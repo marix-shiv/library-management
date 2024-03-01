@@ -402,3 +402,7 @@ The system should use secure protocols for data transmission. User authenticatio
 
 ## 6. Other Requirements
 The system should be able to support multiple languages (internationalization requirements). It should also comply with all relevant legal requirements, such as data protection and privacy laws. The system should be designed in a modular way to allow for reuse of components where possible.
+
+## License
+
+This project is licensed under the terms of the [MIT license](LICENSE).
