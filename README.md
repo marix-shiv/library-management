@@ -53,4 +53,4 @@ This project is licensed under the terms of the MIT license. See the [LICENSE](L
 
 ## Software Requirements Specification (SRS)
 
-For more detailed information about the requirements and design of the Library Management System, please refer to the [Software Requirements Specification (SRS)](SRS.md) document.
+For more detailed information about the requirements and design of the Library Management System, please refer to the [Software Requirements Specification (SRS)](docs/Software_Requirement_Specification.md) document.
