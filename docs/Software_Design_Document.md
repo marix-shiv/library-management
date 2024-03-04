@@ -8,44 +8,34 @@ Delhi Technological University
 March 2 2024
 
 # Table of Contents
-
-=================
 * [Revision History](#revision-history)
-* 1 [Introduction](#1-introduction)
-  * 1.1 [Document Purpose](#11-document-purpose)
-  * 1.2 [Product Scope](#12-product-scope)
-  * 1.3 [Definitions, Acronyms and Abbreviations](#13-definitions-acronyms-and-abbreviations)
-  * 1.4 [References](#14-references)
-  * 1.5 [Document Overview](#15-document-overview)
-* 2 [Design](#2-overall-description)
-  * 2.1 [Stakeholder concerns](#21-stakeholder-concerns)
-  * 2.2 [Selected Viewpoints](#22-selected-viewpoints)
-    * 2.2.1 [Context](#221-context)
-    * 2.2.2 [Composition](#222-composition)
-    * 2.2.3 [Logical](#223-logical)
-    * 2.2.4 [Dependency](#224-dependency)
-    * 2.2.5 [Information](#225-information)
-    * 2.2.6 [Patterns](#226-patterns)
-    * 2.2.7 [Interface](#227-interface)
-    * 2.2.8 [Structure](#228-structure)
-    * 2.2.9 [Interaction](#229-interaction)
-    * 2.2.10 [State dynamics](#2210-state-dynamics)
-    * 2.2.11 [Algorithm](#2211-algorithm)
-    * 2.2.12 [Resources](#2212-resources)
-    * 2.2.13 [Physical](#2213-physical)
-    * 2.2.14 [Deployment](#2214-deployment)
-    * 2.2.15 [Concurrency](#2215-concurrency)
-    * 2.2.16 [Behavioral](#2216-behavioral)
-  * 2.3 [Design Views](#23-design-views)
-* 3 [Appendixes](#3-appendixes)
+* [1 Introduction](#1-introduction)
+  * [1.1 Document Purpose](#11-document-purpose)
+  * [1.2 Product Scope](#12-product-scope)
+  * [1.3 Definitions, Acronyms and Abbreviations](#13-definitions-acronyms-and-abbreviations)
+  * [1.4 References](#14-references)
+  * [1.5 Document Overview](#15-document-overview)
+* [2 Design](#2-design)
+  * [2.1 Stakeholder Concerns](#21-stakeholder-concerns)
+  * [2.2 Selected Viewpoints](#22-selected-viewpoints)
+    * [2.2.1 Context](#221-context)
+    * [2.2.2 Composition](#222-composition)
+    * [2.2.3 Logical](#223-logical)
+    * [2.2.4 Dependency](#224-dependency)
+    * [2.2.5 Interface](#225-interface)
+    * [2.2.6 Deployment](#226-deployment)
+    * [2.2.7 Resources](#227-resources)
+  * [2.3 Views](#23-views)
+* [3 Appendixes](#3-appendixes)
+  * [3.1 Data Dictionary](#31-data-dictionary)
+  * [3.2 Glossary](#32-glossary)
 
 ## Revision History
 
 | Name | Date    | Reason For Changes  | Version   |
 | ---- | ------- | ------------------- | --------- |
-|      |         |                     |           |
-|      |         |                     |           |
-|      |         |                     |           |
+|  1   | 04/03/24| Initial draft       | 1.0       |
+|  2   | 04/04/24| Fixed issues in Table of Contents | 1.1 |
 
 ## 1. Introduction
 
