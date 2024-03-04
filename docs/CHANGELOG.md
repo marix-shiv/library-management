@@ -1,7 +1,16 @@
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2022-04-04
+### Added
+- Software Design Document (SDD) for the Library Management System.
+
+## [1.0.0] - 2022-04-01
+### Added
+- Initial project setup and basic functionality.
+- Software Requirements Specification (SRS) for the Library Management System.
 <!-- 
 NOTE: The following lines are the reference/example/format for the logs which will be added to this file:
 
