@@ -32,7 +32,7 @@ LIBRARY BUDGET,Money,Decimal,9,9,money spent or received,100000.5,0 <= Money <= 
 LIBRARY BUDGET,Description,String,10000,10000,description of the transaction,spent on fixing a lot of 100 books covers,1 <= Description Length <= 10000 characters
 LIBRARY POLICIES,PolicyID,Binary,16,36,unique for every policy using UUID,123e4567-e89b-12d3-a456-426614174000,
 LIBRARY POLICIES,Property,String,256,256,Property of the policy,"max_renewals_per_book",1 <= Property Length <= 256
-LIBRARY POLICIES,Value,String,256,256,Value of the policy,"3",1 <= Value Length <= 256RESERVATIONS,
+LIBRARY POLICIES,Value,String,256,256,Value of the policy,"3",1 <= Value Length <= 256
 RESERVATIONS, Reservation ID,Binary,16,36,unique for every reservation usind UUID,123e4567-e89b-12d3-a456-426614174000,
 RESERVATIONS,User ID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
 RESERVATIONS,Book ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
