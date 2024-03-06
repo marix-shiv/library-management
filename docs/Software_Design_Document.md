@@ -36,6 +36,7 @@ March 2 2024
 | ---- | ------- | ------------------- | --------- |
 |  1   | 04/03/24| Initial draft       | 1.0       |
 |  2   | 04/04/24| Fixed issues in Table of Contents | 1.1 |
+|  3   | 04/05/24| Added MariaDB npm package for database operations | 1.2 |
 
 ## 1. Introduction
 
@@ -181,6 +182,8 @@ The deployment of the LMS in a production environment is illustrated using a UML
 The Library Management System utilizes various resources to function effectively:
 
 - **MySQL Database**: The system uses a MySQL database to store all the data related to users, books, reservations, and administrative details. The database is hosted on a cloud-based server and is accessed through the application logic on the server-side.
+
+- **MariaDB npm package**: The system uses the `mariadb` npm package as a MySQL client to connect to the MySQL database. This package provides a modern, promise-based API for interacting with MariaDB and MySQL databases.
 
 - **Heroku Cloud Server**: The application and database are hosted on a cloud server provided by Heroku. This allows the system to be accessed from anywhere and provides scalability and reliability.
 

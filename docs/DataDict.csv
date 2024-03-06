@@ -2,6 +2,7 @@
 USERS,UserID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
 USERS,Username,String,16,16,used to uniquely identify the user,abcd,5 <= username <= 16 and unique for every user
 USERS,Password,String,256,Depends on the password length,used to validate the user,AaBb@#1298,"8 <= password length <= 64 and must contain one uppercase, one lowercase, one digit and one special character"
+USERS,Salt,String,32,32,used for password hashing,abcf1234jklm,
 USERS,Role,String,1,1,used to uniquely identify the role,A,"used to uniquely identify the role. A = 'Library Admin', L = 'Librarian', S = 'Super Admin', U = 'System User'"
 USERS,First Name,String,256,256,first name of the user,John,1 <= First name <= 256 characters
 USERS,Last Name,String,256,256,last name of the user,Dave,1 <= First name <= 256 characters
@@ -21,18 +22,22 @@ AUTHORS,Date of Death,Date,3,3,date of birth of the author,01/01/1870,01-01-1000
 GENRES,Genre ID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
 GENRES,Name,String,256,256,genre of the book,Adventure,1 <= Genre length <= 256 characters
 BOOK INSTANCE,Instance ID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
-BOOK INSTANCE,Book ID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOK INSTANCE,Instance ID,Binary,16,36,unique for every book instance usind UUID,123e4567-e89b-12d3-a456-426614174000,
 BOOK INSTANCE,Status,String,1,1,uniquely identify the status of the book,A,"M = ""Maintenance"", L = ""Loaned"", R = ""Reserved"", A = ""Available"""
 BOOK INSTANCE,Available By,Date,3,3,"if not available, then date available by",01/01/1770,01-01-1000 <= Date <= 31-12-9999
 BOOK INSTANCE,Imprint,String,256,256,Imprint of the Book,"Penguin Random House - First Edition, 2021",1 <= Imprint Length <= 256
 LIBRARY BUDGET,Budget ID,Binary,16,36,unique for every transaction usind UUID,123e4567-e89b-12d3-a456-426614174000,
 LIBRARY BUDGET,Date,Date,3,3,date of birth of the author,01/01/1770,01-01-1000 <= Date <= 31-12-9999
-LIBRARY BUDGET,Spent/ Received,String,1,1,Identify if it is spent or received,,"S = ""Spent"" and R = ""Received"""
 LIBRARY BUDGET,Money,Decimal,9,9,money spent or received,100000.5,0 <= Money <= 99999999999999999.99
 LIBRARY BUDGET,Description,String,10000,10000,description of the transaction,spent on fixing a lot of 100 books covers,1 <= Description Length <= 10000 characters
-LIBRARY POLICIES,Policy ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
-LIBRARY POLICIES,Description,String,10000,10000,description of the policy,only 2 books are allowed for reservation,1 <= Description Length <= 10000 characters
-RESERVATIONS,Reservation ID,Binary,16,36,unique for every reservation usind UUID,123e4567-e89b-12d3-a456-426614174000,
+LIBRARY POLICIES,PolicyID,Binary,16,36,unique for every policy using UUID,123e4567-e89b-12d3-a456-426614174000,
+LIBRARY POLICIES,Property,String,256,256,Property of the policy,"max_renewals_per_book",1 <= Property Length <= 256
+LIBRARY POLICIES,Value,String,256,256,Value of the policy,"3",1 <= Value Length <= 256RESERVATIONS,
+RESERVATIONS, Reservation ID,Binary,16,36,unique for every reservation usind UUID,123e4567-e89b-12d3-a456-426614174000,
 RESERVATIONS,User ID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
 RESERVATIONS,Book ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
 RESERVATIONS,Date of Reservation,Date,3,3,date of applying for reservation,01/01/1770,01-01-1000 <= Date <= 31-12-9999
+ANNOUNCEMENTS,AnnouncementID,Binary,16,36,unique for every announcement using UUID,123e4567-e89b-12d3-a456-426614174000,
+ANNOUNCEMENTS,Title,String,256,256,Title of the announcement,"Library Closed for Maintenance",1 <= Title Length <= 256
+ANNOUNCEMENTS,Content,String,10000,10000,Content of the announcement,"The library will be closed for maintenance on 01/01/2023.",1 <= Content Length <= 10000 characters
+ANNOUNCEMENTS,DatePosted,Date,3,3,Date the announcement was posted,01/01/2023,01-01-1000 <= Date <= 31-12-9999
