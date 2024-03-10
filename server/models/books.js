@@ -1,3 +1,11 @@
+/**
+ * This module defines the Book model for the 'books' table in the database.
+ * The Book model extends the Objection.js Model class and defines the table name, ID column, a JSON schema, and relation mappings.
+ * The JSON schema describes the shape of the Book objects and is used for validation before inserting or updating records.
+ * The relation mappings define the relationship between the Book model and the Author model.
+ * The Book model is exported so it can be used in other parts of the application to perform operations on the 'books' table.
+ */
+
 const { Model } = require('objection');
 
 class Book extends Model {

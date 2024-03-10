@@ -1,3 +1,10 @@
+/**
+ * This module defines the Author model for the 'authors' table in the database.
+ * The Author model extends the Objection.js Model class and defines the table name, ID column, and a JSON schema.
+ * The JSON schema describes the shape of the Author objects and is used for validation before inserting or updating records.
+ * The Author model is exported so it can be used in other parts of the application to perform operations on the 'authors' table.
+ */
+
 const { Model } = require('objection');
 
 class Author extends Model {

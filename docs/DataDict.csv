@@ -4,39 +4,39 @@ USERS,Username,String,16,16,used to uniquely identify the user,abcd,5 <= usernam
 USERS,Password,String,256,Depends on the password length,used to validate the user,AaBb@#1298,"8 <= password length <= 64 and must contain one uppercase, one lowercase, one digit and one special character"
 USERS,Salt,String,32,32,used for password hashing,abcf1234jklm,
 USERS,Role,String,1,1,used to uniquely identify the role,A,"used to uniquely identify the role. A = 'Library Admin', L = 'Librarian', S = 'Super Admin', U = 'System User'"
-USERS,First Name,String,256,256,first name of the user,John,1 <= First name <= 256 characters
-USERS,Last Name,String,256,256,last name of the user,Dave,1 <= First name <= 256 characters
-USERS,Date of Birth,Date,3,3,date of birth of the user,01/01/1770,01-01-1000 <= Date <= 31-12-9999
+USERS,first_name,String,256,256,first name of the user,John,1 <= First name <= 256 characters
+USERS,last_name,String,256,256,last name of the user,Dave,1 <= First name <= 256 characters
+USERS,date_of_birth,Date,3,3,date of birth of the user,01/01/1770,01-01-1000 <= Date <= 31-12-9999
 USERS,Status,Boolean,1,1,identify if the account is registered,1(registered) or 0(not yet registered),
-BOOKS,Book ID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOKS,BookID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
 BOOKS,Title,String,256,256,Title of the book,The Invisible Man,1 <= Title Length <= 256
-BOOKS,Author ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOKS,AuthorID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
 BOOKS,Summary,String,10000,10000,summary of the book,Invisible Man addresses society's....,1 <= Summary Length <= 10000 characters
 BOOKS,ISBN,Number,13,13,ISBN ID of the book,978-3-16-148410-0,Should be valid ISBN ID
-BOOKS,Genre ID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
-AUTHORS,Author ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
-AUTHORS,First Name,String,256,256,first name of the author,John,1 <= First name <= 256 characters
-AUTHORS,Last Name,String,256,256,last name of the author,Dave,1 <= First name <= 256 characters
-AUTHORS,Date of Birth,Date,3,3,date of birth of the author,01/01/1770,01-01-1000 <= Date <= 31-12-9999
-AUTHORS,Date of Death,Date,3,3,date of birth of the author,01/01/1870,01-01-1000 <= Date <= 31-12-9999
-GENRES,Genre ID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOKS,GenreID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
+AUTHORS,AuthorID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
+AUTHORS,FirstName,String,256,256,first name of the author,John,1 <= First name <= 256 characters
+AUTHORS,LastName,String,256,256,last name of the author,Dave,1 <= First name <= 256 characters
+AUTHORS,DateOfBirth,Date,3,3,date of birth of the author,01/01/1770,01-01-1000 <= Date <= 31-12-9999
+AUTHORS,DateOfDeath,Date,3,3,date of birth of the author,01/01/1870,01-01-1000 <= Date <= 31-12-9999
+GENRES,GenreID,Binary,16,36,unique for every book usind UUID,123e4567-e89b-12d3-a456-426614174000,
 GENRES,Name,String,256,256,genre of the book,Adventure,1 <= Genre length <= 256 characters
-BOOK INSTANCE,Instance ID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
-BOOK INSTANCE,Instance ID,Binary,16,36,unique for every book instance usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOK INSTANCE,InstanceID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
+BOOK INSTANCE,InstanceID,Binary,16,36,unique for every book instance usind UUID,123e4567-e89b-12d3-a456-426614174000,
 BOOK INSTANCE,Status,String,1,1,uniquely identify the status of the book,A,"M = ""Maintenance"", L = ""Loaned"", R = ""Reserved"", A = ""Available"""
-BOOK INSTANCE,Available By,Date,3,3,"if not available, then date available by",01/01/1770,01-01-1000 <= Date <= 31-12-9999
+BOOK INSTANCE,AvailableBy,Date,3,3,"if not available, then date available by",01/01/1770,01-01-1000 <= Date <= 31-12-9999
 BOOK INSTANCE,Imprint,String,256,256,Imprint of the Book,"Penguin Random House - First Edition, 2021",1 <= Imprint Length <= 256
-LIBRARY BUDGET,Budget ID,Binary,16,36,unique for every transaction usind UUID,123e4567-e89b-12d3-a456-426614174000,
+LIBRARY BUDGET,BudgetID,Binary,16,36,unique for every transaction usind UUID,123e4567-e89b-12d3-a456-426614174000,
 LIBRARY BUDGET,Date,Date,3,3,date of birth of the author,01/01/1770,01-01-1000 <= Date <= 31-12-9999
 LIBRARY BUDGET,Money,Decimal,9,9,money spent or received,100000.5,0 <= Money <= 99999999999999999.99
 LIBRARY BUDGET,Description,String,10000,10000,description of the transaction,spent on fixing a lot of 100 books covers,1 <= Description Length <= 10000 characters
 LIBRARY POLICIES,PolicyID,Binary,16,36,unique for every policy using UUID,123e4567-e89b-12d3-a456-426614174000,
 LIBRARY POLICIES,Property,String,256,256,Property of the policy,"max_renewals_per_book",1 <= Property Length <= 256
 LIBRARY POLICIES,Value,String,256,256,Value of the policy,"3",1 <= Value Length <= 256
-RESERVATIONS, Reservation ID,Binary,16,36,unique for every reservation usind UUID,123e4567-e89b-12d3-a456-426614174000,
-RESERVATIONS,User ID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
-RESERVATIONS,Book ID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
-RESERVATIONS,Date of Reservation,Date,3,3,date of applying for reservation,01/01/1770,01-01-1000 <= Date <= 31-12-9999
+RESERVATIONS, ReservationID,Binary,16,36,unique for every reservation usind UUID,123e4567-e89b-12d3-a456-426614174000,
+RESERVATIONS,UserID,Binary,16,36,unique for every user usind UUID,123e4567-e89b-12d3-a456-426614174000,
+RESERVATIONS,BookID,Binary,16,36,unique for every author usind UUID,123e4567-e89b-12d3-a456-426614174000,
+RESERVATIONS,DateOfReservation,Date,3,3,date of applying for reservation,01/01/1770,01-01-1000 <= Date <= 31-12-9999
 ANNOUNCEMENTS,AnnouncementID,Binary,16,36,unique for every announcement using UUID,123e4567-e89b-12d3-a456-426614174000,
 ANNOUNCEMENTS,Title,String,256,256,Title of the announcement,"Library Closed for Maintenance",1 <= Title Length <= 256
 ANNOUNCEMENTS,Content,String,10000,10000,Content of the announcement,"The library will be closed for maintenance on 01/01/2023.",1 <= Content Length <= 10000 characters
