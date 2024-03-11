@@ -23,5 +23,8 @@ module.exports = {
 
     REQUEST_BODY_EMPTY: 'Request Body is Empty.',
 
-    DATE_VALID: 'Date must be a valid date.'
+    DATE_VALID: 'Date must be a valid date.',
+
+    ACCESS_DENIED: 'Access denied. No token provided.',
+    INVALID_TOKEN: 'Invalid token.'
 };

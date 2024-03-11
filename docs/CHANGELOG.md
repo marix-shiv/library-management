@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Created new `middlewares` directory for storing middleware functions.
 - Created new `validators` directory for storing validation functions.
 - Added new routes for `announcements`, `authors`, `bookInstances`, `books`, `genres`, `libraryBudgets`, `libraryPolicies`, `reservations`, and `users`.
+- Added new `server/auth/` directory for authentication-related code.
 
 ### Changed
 - Made updates to the `DataDict.csv` file to reflect changes in the database schema.
@@ -24,6 +25,11 @@ All notable changes to this project will be documented in this file.
 - Modified `app.js`.
 - Modified `users.js` model.
 - Updated `package.json` and `package-lock.json`.
+- Refactored error messages in `server/constants/errorMessages.js`.
+- Updated user controller logic in `server/controllers/usersController.js`.
+- Enhanced authorization middleware in `server/middlewares/authorize.js`.
+- Modified password verification utility in `server/utils/verifyPassword.js`.
+- Adjusted password validation in `server/validators/validatePassword.js`.
 
 ### Removed
 - Deleted `index.js` from `routes` directory.

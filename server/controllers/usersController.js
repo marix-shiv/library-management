@@ -6,9 +6,8 @@
  */
 
 const User = require('../models/users');
-const { param, body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
-const {v4: uuidv4, validate} = require('uuid');
+const {v4: uuidv4} = require('uuid');
 
 // Middleware Functions
 const {idValidator} = require('../middlewares/idValidator');
@@ -30,14 +29,21 @@ const userRoles = require('../constants/userRoles');
 const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS } = require('../constants/fieldNames');
 const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
 
+// Authentication Middlewares and Functions
+const authenticateUser = require('../auth/authenticateUser');
+const generateToken = require('../auth/generateToken');
+const setTokenCookie = require('../auth/setTokenCookie');
+
 // Returns details of all users for authorized user
 exports.all_users = [
+    // Authenticate User
+    authenticateUser,
+
     // If the user is not an A, S or L, redirect them to 
     authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN]),
 
     asyncHandler(async(req, res, next)=>{
-        console.log("Reached Here");
-        let fieldsToSelect = ['UserID', 'Username', 'Role', 'first_name', 'last_name', 'date_of_birth', 'Status'];
+        let fieldsToSelect = [USERS_USER_ID, USERS_USERNAME, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS];
 
         try{
             const users = await User.query().select(fieldsToSelect);
@@ -51,6 +57,9 @@ exports.all_users = [
 
 // Get user information by id(UserID in this case)
 exports.user_details = [
+    // Authenticate User
+    authenticateUser,
+
     // Validate id
     ...idValidator,
 
@@ -89,8 +98,7 @@ exports.create_user = [
         const { Username, Password } = req.body;
         try{
             // Check if a user with same Username already exists
-            console.log("USERNAME IS ", Username);
-            const existingUser = await User.query().where({"Username": Username}).first();
+            const existingUser = await User.query().where({[USERS_USERNAME]: Username}).first();
             if(existingUser){
                 return conflictRequestResponse(res, "Username already taken.");
             }
@@ -128,6 +136,8 @@ exports.create_user = [
 
 // Update details of the user other than password and role
 exports.update_user_details = [
+    // Authenticate User
+    authenticateUser,
 
     // validate id
     ...idValidator,
@@ -137,7 +147,7 @@ exports.update_user_details = [
 
     // Custom validator to ensure no extra fields are present
     (req, res, next) => {
-        const validFields = ['Username', 'first_name', 'last_name', 'date_of_birth'];
+        const validFields = [USERS_USERNAME, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH];
         const invalidFields = Object.keys(req.body).filter(field => !validFields.includes(field) && typeof req.body[field] !== 'object');
 
         if (invalidFields.length > 0) {
@@ -147,7 +157,7 @@ exports.update_user_details = [
     },
     
     // Optionally validate and sanitize the request body
-    validateAndSanitize(['Username', 'first_name', 'last_name', 'date_of_birth']),
+    validateAndSanitize([USERS_USERNAME, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH]),
 
     // Data is valid
 
@@ -184,6 +194,9 @@ exports.update_user_details = [
 
 // Update password of the user
 exports.update_password = [
+    // Authenticate User
+    authenticateUser,
+
     //validate id
     ...idValidator,
 
@@ -209,12 +222,12 @@ exports.update_password = [
         }
         try{
             // Hash password
-            const hashedPassword = await hashPassword(req.body.Password);
+            const hashedPassword = await hashPassword(req.body[USERS_PASSWORD]);
 
             // Store the updated key and salt
             const updatedPasswordData = {
-                Password: hashedPassword.key,
-                Salt: hashedPassword.salt
+                [USERS_PASSWORD]: hashedPassword.key,
+                [USERS_SALT]: hashedPassword.salt
             }
 
             // Update password
@@ -222,7 +235,6 @@ exports.update_password = [
                 query().
                 findById(req.params.id).
                 patch(updatedPasswordData);
-            
             return successResponse(res, "Password Updated Successfully");
         }
         catch (err) {
@@ -233,6 +245,9 @@ exports.update_password = [
 
 // Delete user
 exports.delete_user = [
+    // Authenticate User
+    authenticateUser,
+
     // validate id
     ...idValidator,
 
@@ -249,6 +264,13 @@ exports.delete_user = [
                 return notFoundResponse(res);
             }
             await User.query().deleteById(req.params.id);
+
+            // If the user being deleted is the same as the currently authenticated user, log them out.
+            if (req.user[USERS_USER_ID] === req.params.id) {
+                res.clearCookie('token');
+                return successResponse(res, "User Deleted Successfully. You have been logged out.");
+            }
+
             return successResponse(res, "User Deleted Successfully")
         }
         catch (err) {
@@ -270,10 +292,19 @@ exports.login_user = [
             unauthorizedRequestResponse(res, 'Invalid username or password.');
             return;
         }
-
         // User exists and password is correct. Log them in.
-        // Here we would later create a JWT and send it to the client.
-        // For simplicity, we're just sending a success response.
+        // Generate a JWT and set it as a cookie.
+        const token = generateToken(user);
+        setTokenCookie(res, token);
         return successResponse(res, 'Logged in successfully.');
     })
 ];
+
+// Logout a user
+exports.logout_user = [
+    authenticateUser,
+    asyncHandler((req, res, next)=>{
+        res.clearCookie('token');
+        return successResponse(res, "Logged out successfully.");
+    })
+]
