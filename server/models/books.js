@@ -7,41 +7,44 @@
  */
 
 const { Model } = require('objection');
+const { BOOKS_TABLE, AUTHORS_TABLE } = require('../constants/tableNames');
+const { BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_GENRE_ID, BOOKS_ISBN, BOOKS_SUMMARY, BOOKS_TITLE, AUTHORS_AUTHOR_ID } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, DESC_MIN, DESC_MAX, ISBN_MIN_MAX_LENGTH } = require('../constants/validationConstants');
 
 class Book extends Model {
     static get tableName() {
-        return 'books';
+        return BOOKS_TABLE;
     }
 
     static get idColumn() {
-        return 'BookID';
+        return BOOKS_BOOK_ID;
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['Title', 'AuthorID', 'Summary', 'ISBN', 'GenreID'],
+            required: [BOOKS_TITLE, BOOKS_AUTHOR_ID, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID],
             properties: {
-                BookID: { type: 'string', length: 36 },
-                Title: { type: 'string', minLength: 1, maxLength: 256 },
-                AuthorID: { type: 'string', length: 36 },
-                Summary: { type: 'string', minLength: 1, maxLength: 10000 },
-                ISBN: { type: 'string', length: 13 },
-                GenreID: { type: 'string', length: 36 },
+                [BOOKS_BOOK_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [BOOKS_TITLE]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
+                [BOOKS_AUTHOR_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [BOOKS_SUMMARY]: { type: 'string', minLength: DESC_MIN, maxLength: DESC_MAX },
+                [BOOKS_ISBN]: { type: 'string', minLength: ISBN_MIN_MAX_LENGTH, maxLength: ISBN_MIN_MAX_LENGTH },
+                [BOOKS_GENRE_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
             },
         };
     }
 
     static get relationMappings() {
-        const Author = require('./Author'); // assuming the Author model is in the same directory
+        const Author = require('./authors');
 
         return {
             author: {
                 relation: Model.BelongsToOneRelation,
                 modelClass: Author,
                 join: {
-                    from: 'books.AuthorID',
-                    to: 'authors.AuthorID'
+                    from: `${BOOKS_TABLE}.${BOOKS_AUTHOR_ID}`,
+                    to: `${AUTHORS_TABLE}.${AUTHORS_AUTHOR_ID}`
                 }
             }
         };

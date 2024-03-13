@@ -19,13 +19,21 @@ const validateUsername = require('../validators/validateUsername');
 const validatePassword = require('../validators/validatePassword');
 const validateName = require('../validators/validateName');
 const validateRole = require('../validators/validateRole');
+const validateMoney = require('../validators/moneyValidator');
+const validateDescription = require('../validators/descriptionValidator');
 
 
 // Regex Tests
 // Checks if the string has the word 'date' case-insensitive
 const isSomeDate = /date/i;
 // Check if the string has the word 'first' or 'last' for first or last names case-insensitive
-const isSomeName = /(first|last)/i;
+const isSomeName = /name/i;
+
+// Check if the string has the word 'description' case-insensitive
+const isSomeDescription = /description/i;
+
+// Check if the string has the word 'description' case-insensitive
+const isSomeContent = /content/i;
 
 function validateAndSanitize(optionalFields = []) {
     return (req, res, next) => {
@@ -40,6 +48,7 @@ function validateAndSanitize(optionalFields = []) {
             if (isSomeDate.test(field)){
                 validator = validateDate(field);
             }
+
             else if(typeof req.body[field] === 'object' && req.body[field] !== null){
                 Object.keys(req.body[field]).forEach(subField => {
                     if(subField == fieldNames.USERS_ROLE){
@@ -51,24 +60,35 @@ function validateAndSanitize(optionalFields = []) {
                     }
                 });
             }
+
             else{
                 validator = body(field)
                     .trim()
                     .escape();
             }
+
             if (field === fieldNames.USERS_USERNAME){
                 validator = validateUsername()
             }
+
             else if (field === fieldNames.USERS_PASSWORD) {
                 validator = validatePassword();
             }
             
-            else if (isSomeName.test(field)) {
+            else if (isSomeName.test(field) || field === fieldNames.ANNOUNCEMENTS_TITLE) {
                 validator = validateName(field);
             }
     
             else if (field === fieldNames.USERS_ROLE) {
                 validator = validateRole();
+            }
+
+            else if (field === fieldNames.LIBRARY_BUDGET_MONEY){
+                validator = validateMoney();
+            }
+
+            else if(isSomeDescription.test(field) || isSomeContent.test(field)){
+                validator = validateDescription(field);
             }
     
             if (optionalFields.includes(field)) {
@@ -86,6 +106,7 @@ function validateAndSanitize(optionalFields = []) {
             }
             next();
         });
+        
         // Use Express's built-in middleware chaining function to apply the validation middleware
         return router.use(validationMiddleware)(req, res, next);
     }

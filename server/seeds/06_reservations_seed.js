@@ -1,3 +1,16 @@
+/**
+ * This script seeds the 'reservations' table in the database.
+ * 
+ * It first deletes all existing entries in the 'reservations' table.
+ * Then, it inserts new entries into the 'reservations' table.
+ * 
+ * Each reservation entry includes a unique ID, user ID, book instance ID, and date of reservation.
+ * The user ID for each reservation is retrieved by querying the 'users' table with the username.
+ * The book instance ID for each reservation is retrieved by querying the 'book_instances' table with the imprint.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {

@@ -1,19 +1,18 @@
+/**
+ * This script seeds the 'users' table in the database.
+ * 
+ * It first deletes all existing entries in the 'users' table.
+ * Then, it inserts new entries into the 'users' table.
+ * 
+ * Each user entry includes a unique ID, username, hashed password, salt for the password, role, first name, last name, date of birth, and status.
+ * The password for each user is hashed using the PBKDF2 algorithm.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs and the 'crypto' library to hash passwords.
+ */
+
 const { v4: uuidv4 } = require('uuid');
-const crypto =  require('crypto');
-
-async function hashPassword(password){
-    return new Promise((resolve, reject)=>{
-        // Generate Salt
-        const salt = crypto.randomBytes(16);
-
-        // Hash Password With Salt
-        crypto.pbkdf2(password, salt, 100000, 64, 'sha512', (err, derivedKey)=>{
-            if(err) reject(err);
-
-            resolve({salt: salt.toString("hex"), key: derivedKey.toString('hex')});
-        });
-    });
-}
+const hashPassword = require('../utils/passwordHasher');
+const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_LAST_NAME, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS } = require('../constants/fieldNames');
 
 exports.seed = async function(knex) {
     // Deletes ALL existing entries
@@ -34,114 +33,114 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('users').insert([
         {
-            UserID: uuidv4(),
-            Username: 'john_doe_123',
-            Password: password1.key,
-            Salt: password1.salt,
-            Role: 'A',
-            first_name: 'John',
-            last_name: 'Dave',
-            date_of_birth: '1770-01-01',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'john_doe_123',
+            [USERS_PASSWORD]: password1.key,
+            [USERS_SALT]: password1.salt,
+            [USERS_ROLE]: 'A',
+            [USERS_FIRST_NAME]: 'John',
+            [USERS_LAST_NAME]: 'Dave',
+            [USERS_DATE_OF_BIRTH]: '1770-01-01',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'jane_smith_456',
-            Password: password2.key,
-            Salt: password2.salt,
-            Role: 'L',
-            first_name: 'Jane',
-            last_name: 'Smith',
-            date_of_birth: '1985-01-01',
-            Status: false
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'jane_smith_456',
+            [USERS_PASSWORD]: password2.key,
+            [USERS_SALT]: password2.salt,
+            [USERS_ROLE]: 'L',
+            [USERS_FIRST_NAME]: 'Jane',
+            [USERS_LAST_NAME]: 'Smith',
+            [USERS_DATE_OF_BIRTH]: '1985-01-01',
+            [USERS_STATUS]: false
         },
         {
-            UserID: uuidv4(),
-            Username: 'jim_brown_789',
-            Password: password3.key,
-            Salt: password3.salt,
-            Role: 'S',
-            first_name: 'Jim',
-            last_name: 'Brown',
-            date_of_birth: '1990-01-01',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'jim_brown_789',
+            [USERS_PASSWORD]: password3.key,
+            [USERS_SALT]: password3.salt,
+            [USERS_ROLE]: 'S',
+            [USERS_FIRST_NAME]: 'Jim',
+            [USERS_LAST_NAME]: 'Brown',
+            [USERS_DATE_OF_BIRTH]: '1990-01-01',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'sarah_jones_012',
-            Password: password4.key,
-            Salt: password4.salt,
-            Role: 'U',
-            first_name: 'Sarah',
-            last_name: 'Jones',
-            date_of_birth: '1995-01-01',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'sarah_jones_012',
+            [USERS_PASSWORD]: password4.key,
+            [USERS_SALT]: password4.salt,
+            [USERS_ROLE]: 'U',
+            [USERS_FIRST_NAME]: 'Sarah',
+            [USERS_LAST_NAME]: 'Jones',
+            [USERS_DATE_OF_BIRTH]: '1995-01-01',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'michael_345',
-            Password: password5.key,
-            Salt: password5.salt,
-            Role: 'U',
-            first_name: 'Michael',
-            last_name: 'Jackson',
-            date_of_birth: '2000-01-01',
-            Status: false
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'michael_345',
+            [USERS_PASSWORD]: password5.key,
+            [USERS_SALT]: password5.salt,
+            [USERS_ROLE]: 'U',
+            [USERS_FIRST_NAME]: 'Michael',
+            [USERS_LAST_NAME]: 'Jackson',
+            [USERS_DATE_OF_BIRTH]: '2000-01-01',
+            [USERS_STATUS]: false
         },
         {
-            UserID: uuidv4(),
-            Username: 'alex_smith_789',
-            Password: password6.key,
-            Salt: password6.salt,
-            Role: 'A',
-            first_name: 'Alex',
-            last_name: 'Smith',
-            date_of_birth: '1980-05-15',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'alex_smith_789',
+            [USERS_PASSWORD]: password6.key,
+            [USERS_SALT]: password6.salt,
+            [USERS_ROLE]: 'A',
+            [USERS_FIRST_NAME]: 'Alex',
+            [USERS_LAST_NAME]: 'Smith',
+            [USERS_DATE_OF_BIRTH]: '1980-05-15',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'emilyJ_012',
-            Password: password7.key,
-            Salt: password7.salt,
-            Role: 'U',
-            first_name: 'Emily',
-            last_name: 'Jones',
-            date_of_birth: '1992-08-23',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'emilyJ_012',
+            [USERS_PASSWORD]: password7.key,
+            [USERS_SALT]: password7.salt,
+            [USERS_ROLE]: 'U',
+            [USERS_FIRST_NAME]: 'Emily',
+            [USERS_LAST_NAME]: 'Jones',
+            [USERS_DATE_OF_BIRTH]: '1992-08-23',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'davidW_345',
-            Password: password8.key,
-            Salt: password8.salt,
-            Role: 'S',
-            first_name: 'David',
-            last_name: 'Wilson',
-            date_of_birth: '1975-03-10',
-            Status: false
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'davidW_345',
+            [USERS_PASSWORD]: password8.key,
+            [USERS_SALT]: password8.salt,
+            [USERS_ROLE]: 'S',
+            [USERS_FIRST_NAME]: 'David',
+            [USERS_LAST_NAME]: 'Wilson',
+            [USERS_DATE_OF_BIRTH]: '1975-03-10',
+            [USERS_STATUS]: false
         },
         {
-            UserID: uuidv4(),
-            Username: 'laura_T_678',
-            Password: password9.key,
-            Salt: password9.salt,
-            Role: 'L',
-            first_name: 'Laura',
-            last_name: 'Thomas',
-            date_of_birth: '1988-11-07',
-            Status: true
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'laura_T_678',
+            [USERS_PASSWORD]: password9.key,
+            [USERS_SALT]: password9.salt,
+            [USERS_ROLE]: 'L',
+            [USERS_FIRST_NAME]: 'Laura',
+            [USERS_LAST_NAME]: 'Thomas',
+            [USERS_DATE_OF_BIRTH]: '1988-11-07',
+            [USERS_STATUS]: true
         },
         {
-            UserID: uuidv4(),
-            Username: 'samuel_C_901',
-            Password: password10.key,
-            Salt: password10.salt,
-            Role: 'U',
-            first_name: 'Samuel',
-            last_name: 'Clark',
-            date_of_birth: '1997-01-30',
-            Status: false
+            [USERS_USER_ID]: uuidv4(),
+            [USERS_USERNAME]: 'samuel_C_901',
+            [USERS_PASSWORD]: password10.key,
+            [USERS_SALT]: password10.salt,
+            [USERS_ROLE]: 'U',
+            [USERS_FIRST_NAME]: 'Samuel',
+            [USERS_LAST_NAME]: 'Clark',
+            [USERS_DATE_OF_BIRTH]: '1997-01-30',
+            [USERS_STATUS]: false
         }
         
     ]);

@@ -1,3 +1,15 @@
+/**
+ * This script seeds the 'library_policies' table in the database.
+ * 
+ * It first deletes all existing entries in the 'library_policies' table.
+ * Then, it inserts new entries into the 'library_policies' table.
+ * 
+ * Each policy entry includes a unique ID, property, and value.
+ * The property is the name of the policy, and the value is the policy's value.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {

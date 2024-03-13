@@ -1,3 +1,14 @@
+/**
+ * This script seeds the 'authors' table in the database.
+ * 
+ * It first deletes all existing entries in the 'authors' table.
+ * Then, it inserts new entries into the 'authors' table.
+ * 
+ * Each author entry includes a unique ID, first name, last name, date of birth, and date of death.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {

@@ -6,25 +6,28 @@
  */
 
 const { Model } = require('objection');
+const { LIBRARY_BUDGETS_TABLE } = require('../constants/tableNames');
+const { LIBRARY_BUDGET_BUDGET_ID, LIBRARY_BUDGET_MONEY, LIBRARY_BUDGET_DATE, LIBRARY_BUDGET_DESCRIPTION } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, DESC_MIN, DESC_MAX } = require('../constants/validationConstants');
 
 class LibraryBudget extends Model {
     static get tableName() {
-        return 'library_budgets';
+        return LIBRARY_BUDGETS_TABLE;
     }
 
     static get idColumn() {
-        return 'BudgetID';
+        return LIBRARY_BUDGET_BUDGET_ID;
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['Date', 'Money', 'Description'],
+            required: [LIBRARY_BUDGET_DATE, LIBRARY_BUDGET_MONEY, LIBRARY_BUDGET_DESCRIPTION],
             properties: {
-                BudgetID: { type: 'string', length: 36 },
-                Date: { type: 'string', format: 'date' },
-                Money: { type: 'number' },
-                Description: { type: 'string', minLength: 1, maxLength: 10000 },
+                [LIBRARY_BUDGET_BUDGET_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [LIBRARY_BUDGET_DATE]: { type: 'string', format: 'date' },
+                [LIBRARY_BUDGET_MONEY]: { type: 'number' },
+                [LIBRARY_BUDGET_DESCRIPTION]: { type: 'string', minLength: DESC_MIN, maxLength: DESC_MAX },
             },
         };
     }

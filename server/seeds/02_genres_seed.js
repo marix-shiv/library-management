@@ -1,3 +1,14 @@
+/**
+ * This script seeds the 'genres' table in the database.
+ * 
+ * It first deletes all existing entries in the 'genres' table.
+ * Then, it inserts new entries into the 'genres' table.
+ * 
+ * Each genre entry includes a unique ID and a name.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {
@@ -107,5 +118,13 @@ exports.seed = async function(knex) {
             GenreID: uuidv4(),
             Name: 'Detective'
         },
+        {
+            GenreID: uuidv4(),
+            Name: "Political Fiction"
+        },
+        {
+            GenreID: uuidv4(),
+            Name: "Psychological Fiction"
+        }
     ])
 };

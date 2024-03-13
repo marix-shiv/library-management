@@ -26,5 +26,14 @@ module.exports = {
     DATE_VALID: 'Date must be a valid date.',
 
     ACCESS_DENIED: 'Access denied. No token provided.',
-    INVALID_TOKEN: 'Invalid token.'
+    INVALID_TOKEN: 'Invalid token.',
+
+    INVALID_PAGE_NUMBER: 'Invalid Page Number',
+
+    MONEY_REQUIRED: 'Money is required.',
+    MONEY_VALID: 'Money must be an integer between 0 and 99999999999999999',
+    MONEY_RANGE_INVALID: 'Max money can not be less than Min money.',
+
+    DESC_REQUIRED: 'Description is required.',
+    DESC_LENGTH: 'Description must be between 1 and 10000 characters long'
 };

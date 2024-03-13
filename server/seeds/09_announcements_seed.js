@@ -1,3 +1,14 @@
+/**
+ * This script seeds the 'announcements' table in the database.
+ * 
+ * It first deletes all existing entries in the 'announcements' table.
+ * Then, it inserts new entries into the 'announcements' table.
+ * 
+ * Each announcement entry includes a unique ID, title, content, and date posted.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const { v4: uuidv4 } = require('uuid');
 
 exports.seed = async function(knex) {

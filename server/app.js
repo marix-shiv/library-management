@@ -1,3 +1,11 @@
+/**
+ * This module exports an Express application for the Library Management System.
+ * The application is configured with middleware for logging, parsing JSON and URL-encoded bodies, and parsing cookies.
+ * It also sets up routes for handling requests to the users, genres, authors, library budgets, and announcements APIs.
+ * Additionally, it includes error handling middleware for catching 404 errors and other types of errors.
+ * The application listens on port 3001.
+ */
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -13,7 +21,10 @@ Model.knex(knex);
 
 // const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users')
-
+const genresRouter = require('./routes/genres');
+const authorsRouter = require('./routes/authors');
+const libraryBudgetRouter = require('./routes/libraryBudgets');
+const announcementsRouter = require('./routes/announcements');
 
 const app = express();
 
@@ -24,6 +35,10 @@ app.use(cookieParser());
 
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/genres', genresRouter);
+app.use('/authors', authorsRouter);
+app.use('/budgets', libraryBudgetRouter);
+app.use('/announcements', announcementsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

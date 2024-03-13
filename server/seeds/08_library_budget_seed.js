@@ -1,3 +1,14 @@
+/**
+ * This script seeds the 'library_budgets' table in the database.
+ * 
+ * It first deletes all existing entries in the 'library_budgets' table.
+ * Then, it inserts new entries into the 'library_budgets' table.
+ * 
+ * Each budget entry includes a unique ID, date, money amount, and description.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {

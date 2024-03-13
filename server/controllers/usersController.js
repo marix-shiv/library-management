@@ -23,16 +23,21 @@ const notFoundResponse = require('../utils/notFoundResponse');
 const successResponse = require('../utils/successResponse');
 const badRequestResponse = require('../utils/badRequestResponse');
 const conflictRequestResponse = require('../utils/conflictRequestResponse');
+const allowedFields = require('../utils/allowedFields');
+const incrementDate = require('../utils/incrementDate');
 
 // Constants
 const userRoles = require('../constants/userRoles');
 const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS } = require('../constants/fieldNames');
 const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
+const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
 const authenticateUser = require('../auth/authenticateUser');
 const generateToken = require('../auth/generateToken');
 const setTokenCookie = require('../auth/setTokenCookie');
+const { queryValidator } = require('../validators/queryValidator');
+const { validatePage } = require('../validators/validatePage');
 
 // Returns details of all users for authorized user
 exports.all_users = [
@@ -46,7 +51,10 @@ exports.all_users = [
         let fieldsToSelect = [USERS_USER_ID, USERS_USERNAME, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS];
 
         try{
-            const users = await User.query().select(fieldsToSelect);
+            const users = await User
+                .query()
+                .select(fieldsToSelect);
+
             return res.json(users);
         }
         catch (err) {
@@ -60,21 +68,24 @@ exports.user_details = [
     // Authenticate User
     authenticateUser,
 
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_USER]),
+    
     // Validate id
     ...idValidator,
 
     // Data is valid
-
-    // If the user is a U and they're trying to access another user's details, respond with 403 Forbidden
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_USER]),
 
     asyncHandler(async(req, res, next)=>{
         // Only these fields will be returned using this function
         let fieldsToSelect = [USERS_USER_ID, USERS_USERNAME, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS];
 
         try{
-            const user = await User.query().findById(req.params.id).select(fieldsToSelect);
-            if(!user){
+            const user = await User
+                .query()
+                .findById(req.params.id)
+                .select(fieldsToSelect);
+            
+            if(!user || user.length === 0){
                 return notFoundResponse(res);
             }
             return res.json(user);
@@ -92,13 +103,19 @@ exports.create_user = [
     // Validate and sanitize the request body
     validateAndSanitize(),
 
+    allowedFields([USERS_USERNAME, USERS_PASSWORD, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_ROLE]),
+
     // Data is valid
 
     asyncHandler(async(req, res, next)=>{
         const { Username, Password } = req.body;
         try{
             // Check if a user with same Username already exists
-            const existingUser = await User.query().where({[USERS_USERNAME]: Username}).first();
+            const existingUser = await User
+                .query()
+                .where({[USERS_USERNAME]: Username})
+                .first();
+
             if(existingUser){
                 return conflictRequestResponse(res, "Username already taken.");
             }
@@ -109,23 +126,19 @@ exports.create_user = [
         const hashedPassword = await hashPassword(Password);
 
         // Update the Password and Salt properties in the request body
-        req.body.Password = hashedPassword.key;
-        req.body.Salt = hashedPassword.salt;
-        req.body.Status = false;
-        req.body.UserID = uuidv4();
+        req.body[USERS_PASSWORD] = hashedPassword.key;
+        req.body[USERS_SALT] = hashedPassword.salt;
+        req.body[USERS_STATUS] = false;
+        req.body[USERS_USER_ID] = uuidv4();
+        req.body[USERS_DATE_OF_BIRTH] = incrementDate(req.body[USERS_DATE_OF_BIRTH]);
 
         // Save user to database
         try {
-            const user = await User.query().insert(req.body);
-            // Create a new object with only the properties you want to return
-            const userResponse = {
-                Username: user.Username,
-                Role: user.Role,
-                'first_name': user['first_name'],
-                'last_name': user['last_name'],
-                Status: user.Status
-            }
-            return successResponse(res, "User Created Successfully", userResponse);
+            const user = await User
+                .query()
+                .insert(req.body);
+
+            return successResponse(res, "User Created Successfully");
         }
 
         catch (err) {
@@ -145,16 +158,7 @@ exports.update_user_details = [
     // Check if request body is empty
     checkEmptyRequestBody,
 
-    // Custom validator to ensure no extra fields are present
-    (req, res, next) => {
-        const validFields = [USERS_USERNAME, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH];
-        const invalidFields = Object.keys(req.body).filter(field => !validFields.includes(field) && typeof req.body[field] !== 'object');
-
-        if (invalidFields.length > 0) {
-            return badRequestResponse( res , `Invalid field(s): ${invalidFields.join(', ')}` )
-        }
-        next();
-    },
+    allowedFields([USERS_USERNAME, USERS_PASSWORD, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_ROLE]),
     
     // Optionally validate and sanitize the request body
     validateAndSanitize([USERS_USERNAME, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH]),
@@ -167,14 +171,9 @@ exports.update_user_details = [
 
     asyncHandler(async(req, res, next)=>{
         try {
-            const user = await User.query().findById(req.params.id);
-
-            const updatedData = Object.keys(req.body).reduce((result, field) => {
-                if (typeof req.body[field] !== "object") {
-                    result[field] = req.body[field];
-                }
-                return result;
-            }, {});
+            const user = await User
+                .query()
+                .findById(req.params.id);
 
             if(!user){
                 return notFoundResponse(res);
@@ -182,7 +181,7 @@ exports.update_user_details = [
             await User
                 .query()
                 .findById(req.params.id)
-                .patch(updatedData);
+                .patch(req.body);
                 
             return successResponse(res, "User Updated Successfully");
         }
@@ -212,7 +211,10 @@ exports.update_password = [
 
     asyncHandler(async(req, res, next)=>{
         try{
-            const user = await User.query().findById(req.params.id);
+            const user = await User
+                .query()
+                .findById(req.params.id);
+
             if(!user){
                 return notFoundResponse(res);
             }
@@ -235,6 +237,7 @@ exports.update_password = [
                 query().
                 findById(req.params.id).
                 patch(updatedPasswordData);
+
             return successResponse(res, "Password Updated Successfully");
         }
         catch (err) {
@@ -259,11 +262,17 @@ exports.delete_user = [
 
     asyncHandler(async(req, res, next)=>{
         try{
-            const user = await User.query().findById(req.params.id);
-            if(!user){
+            const user = await User
+                .query()
+                .findById(req.params.id);
+
+            if(!user || user.length === 0){
                 return notFoundResponse(res);
             }
-            await User.query().deleteById(req.params.id);
+
+            await User
+                .query()
+                .deleteById(req.params.id);
 
             // If the user being deleted is the same as the currently authenticated user, log them out.
             if (req.user[USERS_USER_ID] === req.params.id) {
@@ -287,16 +296,21 @@ exports.login_user = [
     // Process request after validation and sanitization.
     asyncHandler(async (req, res, next) => {
         // Check if the user exists and the password is correct.
-        const user = await User.query().findOne({ [USERS_USERNAME]: req.body[USERS_USERNAME] });
+        const user = await User
+            .query()
+            .findOne({ [USERS_USERNAME]: req.body[USERS_USERNAME] });
+
         if (!user || !(await verifyPassword(req.body[USERS_PASSWORD], user[USERS_PASSWORD], user[USERS_SALT]))) {
             unauthorizedRequestResponse(res, 'Invalid username or password.');
             return;
         }
+
         // User exists and password is correct. Log them in.
         // Generate a JWT and set it as a cookie.
         const token = generateToken(user);
         setTokenCookie(res, token);
         return successResponse(res, 'Logged in successfully.');
+
     })
 ];
 
@@ -306,5 +320,48 @@ exports.logout_user = [
     asyncHandler((req, res, next)=>{
         res.clearCookie('token');
         return successResponse(res, "Logged out successfully.");
+    })
+]
+
+// Search for users
+exports.search_user = [
+    authenticateUser,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    // Validate query
+    ...queryValidator,
+
+    // Validate page number
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const validFields = [USERS_USER_ID, USERS_USERNAME, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH];
+            const query = req.params.query;
+            const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+            
+            // Query the 'User' table to get a list of users where the first name or last name matches the query.
+            // The results are ordered by the position of the query in the full name (first name + last name), and then by the full name in alphabetical order, limited to 'PAGINATION_LIMIT' results, and offset by the 'offset' variable to support pagination.
+            const users = await User
+                .query()
+                .select(validFields)
+                .where(USERS_FIRST_NAME, 'like', `%${query}%`)
+                .orWhere(USERS_LAST_NAME, 'like', `%${query}%`)
+                .orderByRaw(`LOCATE(?, CONCAT(${USERS_FIRST_NAME}, ' ', ${USERS_LAST_NAME}))`, [query])
+                .orderByRaw(`CONCAT(${USERS_FIRST_NAME}, ' ', ${USERS_LAST_NAME})`)
+                .limit(PAGINATION_LIMIT)
+                .offset(offset);
+            
+            if(!users || users.length === 0){
+                return notFoundResponse(res);
+            }
+    
+            return res.json(users);
+        }
+        
+        catch (err) {
+            errorResponse(res, err.message);
+        }
     })
 ]

@@ -17,6 +17,9 @@ const users_controller = require("../controllers/usersController");
 // Get All Users Details
 router.get('/', users_controller.all_users);
 
+// Search user by First Name
+router.get('/search/:query', users_controller.search_user);
+
 // Get user information by id(UserID in this case)
 router.get('/:id', users_controller.user_details);
 

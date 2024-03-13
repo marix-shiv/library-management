@@ -6,24 +6,27 @@
  */
 
 const { Model } = require('objection');
+const { LIBRARY_POLICIES_TABLE } = require('../constants/tableNames');
+const { LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, DESC_MIN, DESC_MAX } = require('../constants/validationConstants');
 
 class LibraryPolicy extends Model {
     static get tableName() {
-        return 'library_policies';
+        return LIBRARY_POLICIES_TABLE;
     }
 
     static get idColumn() {
-        return 'PolicyID';
+        return LIBRARY_POLICIES_POLICY_ID;
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['Property', 'Value'],
+            required: [ LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE ],
             properties: {
-                PolicyID: { type: 'string', length: 36 },
-                Property: { type: 'string', minLength: 1, maxLength: 256 },
-                Value: { type: 'string', minLength: 1, maxLength: 256 },
+                [LIBRARY_POLICIES_POLICY_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [LIBRARY_POLICIES_PROPERTY]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
+                [LIBRARY_POLICIES_VALUE]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
             },
         };
     }

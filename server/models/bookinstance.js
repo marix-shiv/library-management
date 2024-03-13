@@ -6,27 +6,30 @@
  */
 
 const { Model } = require('objection');
+const { BOOK_INSTANCES_TABLE } = require('../constants/tableNames');
+const { BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_USER_ID } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, GENRE_MIN_MAX_LENGTH } = require('../constants/validationConstants');
 
 class BookInstance extends Model {
     static get tableName() {
-        return 'book_instances';
+        return BOOK_INSTANCES_TABLE;
     }
 
     static get idColumn() {
-        return 'InstanceID';
+        return BOOK_INSTANCE_INSTANCE_ID;
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['BookID', 'Status', 'Imprint'],
+            required: [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_IMPRINT],
             properties: {
-                InstanceID: { type: 'string', length: 36 },
-                BookID: { type: 'string', length: 36 },
-                Status: { type: 'string', length: 1 },
-                AvailableBy: { type: 'string', format: 'date' },
-                Imprint: { type: 'string', minLength: 1, maxLength: 256 },
-                IssuedToUserID: { type: ['string', 'null'], length: 36 }, // Add this line
+                [BOOK_INSTANCE_INSTANCE_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [BOOK_INSTANCE_BOOK_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [BOOK_INSTANCE_STATUS]: { type: 'string', minLength: GENRE_MIN_MAX_LENGTH, maxLength: GENRE_MIN_MAX_LENGTH },
+                [BOOK_INSTANCE_AVAILABLE_BY]: { type: 'string', format: 'date' },
+                [BOOK_INSTANCE_IMPRINT]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
+                [BOOK_INSTANCE_USER_ID]: { type: ['string', 'null'], minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
             },
         };
     }

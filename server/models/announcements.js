@@ -6,25 +6,28 @@
  */
 
 const { Model } = require('objection');
+const { ANNOUNCEMENTS_ANNOUNCEMENT_ID, ANNOUNCEMENTS_CONTENT, ANNOUNCEMENTS_DATE_POSTED, ANNOUNCEMENTS_TITLE } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, DESC_MIN, DESC_MAX } = require('../constants/validationConstants');
+const { ANNOUNCEMENTS_TABLE } = require('../constants/tableNames');
 
 class Announcement extends Model {
     static get tableName() {
-        return 'announcements';
+        return ANNOUNCEMENTS_TABLE;
     }
 
     static get idColumn() {
-        return 'AnnouncementID';
+        return ANNOUNCEMENTS_ANNOUNCEMENT_ID;
     }
 
     static get jsonSchema() {
         return {
             type: 'object',
-            required: ['Title', 'Content', 'DatePosted'],
+            required: [ANNOUNCEMENTS_TITLE, ANNOUNCEMENTS_CONTENT, ANNOUNCEMENTS_DATE_POSTED],
             properties: {
-                AnnouncementID: { type: 'string', length: 36 },
-                Title: { type: 'string', minLength: 1, maxLength: 256 },
-                Content: { type: 'string', minLength: 1, maxLength: 10000 },
-                DatePosted: { type: 'string', format: 'date' },
+                [ANNOUNCEMENTS_ANNOUNCEMENT_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [ANNOUNCEMENTS_TITLE]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
+                [ANNOUNCEMENTS_CONTENT]: { type: 'string', minLength: DESC_MIN, maxLength: DESC_MAX },
+                [ANNOUNCEMENTS_DATE_POSTED]: { type: 'string', format: 'date' },
             },
         };
     }

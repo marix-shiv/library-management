@@ -1,3 +1,16 @@
+/**
+ * This script seeds the 'book_instances' table in the database.
+ * 
+ * It first deletes all existing entries in the 'book_instances' table.
+ * Then, it inserts new entries into the 'book_instances' table.
+ * 
+ * Each book instance entry includes a unique ID, book ID, status, available by date, imprint, and issued to user ID.
+ * The book ID for each book instance is retrieved by querying the 'books' table with the title.
+ * The issued to user ID for each book instance is retrieved by querying the 'users' table with the username.
+ * 
+ * This script uses the 'uuid' library to generate unique IDs.
+ */
+
 const {v4: uuidv4} = require('uuid');
 
 exports.seed = async function(knex) {

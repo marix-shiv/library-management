@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added new `constants/paginationConstants.js` and `constants/tableNames.js` files.
+- Added new `migrations/20240311092617_create_books_genres_table.js` and `migrations/20240311093435_remove_GenreID_from_books.js` files.
+- Added new `models/booksGenres.js` file.
+- Added new `seeds/10_books_genres_seed.js` file.
+- Added new `utils/allowedFields.js` and `utils/incrementDate.js` files.
+- Added new `validators/descriptionValidator.js`, `validators/moneyValidator.js`, `validators/queryValidator.js`, `validators/validateDateRange.js`, `validators/validateMoneyRange.js`, and `validators/validatePage.js` files.
 - Initial project setup and basic functionality.
 - Software Requirements Specification (SRS) for the Library Management System.
 - Software Design Document (SDD) for the Library Management System.
@@ -20,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Added new `server/auth/` directory for authentication-related code.
 
 ### Changed
+- Refactored models to use constants.
 - Made updates to the `DataDict.csv` file to reflect changes in the database schema.
 - Modified `DataDict.csv`.
 - Modified `app.js`.
