@@ -1,3 +1,17 @@
+/**
+ * This module exports functions that handle requests to the library policies resource.
+ * 
+ * The functions handle the following requests:
+ * - GET all library policies
+ * - GET a specific library policy by its ID
+ * - POST a new library policy
+ * - PATCH an existing library policy
+ * - DELETE a library policy
+ * - SEARCH library policies based on a query
+ * 
+ * Each function uses the LibraryPolicy model to interact with the database and utility functions to send responses and handle errors.
+ */
+
 const LibraryPolicy = require('../models/librarypolicies');
 const asyncHandler = require('express-async-handler');
 const {v4: uuidv4} = require('uuid');

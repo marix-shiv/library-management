@@ -1,3 +1,22 @@
+/**
+ * This module exports functions that handle requests to the books resource.
+ * 
+ * The functions handle the following requests:
+ * - GET all books
+ * - GET books by search query
+ * - GET a specific book by its ID
+ * - POST a new book
+ * - PATCH an existing book
+ * - DELETE a book
+ * - GET top books based on their status
+ * 
+ * Each function is an array of middleware functions that are called in order.
+ * The middleware functions authenticate the user, authorize the user based on their role, validate and sanitize the request parameters and body, and handle the request.
+ * 
+ * The functions use the Book, Author, Genre, BooksGenres, and BookInstance models to interact with the database.
+ * They also use utility functions to send responses and handle errors.
+ */
+
 const Book = require('../models/books');
 const Author = require('../models/authors');
 const Genre = require('../models/genres');

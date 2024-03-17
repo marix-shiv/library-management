@@ -1,3 +1,12 @@
+/**
+ * This module exports a function that validates the 'value' field in a request body, which is expected to contain a library policy value.
+ * 
+ * The function uses the express-validator middleware to check if the 'value' field is either an integer within a certain range or a string of a certain length.
+ * The range and length are defined in the 'validationConstants.js' constants file.
+ * 
+ * If the 'value' field does not meet the validation criteria, it responds with a predefined error message.
+ */
+
 const { body, validationResult } = require('express-validator');
 const { LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_VALUE_IS_INT } = require('../constants/fieldNames');
 const { INTEGER_VALUE_INVALID, STRING_VALUE_INVALID } = require('../constants/errorMessages');

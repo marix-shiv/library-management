@@ -1,3 +1,18 @@
+/**
+ * This module exports a middleware function that validates the 'value' field in a request body for a library policy.
+ * 
+ * The function first retrieves the policy from the database using the ID in the request parameters.
+ * If the policy is not found, it sends a not found response.
+ * If the 'value' field is not present in the request body, it calls the next middleware function.
+ * 
+ * If the 'value' field is present, it validates the field based on whether the policy value is an integer or a string.
+ * If the policy value is an integer, it checks if the 'value' field is an integer within a certain range.
+ * If the policy value is a string, it checks if the 'value' field is a string of a certain length.
+ * 
+ * If the 'value' field is not valid, it sends a response with an error message.
+ * If the 'value' field is valid, it calls the next middleware function.
+ */
+
 const { body } = require('express-validator');
 const LibraryPolicy = require('../models/librarypolicies');
 const { LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_VALUE_IS_INT } = require('../constants/fieldNames');

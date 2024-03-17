@@ -1,3 +1,19 @@
+/**
+ * This module exports functions that handle requests to the reservations resource.
+ * 
+ * The functions handle the following requests:
+ * - GET all reservations
+ * - GET a specific reservation by its ID
+ * - GET all reservations made by a specific user
+ * - GET all reservations for a specific book
+ * - POST a new reservation
+ * - DELETE a reservation
+ * 
+ * Each function uses the Reservation, Book, User, and LibraryPolicy models to interact with the database and utility functions to send responses and handle errors.
+ * 
+ * The functions also use middleware functions to authenticate and authorize the user, validate and sanitize the request parameters and body, and check if the request body is empty.
+ */
+
 const Book = require('../models/books');
 const Author = require('../models/authors');
 const Genre = require('../models/genres');

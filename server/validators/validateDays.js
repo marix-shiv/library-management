@@ -1,3 +1,12 @@
+/**
+ * This module exports a function that validates the 'value' field in a request body, which is expected to contain a list of maintenance days.
+ * 
+ * The function uses the express-validator middleware to check if the 'value' field contains only valid day names.
+ * The valid day names are defined in the 'daysOfWeek.js' constants file.
+ * 
+ * If the 'value' field contains any invalid day names, it responds with a predefined error message.
+ */
+
 const { body } = require('express-validator');
 const { MAINTENANCE_DAYS_INVALID } = require('../constants/errorMessages');
 const { LIBRARY_POLICIES_VALUE } = require('../constants/fieldNames.js');

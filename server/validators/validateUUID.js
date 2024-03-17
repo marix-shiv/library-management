@@ -1,3 +1,11 @@
+/**
+ * This module exports a function that validates a UUID field in a request body.
+ * 
+ * The function uses the express-validator middleware to check if the field is a valid UUID or an array of valid UUIDs.
+ * 
+ * If the field is not a valid UUID or does not contain valid UUIDs, it responds with a predefined error message.
+ */
+
 const { body } = require('express-validator');
 const { USER_ID_UUID } = require('../constants/errorMessages');
 const validator = require('validator');
