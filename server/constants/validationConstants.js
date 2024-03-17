@@ -31,5 +31,6 @@ module.exports = {
 
     GENRE_MIN_MAX_LENGTH: 1,
 
-    ISBN_MIN_MAX_LENGTH: 13
+    ISBN_MIN_MAX_LENGTH: 13,
+    
 };

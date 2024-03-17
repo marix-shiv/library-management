@@ -35,5 +35,14 @@ module.exports = {
     MONEY_RANGE_INVALID: 'Max money can not be less than Min money.',
 
     DESC_REQUIRED: 'Description is required.',
-    DESC_LENGTH: 'Description must be between 1 and 10000 characters long'
+    DESC_LENGTH: 'Description must be between 1 and 10000 characters long',
+
+    BOOLEAN_FIELD_INVALID: 'Boolean Value is required',
+
+    INTEGER_VALUE_INVALID: 'Integer must be between 0 to 99999999999999999',
+    STRING_VALUE_INVALID: 'String must be between 0 to 255',
+
+    ISBN_INVALID: 'ISBN must be 13 digits integer',
+
+    INVALID_STATUS: 'Status must be one of "A", "L", "M" or "R"'
 };

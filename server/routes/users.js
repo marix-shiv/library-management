@@ -38,4 +38,7 @@ router.delete('/:id', users_controller.delete_user);
 // Login a user
 router.post('/login', users_controller.login_user);
 
+// Logout a user
+router.post('/logout', users_controller.logout_user);
+
 module.exports = router;

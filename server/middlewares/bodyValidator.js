@@ -21,19 +21,27 @@ const validateName = require('../validators/validateName');
 const validateRole = require('../validators/validateRole');
 const validateMoney = require('../validators/moneyValidator');
 const validateDescription = require('../validators/descriptionValidator');
-
+const validateBoolean = require('../validators/validateBoolean');
+const validateISBN = require('../validators/validateISBN');
+const validateUUID = require('../validators/validateUUID');
+const validateStatus = require('../validators/validateStatus');
+const { validate } = require('uuid');
 
 // Regex Tests
 // Checks if the string has the word 'date' case-insensitive
 const isSomeDate = /date/i;
 // Check if the string has the word 'first' or 'last' for first or last names case-insensitive
 const isSomeName = /name/i;
-
 // Check if the string has the word 'description' case-insensitive
 const isSomeDescription = /description/i;
-
 // Check if the string has the word 'description' case-insensitive
 const isSomeContent = /content/i;
+// Check if the string has the word 'title' case-insensitive
+const isSomeTitle = /title/i;
+// Check if the string has the word 'id' case-insensitive
+const isSomeID = /id/i;
+// Check if the string has the word 'summary' case-insensitive
+const isSomeSummary = /summary/i;
 
 function validateAndSanitize(optionalFields = []) {
     return (req, res, next) => {
@@ -47,18 +55,6 @@ function validateAndSanitize(optionalFields = []) {
             // Using custom test case because express-validator isDate isn't working properly
             if (isSomeDate.test(field)){
                 validator = validateDate(field);
-            }
-
-            else if(typeof req.body[field] === 'object' && req.body[field] !== null){
-                Object.keys(req.body[field]).forEach(subField => {
-                    if(subField == fieldNames.USERS_ROLE){
-                        validator = body(`${field}.${subField}`)
-                            .exists()
-                            .withMessage(errorMessages.ROLE_REQUIRED)
-                            .trim()
-                            .escape()
-                    }
-                });
             }
 
             else{
@@ -75,7 +71,10 @@ function validateAndSanitize(optionalFields = []) {
                 validator = validatePassword();
             }
             
-            else if (isSomeName.test(field) || field === fieldNames.ANNOUNCEMENTS_TITLE) {
+            else if ( isSomeName.test(field) || 
+                    field === fieldNames.ANNOUNCEMENTS_TITLE ||
+                    field === fieldNames.LIBRARY_POLICIES_PROPERTY ||
+                    isSomeTitle.test(field)) {
                 validator = validateName(field);
             }
     
@@ -87,8 +86,25 @@ function validateAndSanitize(optionalFields = []) {
                 validator = validateMoney();
             }
 
-            else if(isSomeDescription.test(field) || isSomeContent.test(field)){
+            else if(isSomeDescription.test(field) || isSomeContent.test(field) || isSomeSummary.test(field)){
                 validator = validateDescription(field);
+            }
+
+            else if(field === fieldNames.LIBRARY_POLICIES_CORE ||
+                field === fieldNames.LIBRARY_POLICIES_VALUE_IS_INT){
+                validator = validateBoolean(field);
+            }
+
+            else if(field === fieldNames.BOOKS_ISBN){
+                validator = validateISBN(field);
+            }
+
+            else if(isSomeID.test(field)){
+                validator = validateUUID(field);
+            }
+
+            else if(field === fieldNames.BOOK_INSTANCE_STATUS){
+                validator = validateStatus(field);
             }
     
             if (optionalFields.includes(field)) {

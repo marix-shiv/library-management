@@ -7,8 +7,8 @@
 
 const { Model } = require('objection');
 const { LIBRARY_POLICIES_TABLE } = require('../constants/tableNames');
-const { LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE } = require('../constants/fieldNames');
-const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH, DESC_MIN, DESC_MAX } = require('../constants/validationConstants');
+const { LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_CORE, LIBRARY_POLICIES_VALUE_IS_INT } = require('../constants/fieldNames');
+const { ID_MIN_MAX_LENGTH, NAME_MIN_LENGTH, NAME_MAX_LENGTH} = require('../constants/validationConstants');
 
 class LibraryPolicy extends Model {
     static get tableName() {
@@ -22,11 +22,13 @@ class LibraryPolicy extends Model {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: [ LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE ],
+            required: [ LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_CORE ],
             properties: {
                 [LIBRARY_POLICIES_POLICY_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [LIBRARY_POLICIES_PROPERTY]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
                 [LIBRARY_POLICIES_VALUE]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
+                [LIBRARY_POLICIES_CORE]: { type: 'boolean' },
+                [LIBRARY_POLICIES_VALUE_IS_INT]: { type: 'boolean'}
             },
         };
     }

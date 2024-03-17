@@ -11,7 +11,7 @@ const { USERS_USER_ID, USERS_ROLE } = require('../constants/fieldNames');
 
 function authorize(allowedRoles, idRequiredRoles=[]) {
         return (req, res, next) => {
-        // Check if req.body.user exists
+        // Check if req.user exists
         if (!req.user) {
             return unauthorizedRequestResponse(res);
         }

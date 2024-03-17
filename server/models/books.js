@@ -23,14 +23,13 @@ class Book extends Model {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: [BOOKS_TITLE, BOOKS_AUTHOR_ID, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID],
+            required: [BOOKS_TITLE, BOOKS_AUTHOR_ID, BOOKS_SUMMARY, BOOKS_ISBN],
             properties: {
                 [BOOKS_BOOK_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [BOOKS_TITLE]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
                 [BOOKS_AUTHOR_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [BOOKS_SUMMARY]: { type: 'string', minLength: DESC_MIN, maxLength: DESC_MAX },
                 [BOOKS_ISBN]: { type: 'string', minLength: ISBN_MIN_MAX_LENGTH, maxLength: ISBN_MIN_MAX_LENGTH },
-                [BOOKS_GENRE_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
             },
         };
     }

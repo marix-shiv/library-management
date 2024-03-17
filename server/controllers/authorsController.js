@@ -28,7 +28,7 @@ const incrementDate = require('../utils/incrementDate');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { AUTHORS_AUTHOR_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, AUTHORS_DATE_OF_BIRTH, AUTHORS_DATE_OF_DEATH, BOOKS_BOOKID, BOOKS_TITLE, BOOKS_SUMMARY} = require('../constants/fieldNames');
+const { AUTHORS_AUTHOR_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, AUTHORS_DATE_OF_BIRTH, AUTHORS_DATE_OF_DEATH, BOOKS_BOOK_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_AUTHOR_ID} = require('../constants/fieldNames');
 const { PAGINATION_LIMIT } = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
@@ -46,7 +46,13 @@ exports.all_authors = [
         try{
             const selectedFields = [AUTHORS_AUTHOR_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME];
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-            const authors = await Author.query().select(selectedFields).limit(PAGINATION_LIMIT).offset(offset);
+            
+            const authors = await Author
+                .query()
+                .select(selectedFields)
+                .limit(PAGINATION_LIMIT)
+                .offset(offset);
+
             return res.json(authors);
         }
         catch (err) {
@@ -106,23 +112,23 @@ exports.author_details = [
     // ID is valid
 
     asyncHandler(async(req, res, next)=>{
-        // Gets all the BookID from books table where AuthorID is equal to param.id
+        // Gets all the BOOK_ID from books table where AuthorID is equal to param.id
         try{
             const authorFields = [AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, AUTHORS_DATE_OF_BIRTH, AUTHORS_DATE_OF_DEATH];
-            const booksFields = [ BOOKS_BOOKID, BOOKS_TITLE, BOOKS_SUMMARY ];
+            const booksFields = [ BOOKS_BOOK_ID, BOOKS_TITLE, BOOKS_SUMMARY ];
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
 
             // The 'Author' table is queried to get details about the author with the id specified in the request parameters. Only the fields in the 'authorFields' array are selected.
             const authorDetails = await Author
                 .query()
+                .findById(req.params.id)
                 .select(authorFields)
-                .where({ [AUTHORS_AUTHOR_ID]: req.params.id })
 
             // The 'Book' table is queried to get books written by the author with the id specified in the request parameters. Only the fields in the 'booksFields' array are selected. The results are limited to 'PAGINATION_LIMIT' books and offset by the 'offset' variable to support pagination.
             const books = await Book
                 .query()
                 .select(booksFields)
-                .where({ [AUTHORS_AUTHOR_ID]: req.params.id })
+                .where({ [BOOKS_AUTHOR_ID]: req.params.id })
                 .limit(PAGINATION_LIMIT)
                 .offset(offset);
 
@@ -179,7 +185,10 @@ exports.create_author = [
                 req.body[AUTHORS_DATE_OF_DEATH] = incrementDate(req.body[AUTHORS_DATE_OF_DEATH]);
             }
 
-            await Author.query().insert(req.body);
+            await Author
+                .query()
+                .insert(req.body);
+                
             return successResponse(res, "Author Created Successfully");
         }
         catch(err){
@@ -286,7 +295,7 @@ exports.top_authors = [
             .groupBy(AUTHORS_AUTHOR_ID)
             .orderBy('count', 'desc')
             .limit(PAGINATION_LIMIT)
-            .offset(offset);;
+            .offset(offset);
 
         const authorDetails = await Promise.all(topAuthors.map( async (author)=>{
             const authorInfo = await Author

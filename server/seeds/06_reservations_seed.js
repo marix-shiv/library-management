@@ -22,31 +22,31 @@ exports.seed = async function(knex) {
         {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'jane_smith_456'}).first()).UserID,
-            InstanceID: (await knex('book_instances').where({Imprint: 'Grand Central Publishing'}).first()).InstanceID,
+            BookID: (await knex('books').where({Title: "1984"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
         {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'michael_345'}).first()).UserID,
-            InstanceID: (await knex('book_instances').where({Imprint: 'Oxford University Press'}).first()).InstanceID,
+            BookID: (await knex('books').where({Title: "The Great Gatsby"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
         {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'sarah_jones_012'}).first()).UserID,
-            InstanceID: (await knex('book_instances').where({Imprint: 'Pantheon Books'}).first()).InstanceID,
+            BookID: (await knex('books').where({Title: "Animal Farm"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
         {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'jim_brown_789'}).first()).UserID,
-            InstanceID: (await knex('book_instances').where({Imprint: 'Houghton Mifflin Harcourt'}).first()).InstanceID,
+            BookID: (await knex('books').where({Title: "The Shining"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
         {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'jim_brown_789'}).first()).UserID,
-            InstanceID: (await knex('book_instances').where({Imprint: 'Bloomsbury Publishing'}).first()).InstanceID,
+            BookID: (await knex('books').where({Title: "Misery"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
     ]);

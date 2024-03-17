@@ -7,7 +7,7 @@
 
 const { Model } = require('objection');
 const { RESERVATIONS_TABLE } = require('../constants/tableNames');
-const { RESERVATIONS_RESERVATION_ID, RESERVATIONS_USER_ID, RESERVATIONS_INSTANCE_ID, RESERVATIONS_DATE_OF_RESERVATION } = require('../constants/fieldNames');
+const { RESERVATIONS_RESERVATION_ID, RESERVATIONS_USER_ID, RESERVATIONS_BOOK_ID, RESERVATIONS_DATE_OF_RESERVATION } = require('../constants/fieldNames');
 const { ID_MIN_MAX_LENGTH } = require('../constants/validationConstants');
 
 class Reservation extends Model {
@@ -22,11 +22,11 @@ class Reservation extends Model {
     static get jsonSchema() {
         return {
             type: 'object',
-            required: [ RESERVATIONS_USER_ID, RESERVATIONS_INSTANCE_ID, RESERVATIONS_DATE_OF_RESERVATION],
+            required: [ RESERVATIONS_USER_ID, RESERVATIONS_BOOK_ID, RESERVATIONS_DATE_OF_RESERVATION],
             properties: {
                 [RESERVATIONS_RESERVATION_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [RESERVATIONS_USER_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
-                [RESERVATIONS_INSTANCE_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
+                [RESERVATIONS_BOOK_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [RESERVATIONS_DATE_OF_RESERVATION]: { type: 'string', format: 'date' },
             },
         };

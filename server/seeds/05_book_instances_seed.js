@@ -25,7 +25,7 @@ exports.seed = async function(knex) {
             Status: 'A',
             AvailableBy: null,
             Imprint: 'Signet Classics',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -33,7 +33,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Grand Central Publishing',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -41,7 +41,7 @@ exports.seed = async function(knex) {
             Status: 'L',
             AvailableBy: '2026-01-20',
             Imprint: 'Scribner',
-            IssuedToUserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
+            UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
         },
         {
             InstanceID: uuidv4(),
@@ -49,7 +49,7 @@ exports.seed = async function(knex) {
             Status: 'M',
             AvailableBy: '2025-01-24',
             Imprint: 'Penguin Classics',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -57,7 +57,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Oxford University Press',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -65,7 +65,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Pantheon Books',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -73,7 +73,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Houghton Mifflin Harcourt',
-            IssuedToUserID: null
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -81,7 +81,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Bloomsbury Publishing',
-            IssuedToUserID: null
+            UserID: null
         },
     ]);
 };

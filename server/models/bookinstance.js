@@ -27,11 +27,11 @@ class BookInstance extends Model {
                 [BOOK_INSTANCE_INSTANCE_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [BOOK_INSTANCE_BOOK_ID]: { type: 'string', minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
                 [BOOK_INSTANCE_STATUS]: { type: 'string', minLength: GENRE_MIN_MAX_LENGTH, maxLength: GENRE_MIN_MAX_LENGTH },
-                [BOOK_INSTANCE_AVAILABLE_BY]: { type: 'string', format: 'date' },
+                [BOOK_INSTANCE_AVAILABLE_BY]: { type: ['string', 'null'], format: 'date' },
                 [BOOK_INSTANCE_IMPRINT]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
                 [BOOK_INSTANCE_USER_ID]: { type: ['string', 'null'], minLength: ID_MIN_MAX_LENGTH, maxLength: ID_MIN_MAX_LENGTH },
             },
-        };
+        }
     }
 }
 

@@ -25,6 +25,10 @@ const genresRouter = require('./routes/genres');
 const authorsRouter = require('./routes/authors');
 const libraryBudgetRouter = require('./routes/libraryBudgets');
 const announcementsRouter = require('./routes/announcements');
+const policiesRouter = require('./routes/libraryPolicies');
+const booksRouter = require('./routes/books');
+const bookInstancesRouter = require('./routes/bookInstances');
+const reservationsRouter = require('./routes/reservations');
 
 const app = express();
 
@@ -39,6 +43,10 @@ app.use('/genres', genresRouter);
 app.use('/authors', authorsRouter);
 app.use('/budgets', libraryBudgetRouter);
 app.use('/announcements', announcementsRouter);
+app.use('/policies', policiesRouter);
+app.use('/books', booksRouter);
+app.use('/bookinstances', bookInstancesRouter);
+app.use('/reservations', reservationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

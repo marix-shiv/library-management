@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+- Added new `constants/daysOfWeek.js` and `constants/policyConstants.js` files.
+- Added new `middlewares/maintenanceDaysIfRequired.js` and `middlewares/policiesValueValidator.js` files.
+- Added new `migrations/20240314063353_add_core_field_in_library_policies_table.js`, `migrations/20240314091417_add_ValueIsInt_column_in_library_policies_table.js`, `migrations/20240316063311_remove_instance_id_field_and_add_book_id_in_reservations_table.js`, and `migrations/20240316073201_update_issued_to_user_id_column_name_to_user_id_in_book_instances_table.js` files.
+- Added new `utils/updateBookInstance.js` file.
+- Added new `validators/statusValidator.js`, `validators/validateBoolean.js`, `validators/validateDays.js`, `validators/validateISBN.js`, `validators/validatePolicyValueFromBody.js`, `validators/validateStatus.js`, and `validators/validateUUID.js` files.
 - Added new `constants/paginationConstants.js` and `constants/tableNames.js` files.
 - Added new `migrations/20240311092617_create_books_genres_table.js` and `migrations/20240311093435_remove_GenreID_from_books.js` files.
 - Added new `models/booksGenres.js` file.
@@ -26,6 +31,14 @@ All notable changes to this project will be documented in this file.
 - Added new `server/auth/` directory for authentication-related code.
 
 ### Changed
+- Modified `docs/DataDict.csv`.
+- Modified `server/app.js`.
+- Modified `server/constants/errorMessages.js`, `server/constants/fieldNames.js`, and `server/constants/validationConstants.js`.
+- Updated controller logic in `server/controllers/authorsController.js`, `server/controllers/bookInstancesController.js`, `server/controllers/booksController.js`, `server/controllers/libraryPoliciesController.js`, and `server/controllers/reservationsController.js`.
+- Enhanced middleware in `server/middlewares/authorize.js` and `server/middlewares/bodyValidator.js`.
+- Modified models in `server/models/bookinstance.js`, `server/models/books.js`, `server/models/librarypolicies.js`, and `server/models/reservations.js`.
+- Updated routes in `server/routes/bookInstances.js`, `server/routes/books.js`, `server/routes/libraryPolicies.js`, `server/routes/reservations.js`, and `server/routes/users.js`.
+- Modified seeds in `server/seeds/05_book_instances_seed.js`, `server/seeds/06_reservations_seed.js`, and `server/seeds/07_library_policies_seed.js`.
 - Refactored models to use constants.
 - Made updates to the `DataDict.csv` file to reflect changes in the database schema.
 - Modified `DataDict.csv`.
