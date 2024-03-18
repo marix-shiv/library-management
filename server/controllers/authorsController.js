@@ -98,6 +98,42 @@ exports.search_authors = [
     })
 ]
 
+// Top authors (based on number of books written present in the library)
+exports.top_authors = [
+    authenticate,
+
+    // Validate page number
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+
+        // Get AuthorID in descending order
+        const topAuthors = await Book
+            .query()
+            .select(AUTHORS_AUTHOR_ID)
+            .count(`${AUTHORS_AUTHOR_ID} as count`)
+            .groupBy(AUTHORS_AUTHOR_ID)
+            .orderBy('count', 'desc')
+            .limit(PAGINATION_LIMIT)
+            .offset(offset);
+
+        const authorDetails = await Promise.all(topAuthors.map( async (author)=>{
+            const authorInfo = await Author
+                .query()
+                .findById(author[AUTHORS_AUTHOR_ID]);
+            
+            return {
+                [AUTHORS_AUTHOR_ID]: authorInfo[AUTHORS_AUTHOR_ID],
+                [AUTHORS_FIRST_NAME]: authorInfo[AUTHORS_FIRST_NAME],
+                [AUTHORS_LAST_NAME]: authorInfo[AUTHORS_LAST_NAME]
+            };
+        }));
+
+        res.json(authorDetails);
+    })
+]
+
 // Get author information and books written by author by id
 exports.author_details = [
     // Authenticate User
@@ -124,6 +160,10 @@ exports.author_details = [
                 .findById(req.params.id)
                 .select(authorFields)
 
+            if(!authorDetails){
+                return notFoundResponse(res, "Author not found");
+            }
+
             // The 'Book' table is queried to get books written by the author with the id specified in the request parameters. Only the fields in the 'booksFields' array are selected. The results are limited to 'PAGINATION_LIMIT' books and offset by the 'offset' variable to support pagination.
             const books = await Book
                 .query()
@@ -133,8 +173,9 @@ exports.author_details = [
                 .offset(offset);
 
             // The results from the two queries are combined into a single object, 'authorDetailsWithBooks', which includes the author details and an array of books.
+            console.log(authorDetails);
             const authorDetailsWithBooks = {
-                ...authorDetails[0],
+                ...authorDetails,
                 Books: books
             }
 
@@ -263,12 +304,12 @@ exports.update_author = [
             }
 
             await Author
-                .query()
-                .findById(req.params.id)
-                .patch(req.body);
-
+            .query()
+            .findById(req.params.id)
+            .patch(req.body);
+            
             return successResponse(res, "Author Updated Successfully.");
-
+            
         }
 
         catch (err) {
@@ -276,39 +317,3 @@ exports.update_author = [
         }
     })
 ];
-
-// Top authors (based on number of books written present in the library)
-exports.top_authors = [
-    authenticate,
-
-    // Validate page number
-    ...validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-
-        // Get AuthorID in descending order
-        const topAuthors = await Book
-            .query()
-            .select(AUTHORS_AUTHOR_ID)
-            .count(`${AUTHORS_AUTHOR_ID} as count`)
-            .groupBy(AUTHORS_AUTHOR_ID)
-            .orderBy('count', 'desc')
-            .limit(PAGINATION_LIMIT)
-            .offset(offset);
-
-        const authorDetails = await Promise.all(topAuthors.map( async (author)=>{
-            const authorInfo = await Author
-                .query()
-                .findById(author[AUTHORS_AUTHOR_ID]);
-            
-            return {
-                [AUTHORS_AUTHOR_ID]: authorInfo[AUTHORS_AUTHOR_ID],
-                [AUTHORS_FIRST_NAME]: authorInfo[AUTHORS_FIRST_NAME],
-                [AUTHORS_LAST_NAME]: authorInfo[AUTHORS_LAST_NAME]
-            };
-        }));
-
-        res.json(authorDetails);
-    })
-]

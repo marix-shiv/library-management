@@ -64,7 +64,7 @@ exports.latest_announcement = [
             const announcements = await Announcement
                 .query()
                 .select(selectedFields)
-                .orderBy(ANNOUNCEMENTS_DATE_POSTED)
+                .orderBy(ANNOUNCEMENTS_DATE_POSTED, 'desc')
                 .first();
             
             return res.json(announcements);

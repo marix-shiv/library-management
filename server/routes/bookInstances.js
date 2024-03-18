@@ -7,31 +7,240 @@
 
 const express = require('express');
 const router = express.Router();
-
-// Require the controller module
 const book_instances_controller = require("../controllers/bookInstancesController");
 
-///// BOOK INSTANCES ROUTES //////
-
-// Get All Book Instances
+/**
+ * @swagger
+ * /bookinstances:
+ *   get:
+ *     tags:
+ *       - Book Instances
+ *     summary: Get all book instances
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: The page number for pagination
+ *     responses:
+ *       200:
+ *         description: An array of book instances
+ *       500:
+ *         description: Server error
+ */
 router.get('/', book_instances_controller.all_book_instances);
 
-// Get Book Instances By Status
+/**
+ * @swagger
+ * /bookinstances/status/{status}:
+ *   get:
+ *     tags:
+ *       - Book Instances
+ *     summary: Get book instances by status
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         example: "A"
+ *         schema:
+ *           type: string
+ *         description: The book instance status
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: The page number for pagination
+ *     responses:
+ *       200:
+ *         description: An array of book instances
+ *       404:
+ *         description: No book instances found
+ *       500:
+ *         description: Server error
+ */
 router.get('/status/:status', book_instances_controller.book_instances_by_status);
 
-// Get book instance by id(InstanceID in this case)
+/**
+ * @swagger
+ * /bookinstances/{id}:
+ *   get:
+ *     tags:
+ *       - Book Instances
+ *     summary: Get book instance details by id
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         example: "f9b8b556-1f42-4e20-8364-8e8d15905b12"
+ *         schema:
+ *           type: string
+ *         description: The book instance id
+ *     responses:
+ *       200:
+ *         description: The book instance details
+ *       404:
+ *         description: Book instance not found
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id', book_instances_controller.book_instance_details);
 
-// Create a new book instance
+/**
+ * @swagger
+ * /bookinstances:
+ *   post:
+ *     tags:
+ *       - Book Instances
+ *     summary: Create a new book instance
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               BookId:
+ *                 type: string
+ *                 example: "bc0e219a-e4f3-40ec-b6fb-0719fd557cec"
+ *               Imprint:
+ *                 type: string
+ *                 example: "Test Imprint"
+ *               Status:
+ *                 type: string
+ *                 example: "A"
+ *     responses:
+ *       200:
+ *         description: Book instance created successfully
+ *       500:
+ *         description: Server error
+ */
 router.post('/', book_instances_controller.create_book_instance);
 
-// Update book instance's status
+/**
+ * @swagger
+ * /bookinstances/{id}/status/{status}:
+ *   put:
+ *     tags:
+ *       - Book Instances
+ *     summary: Update a book instance's status
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         example: "f9b8b556-1f42-4e20-8364-8e8d15905b12"
+ *         schema:
+ *           type: string
+ *         description: The book instance id
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         example: "M"
+ *         schema:
+ *           type: string
+ *         description: The new status
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               UserID:
+ *                 type: string
+ *                 example: "98630294-1c1f-4b67-911d-9516938c66de"
+ *     responses:
+ *       200:
+ *         description: Book instance status updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Book instance not found
+ *       409:
+ *         description: Conflict with the current status
+ *       500:
+ *         description: Server error
+ */
 router.put('/:id/status/:status', book_instances_controller.update_book_instance_status);
 
-// Update a book instance's details
+/**
+ * @swagger
+ * /bookinstances/{id}:
+ *   put:
+ *     tags:
+ *       - Book Instances
+ *     summary: Update a book instance
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         example: "f9b8b556-1f42-4e20-8364-8e8d15905b12"
+ *         schema:
+ *           type: string
+ *         description: The book instance id
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               BookID:
+ *                 type: string
+ *                 example: "bc0e219a-e4f3-40ec-b6fb-0719fd557cec"
+ *               Imprint:
+ *                 type: string
+ *                 example: "Updated Imprint"
+ *     responses:
+ *       200:
+ *         description: Book instance updated successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Book instance not found
+ *       500:
+ *         description: Server error
+ */
 router.put('/:id', book_instances_controller.update_book_instance);
 
-// Delete a book instance
+/**
+ * @swagger
+ * /bookinstances/{id}:
+ *   delete:
+ *     tags:
+ *       - Book Instances
+ *     summary: Delete a book instance
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         example: "f9b8b556-1f42-4e20-8364-8e8d15905b12"
+ *         schema:
+ *           type: string
+ *         description: The book instance id
+ *     responses:
+ *       200:
+ *         description: Book instance deleted successfully
+ *       404:
+ *         description: Book instance not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', book_instances_controller.delete_book_instance);
 
 module.exports = router;

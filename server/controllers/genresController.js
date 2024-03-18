@@ -59,6 +59,82 @@ exports.all_genres = [
     })
 ]
 
+// Top Genres
+exports.top_genres = [
+    authenticate,
+
+    // Validate page number
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+
+        /**
+         * This code snippet queries the 'BooksGenres' table to get a list of genres and the count of books in each genre.
+         * The 'BooksGenres' table is queried to select the genre id and count the number of books in each genre. The results are grouped by genre id.
+         * The results are ordered by the count of books in descending order, so genres with more books appear first.
+         * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
+         */
+        const genres = await BooksGenres
+            .query()
+            .select(GENRES_GENRE_ID)
+            .count(`${BOOKS_GENRES_BOOK_ID} as BookCount`)
+            .groupBy(GENRES_GENRE_ID)
+            .orderBy('BookCount', 'desc')
+            .limit(PAGINATION_LIMIT)
+            .offset(offset);
+
+        // Extract BookID values from the fetched rows and get book details
+        const genreDetails = await Promise.all(genres.map(async (genre) => {
+            const genreInfo = await Genre
+                .query()
+                .findById(genre[GENRES_GENRE_ID]);
+            return {
+                [GENRES_NAME]: genreInfo[GENRES_NAME],
+                [GENRES_GENRE_ID]: genre[GENRES_GENRE_ID]
+            };
+        }));
+
+        res.json(genreDetails);
+    })
+]
+
+// Search for genres
+exports.search_genres = [
+    authenticate,
+
+    // Validate query
+    ...queryValidator,
+
+    // Validate page number
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        const query = req.params.query;
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+        
+        /**
+         * This code snippet queries the 'Genre' table to get a list of genres where the name matches the query.
+         * The 'Genre' table is queried to select genres where the name matches the query. The '%' symbols are used with the 'like' operator to find genres where the name contains the query anywhere.
+         * The results are ordered by the position of the query in the genre name, and then by the genre name in alphabetical order.
+         * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
+         */
+        const genres = await Genre
+            .query()
+            .where(GENRES_NAME, 'like', `%${query}%`)
+            .orderByRaw(`LOCATE(?, ${GENRES_NAME})`, [query])
+            .orderBy(GENRES_NAME)
+            .limit(PAGINATION_LIMIT)
+            .offset(offset);
+        
+        if(!genres || genres.length === 0){
+            return notFoundResponse(res);
+        }
+
+        return res.json(genres);
+    })
+]
+
 // Get genre information by id
 exports.genre_details = [
     // Authenticate User
@@ -148,39 +224,6 @@ exports.create_genre = [
     })
 ]
 
-// Delete a genre by id
-exports.delete_genre = [
-    authenticate,
-
-    // Only Super Admin and Librarian are authorized
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
-
-    // Validate id  
-    ...idValidator,
-
-    asyncHandler(async(req, res, next)=>{
-        try{
-            const genre = await Genre
-                .query()
-                .findById(req.params.id);
-
-            if(!genre || genre.length === 0){
-                return notFoundResponse(res);
-            }
-
-            await Genre
-                .query()
-                .deleteById(req.params.id);
-
-            return successResponse(res, "Genre Deleted Successfully");
-        }
-        catch ( err ) {
-            return errorResponse(res, err.message);
-        }
-
-    })
-]
-
 // Update genre
 exports.update_genre = [
     authenticate,
@@ -218,81 +261,40 @@ exports.update_genre = [
     })
 ]
 
-// Top Genres
-exports.top_genres = [
+// Delete a genre by id
+exports.delete_genre = [
     authenticate,
 
-    // Validate page number
-    ...validatePage,
+    // Only Super Admin and Librarian are authorized
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    // Validate id  
+    ...idValidator,
 
     asyncHandler(async(req, res, next)=>{
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-
-        /**
-         * This code snippet queries the 'BooksGenres' table to get a list of genres and the count of books in each genre.
-         * The 'BooksGenres' table is queried to select the genre id and count the number of books in each genre. The results are grouped by genre id.
-         * The results are ordered by the count of books in descending order, so genres with more books appear first.
-         * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
-         */
-        const genres = await BooksGenres
-            .query()
-            .select(GENRES_GENRE_ID)
-            .count(`${BOOKS_GENRES_BOOK_ID} as BookCount`)
-            .groupBy(GENRES_GENRE_ID)
-            .orderBy('BookCount', 'desc')
-            .limit(PAGINATION_LIMIT)
-            .offset(offset);
-
-        // Extract BookID values from the fetched rows and get book details
-        const genreDetails = await Promise.all(genres.map(async (genre) => {
-            const genreInfo = await Genre
+        try{
+            const genre = await Genre
                 .query()
-                .findById(genre[GENRES_GENRE_ID]);
-            return {
-                [GENRES_NAME]: genreInfo[GENRES_NAME],
-                [GENRES_GENRE_ID]: genre[GENRES_GENRE_ID]
-            };
-        }));
+                .findById(req.params.id);
 
-        res.json(genreDetails);
-    })
-]
+            if(!genre || genre.length === 0){
+                return notFoundResponse(res);
+            }
 
-// Search for genres
-exports.search_genres = [
-    authenticate,
+            await Genre
+                .query()
+                .deleteById(req.params.id);
 
-    // Validate query
-    ...queryValidator,
-
-    // Validate page number
-    ...validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        const query = req.params.query;
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-        
-        /**
-         * This code snippet queries the 'Genre' table to get a list of genres where the name matches the query.
-         * The 'Genre' table is queried to select genres where the name matches the query. The '%' symbols are used with the 'like' operator to find genres where the name contains the query anywhere.
-         * The results are ordered by the position of the query in the genre name, and then by the genre name in alphabetical order.
-         * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
-         */
-        const genres = await Genre
-            .query()
-            .where(GENRES_NAME, 'like', `%${query}%`)
-            .orderByRaw(`LOCATE(?, ${GENRES_NAME})`, [query])
-            .orderBy(GENRES_NAME)
-            .limit(PAGINATION_LIMIT)
-            .offset(offset);
-        
-        if(!genres || genres.length === 0){
-            return notFoundResponse(res);
+            return successResponse(res, "Genre Deleted Successfully");
+        }
+        catch ( err ) {
+            return errorResponse(res, err.message);
         }
 
-        return res.json(genres);
     })
 ]
+
+
 
 
 

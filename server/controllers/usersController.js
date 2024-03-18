@@ -44,7 +44,6 @@ exports.all_users = [
     // Authenticate User
     authenticateUser,
 
-    // If the user is not an A, S or L, redirect them to 
     authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN]),
 
     asyncHandler(async(req, res, next)=>{
@@ -53,7 +52,8 @@ exports.all_users = [
         try{
             const users = await User
                 .query()
-                .select(fieldsToSelect);
+                .select(fieldsToSelect)
+                .orderBy(USERS_FIRST_NAME);
 
             return res.json(users);
         }
@@ -199,8 +199,7 @@ exports.update_password = [
     //validate id
     ...idValidator,
 
-    // check if request body is empty
-    checkEmptyRequestBody,
+    allowedFields([USERS_PASSWORD]),
 
     // Sanitize and validate password
     validateAndSanitize(),
@@ -361,6 +360,41 @@ exports.search_user = [
         }
         
         catch (err) {
+            errorResponse(res, err.message);
+        }
+    })
+]
+
+// Alter status of a user
+exports.verify_user = [
+    authenticateUser,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN]),
+
+    allowedFields([USERS_STATUS]),
+
+    validateAndSanitize(),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const user = await User
+                .query()
+                .findById(req.params.id);
+
+            if(!user || user.length === 0){
+                return notFoundResponse(res);
+            }
+
+            await User
+                .query()
+                .patch(req.body)
+                .findById(req.params.id)
+            
+            return successResponse(res, "User Verified Successfully.");
+        }
+        catch(err){
             errorResponse(res, err.message);
         }
     })

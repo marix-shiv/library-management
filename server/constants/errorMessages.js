@@ -44,5 +44,7 @@ module.exports = {
 
     ISBN_INVALID: 'ISBN must be 13 digits integer',
 
-    INVALID_STATUS: 'Status must be one of "A", "L", "M" or "R"'
+    INVALID_STATUS: 'Status must be one of "A", "L", "M" or "R"',
+
+    USER_NOT_VERIFIED: 'User must be verified to access this page.'
 };

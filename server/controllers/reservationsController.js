@@ -108,51 +108,6 @@ exports.all_reservations = [
     })
 ]
 
-exports.reservation_details = [
-    authenticate,
-
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
-
-    ...idValidator,
-
-    asyncHandler(async(req, res, next)=>{
-        try{
-            const reservation = await Reservation
-                .query()
-                .select()
-                .findById(req.params.id);
-
-            if (!reservation) {
-                return notFoundResponse(res, 'Reservation not found');
-            }
-
-            try {
-                const book = await Book
-                    .query()
-                    .findById(reservation[RESERVATIONS_BOOK_ID]);
-
-                reservation[BOOKS_TITLE] = book[BOOKS_TITLE];
-
-                const user = await User
-                    .query()
-                    .findById(reservation[RESERVATIONS_USER_ID]);
-
-                reservation[USERS_FIRST_NAME] = user[USERS_FIRST_NAME];
-                reservation[USERS_LAST_NAME] = user[USERS_LAST_NAME];
-                reservation[USERS_USERNAME] = user[USERS_USERNAME];
-
-            } catch (err) {
-                return errorResponse(res, err.message);
-            }
-
-            return res.json(reservation);
-        }
-        catch (err) {
-            return errorResponse(res, err.message);
-        }
-    })
-]
-
 exports.reservations_by_user = [
     authenticate,
 
@@ -233,6 +188,51 @@ exports.reservations_by_book = [
             }
     
             return res.json(reservations);
+        }
+        catch (err) {
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.reservation_details = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const reservation = await Reservation
+                .query()
+                .select()
+                .findById(req.params.id);
+
+            if (!reservation) {
+                return notFoundResponse(res, 'Reservation not found');
+            }
+
+            try {
+                const book = await Book
+                    .query()
+                    .findById(reservation[RESERVATIONS_BOOK_ID]);
+
+                reservation[BOOKS_TITLE] = book[BOOKS_TITLE];
+
+                const user = await User
+                    .query()
+                    .findById(reservation[RESERVATIONS_USER_ID]);
+
+                reservation[USERS_FIRST_NAME] = user[USERS_FIRST_NAME];
+                reservation[USERS_LAST_NAME] = user[USERS_LAST_NAME];
+                reservation[USERS_USERNAME] = user[USERS_USERNAME];
+
+            } catch (err) {
+                return errorResponse(res, err.message);
+            }
+
+            return res.json(reservation);
         }
         catch (err) {
             return errorResponse(res, err.message);

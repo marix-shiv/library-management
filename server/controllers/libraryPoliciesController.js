@@ -68,6 +68,30 @@ exports.all_policies = [
     })
 ]
 
+exports.search_policies = [
+    authenticate,
+
+    ...queryValidator,
+
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        const validFields = [LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE];
+        const query = req.params.query;
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+
+        const policies = await LibraryPolicy
+            .query()
+            .select(validFields)
+            .where(LIBRARY_POLICIES_PROPERTY, 'like', `%${query}%`)
+            .orderByRaw(`position('${query}' in ${LIBRARY_POLICIES_PROPERTY})`)
+            .offset(offset)
+            .limit(PAGINATION_LIMIT);
+
+        return res.json(policies);
+    })
+]
+
 exports.policy_details = [
     authenticate,
 
@@ -190,29 +214,5 @@ exports.delete_policy = [
         catch ( err ) {
             return errorResponse(res, err.message);
         }
-    })
-]
-
-exports.search_policies = [
-    authenticate,
-
-    ...queryValidator,
-
-    ...validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        const validFields = [LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE];
-        const query = req.params.query;
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-
-        const policies = await LibraryPolicy
-            .query()
-            .select(validFields)
-            .where(LIBRARY_POLICIES_PROPERTY, 'like', `%${query}%`)
-            .orderByRaw(`position('${query}' in ${LIBRARY_POLICIES_PROPERTY})`)
-            .offset(offset)
-            .limit(PAGINATION_LIMIT);
-
-        return res.json(policies);
     })
 ]

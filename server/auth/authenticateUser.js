@@ -12,15 +12,23 @@
 const jwt = require('jsonwebtoken');
 const badRequestResponse = require('../utils/badRequestResponse');
 const forbiddenRequestResponse = require('../utils/forbiddenRequestResponse');
-const { ACCESS_DENIED, INVALID_TOKEN } = require('../constants/errorMessages');
+const { ACCESS_DENIED, INVALID_TOKEN, USER_NOT_VERIFIED } = require('../constants/errorMessages');
+const { USERS_STATUS } = require('../constants/fieldNames');
 require('dotenv').config();
 
 function authenticate(req, res, next) {
+    if (req.path === '/api-docs') {
+        return next();
+    }
     const token = req.headers['authorization'] || req.cookies.token;
     if (!token) return forbiddenRequestResponse(res, ACCESS_DENIED);
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded[USERS_STATUS]) {
+            console.log(decoded[USERS_STATUS])
+            return forbiddenRequestResponse(res, USER_NOT_VERIFIED);
+        }
         req.user = decoded;
         next();
     } catch (ex) {

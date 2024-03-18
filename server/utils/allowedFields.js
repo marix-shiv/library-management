@@ -7,13 +7,21 @@ const badRequestResponse = require('../utils/badRequestResponse');
 
 function allowedFields(validFields) {
     return (req, res, next) => {
+        // Ignore GET requests
+        if (req.method === 'GET') {
+            return next();
+        }
+
         const invalidFields = Object.keys(req.body).filter(field => !validFields.includes(field));
 
         if (invalidFields.length > 0) {
-            return badRequestResponse( res , `Invalid field(s): ${invalidFields.join(', ')}` )
+            return badRequestResponse(res, `Invalid field(s): ${invalidFields.join(', ')}`);
         }
+
         next();
     };
 }
+
+module.exports = allowedFields;
 
 module.exports = allowedFields;

@@ -30,7 +30,7 @@ class User extends Model {
                 [USERS_SALT]: { type: 'string', minLength: SALT_MIN_MAX_LENGTH, maxLength: SALT_MIN_MAX_LENGTH },
                 [USERS_ROLE]: { type: 'string', minLength: ROLE_MIN_MAX_LENGTH, maxLength: ROLE_MIN_MAX_LENGTH },
                 [USERS_FIRST_NAME]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
-                [USERS_LAST_NAME]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MIN_LENGTH },
+                [USERS_LAST_NAME]: { type: 'string', minLength: NAME_MIN_LENGTH, maxLength: NAME_MAX_LENGTH },
                 [USERS_DATE_OF_BIRTH]: { type: 'string', format: 'date' },
                 [USERS_STATUS]: { type: 'boolean' },
             },

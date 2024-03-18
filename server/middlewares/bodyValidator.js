@@ -44,7 +44,7 @@ const isSomeID = /id/i;
 const isSomeSummary = /summary/i;
 
 function validateAndSanitize(optionalFields = []) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
         const validationMiddleware = [];
     
         Object.keys(req.body).forEach(field => {
@@ -123,8 +123,16 @@ function validateAndSanitize(optionalFields = []) {
             next();
         });
         
-        // Use Express's built-in middleware chaining function to apply the validation middleware
-        return router.use(validationMiddleware)(req, res, next);
+        // Apply each validation middleware in sequence
+        function runMiddleware(index) {
+            if (index < validationMiddleware.length) {
+                validationMiddleware[index](req, res, () => runMiddleware(index + 1));
+            } else {
+                next();
+            }
+        }
+
+        runMiddleware(0);
     }
 }
 

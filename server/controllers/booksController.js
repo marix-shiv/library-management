@@ -78,7 +78,6 @@ exports.all_books = [
         }
     })
 ]
-
 // Search Books
 exports.search_books = [
     authenticate,
@@ -108,6 +107,36 @@ exports.search_books = [
         }
             
         return res.json(books);
+    })
+]
+
+exports.top_books = [
+    authenticate,
+
+    ...validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+        const selectedFields = [BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY];
+
+        const topBooks = await BookInstance
+            .query()
+            .select(BOOK_INSTANCE_BOOK_ID)
+            .count(`${BOOK_INSTANCE_STATUS} as count`)
+            .whereIn(BOOK_INSTANCE_STATUS, ['L', 'R'])
+            .groupBy(BOOK_INSTANCE_BOOK_ID)
+            .orderBy('count', 'desc')
+            .offset(offset)
+            .limit(PAGINATION_LIMIT);
+
+        const booksDetails = await Promise.all(topBooks.map( async (book)=>{
+            return await Book
+                .query()
+                .findById(book[BOOKS_BOOK_ID])
+                .select(selectedFields);
+        }));
+
+        res.json(booksDetails);
     })
 ]
 
@@ -372,35 +401,5 @@ exports.delete_book = [
         catch ( err ) {
             return errorResponse(res, err.message);
         }
-    })
-]
-
-exports.top_books = [
-    authenticate,
-
-    ...validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-        const selectedFields = [BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY];
-
-        const topBooks = await BookInstance
-            .query()
-            .select(BOOK_INSTANCE_BOOK_ID)
-            .count(`${BOOK_INSTANCE_STATUS} as count`)
-            .whereIn(BOOK_INSTANCE_STATUS, ['L', 'R'])
-            .groupBy(BOOK_INSTANCE_BOOK_ID)
-            .orderBy('count', 'desc')
-            .offset(offset)
-            .limit(PAGINATION_LIMIT);
-
-        const booksDetails = await Promise.all(topBooks.map( async (book)=>{
-            return await Book
-                .query()
-                .findById(book[BOOKS_BOOK_ID])
-                .select(selectedFields);
-        }));
-
-        res.json(booksDetails);
     })
 ]

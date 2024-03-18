@@ -13,28 +13,175 @@
  */
 const express = require('express');
 const router = express.Router();
-
-// Require the controller module
 const reservationsController = require("../controllers/reservationsController");
 
-///// RESERVATIONS ROUTES //////
-
-// Get All Reservations
+/**
+ * @swagger
+ * /reservations:
+ *   get:
+ *     tags:
+ *       - Reservations
+ *     summary: Get all reservations
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: Page number for pagination
+ *     responses:
+ *       200:
+ *         description: A list of reservations
+ *       500:
+ *         description: Server error
+ */
 router.get('/', reservationsController.all_reservations);
 
-// Get Reservations by User ID
+/**
+ * @swagger
+ * /reservations/user/{id}:
+ *   get:
+ *     tags:
+ *       - Reservations
+ *     summary: Get reservations by user
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *         description: The user id
+ *     responses:
+ *       200:
+ *         description: A list of reservations
+ *       404:
+ *         description: No reservations found
+ *       500:
+ *         description: Server error
+ */
 router.get('/user/:id', reservationsController.reservations_by_user);
 
-// Get Reservations by Book ID
+/**
+ * @swagger
+ * /reservations/book/{id}:
+ *   get:
+ *     tags:
+ *       - Reservations
+ *     summary: Get reservations by book
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *         description: The book id
+ *     responses:
+ *       200:
+ *         description: A list of reservations
+ *       404:
+ *         description: No reservations found
+ *       500:
+ *         description: Server error
+ */
 router.get('/book/:id', reservationsController.reservations_by_book);
 
-// Get Reservation by id (ReservationID in this case)
+/**
+ * @swagger
+ * /reservations/{id}:
+ *   get:
+ *     tags:
+ *       - Reservations
+ *     summary: Get reservation details
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *         description: The reservation id
+ *     responses:
+ *       200:
+ *         description: Reservation details
+ *       404:
+ *         description: Reservation not found
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id', reservationsController.reservation_details);
 
-// Create a new reservation
+/**
+ * @swagger
+ * /reservations:
+ *   post:
+ *     tags:
+ *       - Reservations
+ *     summary: Create a reservation
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               RESERVATIONS_BOOK_ID:
+ *                 type: string
+ *                 example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *               RESERVATIONS_DATE_OF_RESERVATION:
+ *                 type: string
+ *                 example: "2022-01-01"
+ *               RESERVATIONS_USER_ID:
+ *                 type: string
+ *                 example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *     responses:
+ *       200:
+ *         description: Reservation created successfully
+ *       400:
+ *         description: Bad request
+ *       409:
+ *         description: Conflict with existing reservation
+ *       500:
+ *         description: Server error
+ */
 router.post('/', reservationsController.create_reservation);
 
-// Delete a reservation
+/**
+ * @swagger
+ * /reservations/{id}:
+ *   delete:
+ *     tags:
+ *       - Reservations
+ *     summary: Delete a reservation
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *         description: The reservation id
+ *     responses:
+ *       200:
+ *         description: Reservation deleted successfully
+ *       404:
+ *         description: Reservation not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', reservationsController.delete_reservation);
 
 module.exports = router;

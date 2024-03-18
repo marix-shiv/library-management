@@ -48,6 +48,33 @@ app.use('/books', booksRouter);
 app.use('/bookinstances', bookInstancesRouter);
 app.use('/reservations', reservationsRouter);
 
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Library API',
+            version: '1.0.0',
+            description: 'API for a Library Management System',
+        },
+        servers: [
+            {
+                url: 'http://localhost:3001',
+            },
+        ],
+    },
+    apis: ['./routes/*.js'],
+};
+
+try {
+    const swaggerDocs = swaggerJsDoc(swaggerOptions);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+} catch (error) {
+    console.error('Error setting up Swagger:', error);
+}
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));
@@ -68,10 +95,6 @@ app.use(function(err, req, res, next) {
     // Otherwise, send the error as a response
     res.status(err.status || 500);
     res.json({error: err});
-});
-
-const server = app.listen(3001, () => {
-    console.log(`Server is running on port 3001`);
 });
 
 module.exports = app;

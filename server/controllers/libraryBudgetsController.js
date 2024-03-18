@@ -67,6 +67,114 @@ exports.all_transactions = [
     })
 ]
 
+// Transactions in Date Range
+exports.transactions_by_date_range = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
+
+    // Validates the start and end dates and checks if end date is lesser than start date
+    dateRangeValidator,
+
+    validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            let startDate = new Date(req.params.startDate);
+            let endDate = new Date(req.params.endDate);
+
+            endDate.setDate(endDate.getDate() + 1);
+
+            const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+
+            /**
+             * This code snippet queries the 'LibraryBudget' table to get a list of budget transactions within a specific date range.
+             * The 'LibraryBudget' table is queried to select all fields for each transaction where the date is between 'startDate' and 'endDate'.
+             * The results are ordered by the transaction date in descending order, so the most recent transactions appear first.
+             * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
+             */
+            const transactions = await LibraryBudget
+                .query()
+                .whereBetween(LIBRARY_BUDGET_DATE, [startDate.toISOString(), endDate.toISOString()])
+                .orderBy(LIBRARY_BUDGET_DATE, 'desc')
+                .limit(PAGINATION_LIMIT)
+                .offset(offset);
+
+            return res.json(transactions);
+        }
+        catch(err){
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+// Get transactions in money range
+exports.transactions_by_money_range = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
+
+    // Validates the minMoney and maxMoney and checks if maxMoney is lesser than minMoney
+    moneyRangeValidator,
+
+    validatePage,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const minMoney = req.params.minMoney;
+            const maxMoney = req.params.maxMoney;
+
+            const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+
+            // Query the 'LibraryBudget' table to get a list of budget transactions where the money is between 'minMoney' and 'maxMoney'.
+            // The results are ordered by the money in descending order, limited to 'PAGINATION_LIMIT' results, and offset by the 'offset' variable to support pagination.
+            const transactions = await LibraryBudget
+                .query()
+                .whereBetween(LIBRARY_BUDGET_MONEY, [minMoney, maxMoney])
+                .orderBy(LIBRARY_BUDGET_MONEY, 'desc')
+                .limit(PAGINATION_LIMIT)
+                .offset(offset);
+
+            return res.json(transactions);
+        }
+        catch(err){
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+// Search transaction by description
+exports.search_transactions = [
+    authenticate,
+    
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
+
+    validatePage,
+
+    queryValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        const query = req.params.query;
+        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
+        
+        // Query the 'LibraryBudget' table to get a list of budget transactions where the description matches the query.
+        // The results are ordered by the position of the query in the description, limited to 'PAGINATION_LIMIT' results, and offset by the 'offset' variable to support pagination.
+        const transactions = await LibraryBudget
+            .query()
+            .select()
+            .where(LIBRARY_BUDGET_DESCRIPTION, 'like', `%${query}%`)
+            .orderByRaw(`LOCATE(?, ${LIBRARY_BUDGET_DESCRIPTION})`, [query])
+            .limit(PAGINATION_LIMIT)
+            .offset(offset);
+                
+        if(!transactions || transactions.length === 0){
+            return notFoundResponse(res);
+        }
+
+        return res.json(transactions);
+    })
+]
+
 // Get transaction by id
 exports.transaction_details = [
     // Authenticate User
@@ -197,113 +305,5 @@ exports.delete_transaction = [
         catch ( err ) {
             return errorResponse(res, err.message);
         }
-    })
-]
-
-// Transactions in Date Range
-exports.transactions_by_date_range = [
-    authenticate,
-
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
-
-    // Validates the start and end dates and checks if end date is lesser than start date
-    dateRangeValidator,
-
-    validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        try{
-            let startDate = new Date(req.params.startDate);
-            let endDate = new Date(req.params.endDate);
-
-            endDate.setDate(endDate.getDate() + 1);
-
-            const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-
-            /**
-             * This code snippet queries the 'LibraryBudget' table to get a list of budget transactions within a specific date range.
-             * The 'LibraryBudget' table is queried to select all fields for each transaction where the date is between 'startDate' and 'endDate'.
-             * The results are ordered by the transaction date in descending order, so the most recent transactions appear first.
-             * The query is limited to 'PAGINATION_LIMIT' results and offset by the 'offset' variable to support pagination.
-             */
-            const transactions = await LibraryBudget
-                .query()
-                .whereBetween(LIBRARY_BUDGET_DATE, [startDate.toISOString(), endDate.toISOString()])
-                .orderBy(LIBRARY_BUDGET_DATE, 'desc')
-                .limit(PAGINATION_LIMIT)
-                .offset(offset);
-
-            return res.json(transactions);
-        }
-        catch(err){
-            return errorResponse(res, err.message);
-        }
-    })
-]
-
-// Get transactions in money range
-exports.transactions_by_money_range = [
-    authenticate,
-
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
-
-    // Validates the minMoney and maxMoney and checks if maxMoney is lesser than minMoney
-    moneyRangeValidator,
-
-    validatePage,
-
-    asyncHandler(async(req, res, next)=>{
-        try{
-            const minMoney = req.params.minMoney;
-            const maxMoney = req.params.maxMoney;
-
-            const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-
-            // Query the 'LibraryBudget' table to get a list of budget transactions where the money is between 'minMoney' and 'maxMoney'.
-            // The results are ordered by the money in descending order, limited to 'PAGINATION_LIMIT' results, and offset by the 'offset' variable to support pagination.
-            const transactions = await LibraryBudget
-                .query()
-                .whereBetween(LIBRARY_BUDGET_MONEY, [minMoney, maxMoney])
-                .orderBy(LIBRARY_BUDGET_MONEY, 'desc')
-                .limit(PAGINATION_LIMIT)
-                .offset(offset);
-
-            return res.json(transactions);
-        }
-        catch(err){
-            return errorResponse(res, err.message);
-        }
-    })
-]
-
-// Search transaction by description
-exports.search_transactions = [
-    authenticate,
-    
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN]),
-
-    validatePage,
-
-    queryValidator,
-
-    asyncHandler(async(req, res, next)=>{
-        const query = req.params.query;
-        const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
-        
-        // Query the 'LibraryBudget' table to get a list of budget transactions where the description matches the query.
-        // The results are ordered by the position of the query in the description, limited to 'PAGINATION_LIMIT' results, and offset by the 'offset' variable to support pagination.
-        const transactions = await LibraryBudget
-            .query()
-            .select()
-            .where(LIBRARY_BUDGET_DESCRIPTION, 'like', `%${query}%`)
-            .orderByRaw(`LOCATE(?, ${LIBRARY_BUDGET_DESCRIPTION})`, [query])
-            .limit(PAGINATION_LIMIT)
-            .offset(offset);
-                
-        if(!transactions || transactions.length === 0){
-            return notFoundResponse(res);
-        }
-
-        return res.json(transactions);
     })
 ]

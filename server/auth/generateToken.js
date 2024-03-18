@@ -9,11 +9,16 @@
 
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const {USERS_USER_ID, USERS_USERNAME, USERS_ROLE} = require('../constants/fieldNames');
+const { USERS_USER_ID, USERS_USERNAME, USERS_ROLE, USERS_STATUS } = require('../constants/fieldNames');
 
 module.exports = function generateToken(user) {
     try {
-        const payload = { [USERS_USER_ID]: user[USERS_USER_ID], [USERS_USERNAME]: user[USERS_USERNAME], [USERS_ROLE]: user[USERS_ROLE] };
+        const payload = { 
+            [USERS_USER_ID]: user[USERS_USER_ID], 
+            [USERS_USERNAME]: user[USERS_USERNAME], 
+            [USERS_ROLE]: user[USERS_ROLE],
+            [USERS_STATUS]: user[USERS_STATUS]
+        };
         const secret = process.env.JWT_SECRET;
         const token = jwt.sign(payload, secret, { expiresIn: '1h' });
         return token;
