@@ -20,6 +20,13 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('library_policies').insert([
         {
+            PolicyID: '123e4567-e89b-12d3-a456-426614174006',
+            Property: "Test Policy 1",
+            Value: '100', // Maximum number of books a user can reserve at a time
+            Core: false,
+            ValueIsInt: true
+        },
+        {
             PolicyID: uuidv4(),
             Property: policies.MAX_RESERVATIONS_PER_USER,
             Value: '5', // Maximum number of books a user can reserve at a time

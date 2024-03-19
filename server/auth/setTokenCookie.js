@@ -7,7 +7,7 @@
 module.exports = function setTokenCookie(res, token) {
     res.cookie('token', token, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production', // Only use secure in production
         sameSite: 'strict',
         maxAge: 3600000 // 1 hour in milliseconds
     });

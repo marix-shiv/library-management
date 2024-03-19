@@ -6,7 +6,7 @@
     "start": "nodemon server.js",
     "client": "cd ../client && npm start",
     "dev": "concurrently \"npm run start\" \"npm run client\"",
-    "test": "jest --detectOpenHandles",
+    "test": "npx knex seed:run && jest --detectOpenHandles",
     "client-test": "cd ../client && npm test",
     "test-all": "concurrently \"npm run test\" \"npm run client-test\""
   },
@@ -29,6 +29,7 @@
     "mariadb": "^3.2.3",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
+    "node-cron": "^3.0.3",
     "nodemon": "^3.1.0",
     "objection": "^3.1.4",
     "swagger-jsdoc": "^6.2.8",

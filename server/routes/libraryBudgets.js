@@ -48,14 +48,14 @@ router.get('/', libraryBudgetController.all_transactions);
  *         required: true
  *         schema:
  *           type: string
- *           example: "2022-01-01"
+ *           example: "2000-01-01"
  *         description: The start date
  *       - in: path
  *         name: endDate
  *         required: true
  *         schema:
  *           type: string
- *           example: "2022-12-31"
+ *           example: "2050-12-31"
  *         description: The end date
  *       - in: query
  *         name: page
@@ -95,7 +95,7 @@ router.get('/date/:startDate/:endDate', libraryBudgetController.transactions_by_
  *         required: true
  *         schema:
  *           type: number
- *           example: 1000
+ *           example: 100000
  *         description: The maximum money
  *       - in: query
  *         name: page
@@ -189,13 +189,13 @@ router.get('/:id', libraryBudgetController.transaction_details);
  *           schema:
  *             type: object
  *             properties:
- *               LIBRARY_BUDGET_MONEY:
+ *               Money:
  *                 type: number
  *                 example: 200
- *               LIBRARY_BUDGET_DATE:
+ *               Date:
  *                 type: string
  *                 example: "2020-01-02"
- *               LIBRARY_BUDGET_DESCRIPTION:
+ *               Description:
  *                 type: string
  *                 example: "Updated Test Description"
  *     responses:
@@ -234,13 +234,13 @@ router.post('/', libraryBudgetController.create_transaction);
  *           schema:
  *             type: object
  *             properties:
- *               LIBRARY_BUDGET_MONEY:
+ *               Money:
  *                 type: number
  *                 example: 100
- *               LIBRARY_BUDGET_DATE:
+ *               Date:
  *                 type: string
  *                 example: "2020-01-01"
- *               LIBRARY_BUDGET_DESCRIPTION:
+ *               Description:
  *                 type: string
  *                 example: "Test Description"
  *     responses:

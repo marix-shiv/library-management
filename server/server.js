@@ -1,4 +1,4 @@
-const app = require('./app');  // Import the app from app.js
+const {app} = require('./app');  // Import the app from app.js
 
 try {
     app.listen(3001, () => console.log('Server is running on port 3001'));

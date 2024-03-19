@@ -51,6 +51,9 @@ app.use('/reservations', reservationsRouter);
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
+// Load cron jobs
+require('./jobs/cronJobs');
+
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -70,7 +73,7 @@ const swaggerOptions = {
 
 try {
     const swaggerDocs = swaggerJsDoc(swaggerOptions);
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { docExpansion: 'list' }));
 } catch (error) {
     console.error('Error setting up Swagger:', error);
 }
@@ -97,4 +100,4 @@ app.use(function(err, req, res, next) {
     res.json({error: err});
 });
 
-module.exports = app;
+module.exports = { app, knex };

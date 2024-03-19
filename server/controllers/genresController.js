@@ -162,6 +162,11 @@ exports.genre_details = [
                 return notFoundResponse(res);
             }
 
+            const genreName = await Genre
+                .query()
+                .findById(req.params.id)
+                .select([GENRES_NAME])
+
             // Extract BookID values from the fetched rows and get book details
             const bookDetails = await Promise.all(books.map(async (book) => {
                 const bookInfo = await Book
@@ -174,7 +179,12 @@ exports.genre_details = [
                 };
             }));
 
-            return res.json(bookDetails);
+            const responseBody = {
+                ...genreName,
+                ...bookDetails
+            }
+
+            return res.json(responseBody);
         }
         catch (err) {
             return errorResponse(res, err.message);

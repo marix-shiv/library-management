@@ -17,9 +17,9 @@ const { USERS_STATUS } = require('../constants/fieldNames');
 require('dotenv').config();
 
 function authenticate(req, res, next) {
-    if (req.path === '/api-docs') {
-        return next();
-    }
+    // if (req.path === '/api-docs') {
+    //     return next();
+    // }
     const token = req.headers['authorization'] || req.cookies.token;
     if (!token) return forbiddenRequestResponse(res, ACCESS_DENIED);
 

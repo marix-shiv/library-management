@@ -23,5 +23,3 @@ function allowedFields(validFields) {
 }
 
 module.exports = allowedFields;
-
-module.exports = allowedFields;

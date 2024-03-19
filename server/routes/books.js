@@ -139,12 +139,12 @@ router.get('/:id', books_controller.book_details);
  *               Title:
  *                 type: string
  *                 example: "Test Title"
- *               GenreId:
+ *               GenreID:
  *                 type: array
  *                 items:
  *                   type: string
  *                 example: ["ff1830b9-950e-47bf-8685-f6bed5f2b7d9", "f8de736d-d294-4373-b744-112b69bf7b50"]
- *               AuthorId:
+ *               AuthorID:
  *                 type: string
  *                 example: "47a097f6-6f9d-40b0-9897-939095cafa0c"
  *               Summary:
@@ -195,10 +195,10 @@ router.post('/', books_controller.create_book);
  *               Summary:
  *                 type: string
  *                 example: "Updated Test Summary"
- *               AuthorId:
+ *               AuthorID:
  *                 type: string
  *                 example: "371bdf73-f2c7-443a-99f7-0db400fc2efa"
- *               GenreId:
+ *               GenreID:
  *                 type: array
  *                 items:
  *                   type: string

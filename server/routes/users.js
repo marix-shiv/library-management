@@ -48,7 +48,7 @@ const users_controller = require("../controllers/usersController");
  *                     type: string
  *                     format: date-time
  *                     example: "1770-01-01T18:06:32.000Z"
- *                   Status:
+ *                   UStatus:
  *                     type: integer
  *                     example: 0
  *       500:
@@ -151,7 +151,7 @@ router.get('/search/:query', users_controller.search_user);
  *                   type: string
  *                   format: date-time
  *                   example: "1770-01-01T18:06:32.000Z"
- *                 Status:
+ *                 UStatus:
  *                   type: integer
  *                   example: 0
  *       404:
@@ -245,7 +245,7 @@ router.put('/:id/password', users_controller.update_password);
  *   put:
  *     tags:
  *       - Users
- *     summary: Alter status of a user
+ *     summary: Alter UStatus of a user
  *     security:
  *       - cookieAuth: []
  *     parameters:
@@ -263,7 +263,7 @@ router.put('/:id/password', users_controller.update_password);
  *           schema:
  *             type: object
  *             properties:
- *               Status:
+ *               UStatus:
  *                 type: boolean
  *                 example: true
  *     responses:

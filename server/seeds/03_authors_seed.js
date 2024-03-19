@@ -18,6 +18,13 @@ exports.seed = async function(knex) {
     // Inserts seed entries in genre table
     return knex('authors').insert([
         {
+            AuthorID: '123e4567-e89b-12d3-a456-426614174002',
+            FirstName: "Test",
+            LastName: "Author 1",
+            DateOfBirth: '1564-04-26',
+            DateOfDeath: '1616-04-23'
+        },
+        {
             AuthorID: uuidv4(),
             FirstName: "William",
             LastName: "Shakespeare",

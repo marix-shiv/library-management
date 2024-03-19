@@ -136,15 +136,15 @@ router.get('/:id', reservationsController.reservation_details);
  *           schema:
  *             type: object
  *             properties:
- *               RESERVATIONS_BOOK_ID:
+ *               BookID:
  *                 type: string
  *                 example: "3d00d927-bc77-4692-ae5b-fca632121eda"
- *               RESERVATIONS_DATE_OF_RESERVATION:
+ *               DateOfReservation:
  *                 type: string
  *                 example: "2022-01-01"
- *               RESERVATIONS_USER_ID:
+ *               UserID:
  *                 type: string
- *                 example: "3d00d927-bc77-4692-ae5b-fca632121eda"
+ *                 example: "6fa6fd90-8c4c-4ea3-8554-bf1da81009ca"
  *     responses:
  *       200:
  *         description: Reservation created successfully

@@ -112,16 +112,16 @@ router.get('/:id', libraryPoliciesController.policy_details);
  *           schema:
  *             type: object
  *             properties:
- *               LIBRARY_POLICIES_PROPERTY:
+ *               Property:
  *                 type: string
  *                 example: "Policy1"
- *               LIBRARY_POLICIES_VALUE:
+ *               Value:
  *                 type: string
  *                 example: "Value1"
- *               LIBRARY_POLICIES_CORE:
+ *               Core:
  *                 type: boolean
  *                 example: false
- *               LIBRARY_POLICIES_VALUE_IS_INT:
+ *               ValueIsInt:
  *                 type: boolean
  *                 example: false
  *     responses:
@@ -160,15 +160,9 @@ router.post('/', libraryPoliciesController.create_policy);
  *           schema:
  *             type: object
  *             properties:
- *               LIBRARY_POLICIES_PROPERTY:
+ *               Value:
  *                 type: string
- *                 example: "Policy1"
- *               LIBRARY_POLICIES_VALUE:
- *                 type: string
- *                 example: "Value1"
- *               LIBRARY_POLICIES_CORE:
- *                 type: boolean
- *                 example: false
+ *                 example: "100"
  *     responses:
  *       200:
  *         description: Policy updated successfully

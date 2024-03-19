@@ -14,7 +14,7 @@ module.exports = {
     USERS_FIRST_NAME: 'first_name',
     USERS_LAST_NAME: 'last_name',
     USERS_DATE_OF_BIRTH: 'date_of_birth',
-    USERS_STATUS: 'Status',
+    USERS_STATUS: 'UStatus',
 
     BOOKS_BOOK_ID: 'BookID',
     BOOKS_TITLE: 'Title',

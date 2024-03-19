@@ -18,6 +18,12 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('announcements').insert([
         {
+            AnnouncementID: '123e4567-e89b-12d3-a456-426614174008',
+            Title: 'Test Announcement 1',
+            Content: 'Test Content 1',
+            DatePosted: '2000-01-01'
+        },
+        {
             AnnouncementID: uuidv4(),
             Title: 'Library Closed for Maintenance',
             Content: 'The library will be closed for maintenance on 01/01/2023.',

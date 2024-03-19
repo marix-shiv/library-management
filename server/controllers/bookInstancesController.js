@@ -36,6 +36,7 @@ const badRequestResponse = require('../utils/badRequestResponse');
 const conflictRequestResponse = require('../utils/conflictRequestResponse');
 const allowedFields = require('../utils/allowedFields');
 const updateBookInstanceStatus = require('../utils/updateBookInstance');
+const reservationCleaner = require('../utils/reservationCleaner');
 
 // Constants
 const userRoles = require('../constants/userRoles');
@@ -56,6 +57,7 @@ exports.all_book_instances = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            reservationCleaner();
             const selectedFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT];
             
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
@@ -82,6 +84,7 @@ exports.book_instances_by_status = [
     ...statusValidator,
 
     asyncHandler(async(req, res, next)=>{
+        reservationCleaner();
         const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
         const selectedFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT];
         const status = req.params.status;
@@ -266,6 +269,7 @@ exports.update_book_instance_status = [
     validateAndSanitize(),
 
     asyncHandler(async(req, res, next)=>{
+        reservationCleaner();
         const id = req.params.id;
         const status = req.params.status;
 
@@ -306,8 +310,26 @@ exports.update_book_instance_status = [
                         return successResponse(res, "Book Instance Status Updated Successfully.");
                     }
                 }
+                else if(status === 'A'){
+                    await BookInstance
+                        .query()
+                        .patch({
+                            [BOOK_INSTANCE_STATUS]: status,
+                            [BOOK_INSTANCE_AVAILABLE_BY]: null,
+                            [BOOK_INSTANCE_USER_ID]: null
+                        })
+
+                    try{
+                        updateBookInstanceStatus(id, instance[BOOK_INSTANCE_BOOK_ID]);
+                    }
+                    catch(err){
+                        return errorResponse(res, err.message);
+                    }
+
+                    return successResponse(res, "Book Instance Status Updated Successfully.");
+                }
                 else{
-                    return conflictRequestResponse(res, "Cannot change the status of a reserved book to anything other than 'L'.");
+                    return conflictRequestResponse(res, "Cannot change the status of a reserved book to anything other than 'L' or 'A'.");
                 }
             }
 

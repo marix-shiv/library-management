@@ -91,7 +91,8 @@ function validateAndSanitize(optionalFields = []) {
             }
 
             else if(field === fieldNames.LIBRARY_POLICIES_CORE ||
-                field === fieldNames.LIBRARY_POLICIES_VALUE_IS_INT){
+                field === fieldNames.LIBRARY_POLICIES_VALUE_IS_INT ||
+                field === fieldNames.USERS_STATUS){
                 validator = validateBoolean(field);
             }
 

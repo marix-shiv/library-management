@@ -44,7 +44,7 @@ const incrementDate = require('../utils/incrementDate');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS, BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS } = require('../constants/fieldNames');
+const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS, BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, RESERVATIONS_BOOK_ID } = require('../constants/fieldNames');
 const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 
@@ -54,6 +54,7 @@ const generateToken = require('../auth/generateToken');
 const setTokenCookie = require('../auth/setTokenCookie');
 const { queryValidator } = require('../validators/queryValidator');
 const { validatePage } = require('../validators/validatePage');
+const Reservation = require('../models/reservations');
 
 exports.all_books = [
     authenticate,
@@ -394,6 +395,11 @@ exports.delete_book = [
                 .query()
                 .delete()
                 .where(BOOKS_GENRES_BOOK_ID, req.params.id);
+
+            await Reservation
+                .query()
+                .delete()
+                .where(RESERVATIONS_BOOK_ID, req.params.id);
 
             return successResponse(res, "Book Deleted Successfully");
         }

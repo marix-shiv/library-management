@@ -20,6 +20,12 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('reservations').insert([
         {
+            ReservationID: '123e4567-e89b-12d3-a456-426614174005',
+            UserID: (await knex('users').where({Username: 'testUsername1'}).first()).UserID,
+            BookID: (await knex('books').where({Title: "Test Book 1"}).first()).BookID,
+            DateOfReservation: new Date().toISOString().split('T')[0]
+        },
+        {
             ReservationID: uuidv4(),
             UserID: (await knex('users').where({Username: 'jane_smith_456'}).first()).UserID,
             BookID: (await knex('books').where({Title: "1984"}).first()).BookID,

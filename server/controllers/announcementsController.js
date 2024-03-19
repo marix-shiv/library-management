@@ -39,6 +39,7 @@ exports.all_announcements = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\nHERE");
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
             const announcements = await Announcement
                 .query()

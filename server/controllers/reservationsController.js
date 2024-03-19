@@ -42,6 +42,8 @@ const conflictRequestResponse = require('../utils/conflictRequestResponse');
 const allowedFields = require('../utils/allowedFields');
 const incrementDate = require('../utils/incrementDate');
 const updateBookInstanceStatus = require('../utils/updateBookInstance');
+const filterTimeExceededReservations = require('../utils/filterTimeExceededReservations');
+const reservationCleaner = require('../utils/reservationCleaner');
 
 // Constants
 const userRoles = require('../constants/userRoles');
@@ -69,6 +71,7 @@ exports.all_reservations = [
 
     asyncHandler(async(req, res, next)=>{
         try {
+            reservationCleaner();
             const selectedFields = [RESERVATIONS_BOOK_ID, RESERVATIONS_USER_ID, RESERVATIONS_DATE_OF_RESERVATION, RESERVATIONS_RESERVATION_ID];
 
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
@@ -117,6 +120,7 @@ exports.reservations_by_user = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            reservationCleaner();
             const reservations = await Reservation
                 .query()
                 .select()
@@ -160,6 +164,7 @@ exports.reservations_by_book = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            reservationCleaner();
             const reservations = await Reservation
                 .query()
                 .select()
@@ -204,6 +209,7 @@ exports.reservation_details = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            reservationCleaner();
             const reservation = await Reservation
                 .query()
                 .select()
@@ -251,6 +257,8 @@ exports.create_reservation = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            filterTimeExceededReservations(req.body[RESERVATIONS_BOOK_ID]);
+
             const maxReservationsPerUser = await LibraryPolicy 
                 .query()
                 .findOne({ [LIBRARY_POLICIES_PROPERTY]: MAX_RESERVATIONS_PER_USER });
@@ -338,13 +346,19 @@ exports.delete_reservation = [
     validateAndSanitize(),
 
     asyncHandler(async(req, res, next)=>{
-        console.log("HERE");
-        const { [RESERVATIONS_USER_ID]: userId } = req.body;
-        if (!userId) {
-            return badRequestResponse(res, "No user id in request body.");
-        }
-
         try {
+            reservationCleaner();
+            const reservation = await Reservation
+                .query()
+                .findById(req.params.id);
+
+            if (!reservation) {
+                return notFoundResponse(res, "Reservation not found.");
+            }
+
+            const userId = reservation[RESERVATIONS_USER_ID];
+            const bookId = reservation[RESERVATIONS_BOOK_ID];
+
             const user = await User
                 .query()
                 .findById(userId);
@@ -353,47 +367,13 @@ exports.delete_reservation = [
                 return notFoundResponse(res, "User not found.");
             }
 
-            if(user[USERS_ROLE] !== userRoles.ROLE_USER){
-                return badRequestResponse(res, "Reservations can only be done for system users.");
-            }
-
-            if (req.user[USERS_ROLE] === userRoles.ROLE_USER && user[USERS_ROLE] !== req.user[USERS_ROLE]) {
+            if (req.user[USERS_ROLE] === userRoles.ROLE_USER && user[USERS_USER_ID] !== req.user[USERS_USER_ID]) {
                 return unauthorizedResponse(res, "User is not authorized to delete this reservation.");
             }
 
-            const reservation = await Reservation
+            await Reservation
                 .query()
                 .deleteById(req.params.id);
-
-            if(!reservation){
-                const bookInstance = await BookInstance
-                    .query()
-                    .select([BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_BOOK_ID])
-                    .where({
-                        [BOOK_INSTANCE_BOOK_ID]: req.body[RESERVATIONS_BOOK_ID],
-                        [BOOK_INSTANCE_USER_ID]: userId,
-                        [BOOK_INSTANCE_STATUS]: "R"
-                    })
-                    .first();
-
-                if(!bookInstance){
-                    return notFoundResponse(res, "Reservation Not Found.");
-                }
-
-                await BookInstance
-                    .query()
-                    .patch({
-                        [BOOK_INSTANCE_STATUS]: "A",
-                        [BOOK_INSTANCE_AVAILABLE_BY]: null,
-                        [BOOK_INSTANCE_USER_ID]: null
-                    })
-                    .where({
-                        [BOOK_INSTANCE_BOOK_ID]: req.body[RESERVATIONS_BOOK_ID],
-                        [BOOK_INSTANCE_USER_ID]: userId
-                    });
-
-                updateBookInstanceStatus(bookInstance[BOOK_INSTANCE_INSTANCE_ID], bookInstance[BOOK_INSTANCE_BOOK_ID]);
-            }
 
             return successResponse(res, 'Reservation deleted successfully');
         }
