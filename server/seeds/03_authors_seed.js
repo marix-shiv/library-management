@@ -25,6 +25,13 @@ exports.seed = async function(knex) {
             DateOfDeath: '1616-04-23'
         },
         {
+            AuthorID: '123e4567-e89b-12d3-a456-426614174022',
+            FirstName: "Test 10",
+            LastName: "Author 10",
+            DateOfBirth: '1564-04-26',
+            DateOfDeath: '1616-04-23'
+        },
+        {
             AuthorID: uuidv4(),
             FirstName: "William",
             LastName: "Shakespeare",

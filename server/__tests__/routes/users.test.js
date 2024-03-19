@@ -1,4 +1,3 @@
-const request = require('supertest');
 const loginUser = require('../utils/loginUser');
 const logoutUser = require('../utils/logoutUser');
 
