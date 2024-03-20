@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
+
+- Integrated Swagger for API documentation. This includes the installation of necessary packages and setup of Swagger UI for interactive API exploration.
+- Added a note in the `tests` directory indicating plans to return to writing tests at a later stage.
 - Added new `constants/daysOfWeek.js` and `constants/policyConstants.js` files.
 - Added new `middlewares/maintenanceDaysIfRequired.js` and `middlewares/policiesValueValidator.js` files.
 - Added new `migrations/20240314063353_add_core_field_in_library_policies_table.js`, `migrations/20240314091417_add_ValueIsInt_column_in_library_policies_table.js`, `migrations/20240316063311_remove_instance_id_field_and_add_book_id_in_reservations_table.js`, and `migrations/20240316073201_update_issued_to_user_id_column_name_to_user_id_in_book_instances_table.js` files.
@@ -31,6 +34,8 @@ All notable changes to this project will be documented in this file.
 - Added new `server/auth/` directory for authentication-related code.
 
 ### Changed
+
+- Updated `package.json` and `package-lock.json` to include Swagger-related dependencies.
 - Modified `docs/DataDict.csv`.
 - Modified `server/app.js`.
 - Modified `server/constants/errorMessages.js`, `server/constants/fieldNames.js`, and `server/constants/validationConstants.js`.
@@ -52,9 +57,11 @@ All notable changes to this project will be documented in this file.
 - Adjusted password validation in `server/validators/validatePassword.js`.
 
 ### Removed
+
 - Deleted `index.js` from `routes` directory.
 
 ### Other
+
 - Created new `utils` directory.
 
 <!-- 
