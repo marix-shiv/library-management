@@ -107,6 +107,8 @@ router.get('/', users_controller.all_users);
  */
 router.get('/search/:query', users_controller.search_user);
 
+router.get('/username/:query', users_controller.check_username_presence);
+
 /**
  * @swagger
  * /users/{id}:

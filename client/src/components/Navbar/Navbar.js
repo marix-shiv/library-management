@@ -22,10 +22,10 @@ return (
         <Nav.Link as={Link} to="/#about" className="px-3 lead text-light slab-font">
             About
         </Nav.Link>
-        <Nav.Link as={Link} to="/" className="px-3 lead text-light slab-font">
+        <Nav.Link as={Link} to="/login" className="px-3 lead text-light slab-font">
             Login
         </Nav.Link>
-        <Nav.Link as={Link} to="/" className="px-3 lead text-light slab-font">
+        <Nav.Link as={Link} to="/signup" className="px-3 lead text-light slab-font">
             Signup
         </Nav.Link>
         </Nav>

@@ -8,9 +8,7 @@
 
 const { body, validationResult } = require('express-validator');
 const express = require('express');
-const router = express.Router();
 const badRequestResponse = require('../utils/badRequestResponse');
-const errorMessages = require('../constants/errorMessages');
 const fieldNames = require('../constants/fieldNames');
 
 // Validators
@@ -25,7 +23,6 @@ const validateBoolean = require('../validators/validateBoolean');
 const validateISBN = require('../validators/validateISBN');
 const validateUUID = require('../validators/validateUUID');
 const validateStatus = require('../validators/validateStatus');
-const { validate } = require('uuid');
 
 // Regex Tests
 // Checks if the string has the word 'date' case-insensitive

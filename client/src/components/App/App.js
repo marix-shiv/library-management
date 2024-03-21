@@ -4,8 +4,12 @@ import Home from '../Home/Home';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import NotFound from '../NotFound/NotFound';
+import SignUp from '../SignUp/SignUp';
+import Login from '../Login/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/main.scss';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // App component
 function App() {
@@ -33,8 +37,13 @@ function App() {
             {/* Routes for the application */}
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/signup" element = {<SignUp />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
+            {/* ToastContainer component */}
+            <ToastContainer />
 
             {/* Footer component */}
             <Footer />

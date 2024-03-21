@@ -399,3 +399,26 @@ exports.verify_user = [
         }
     })
 ]
+
+// Returns 200 if no user with such username is present, Conflict otherwise
+exports.check_username_presence = [
+    ...queryValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const username = req.params.query;
+
+            const user = await User
+                .query()
+                .findOne({ [USERS_USERNAME]: username });
+
+            if (user) {
+                return conflictRequestResponse(res, "Username already in use");
+            } else {
+                return successResponse(res);
+            }
+        } catch (err) {
+            errorResponse(res, err.message);
+        }
+    })
+]

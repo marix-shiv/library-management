@@ -12,7 +12,7 @@ const { PASSWORD_LENGTH, PASSWORD_COMPLEXITY } = require('../constants/errorMess
 const { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } = require('../constants/validationConstants');
 
 // Checks if a password is between 8 and 64 characters long, and includes at least one lowercase letter, one uppercase letter, one digit, and one special character.
-const passwordTest = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#.-_+=~(){}:;])[A-Za-z\d@$!%*?&#.-_+=~(){}:;]{8,64}$/;
+const passwordTest = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*\-_]).{8,64}$/;
 
 module.exports = function validatePassword() {
     return body(USERS_PASSWORD)
