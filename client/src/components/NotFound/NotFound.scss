@@ -1,0 +1,17 @@
+@keyframes wave {
+    0% {
+        transform: rotate(-30deg);
+    }
+    50% {
+        transform: rotate(30deg);
+    }
+    100% {
+        transform: rotate(-30deg);
+    }
+}
+
+.image-wave {
+    animation: wave 2s infinite;
+    height: 250px;
+    width: 250px;
+}

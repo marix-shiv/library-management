@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from '../Home/Home';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import NotFound from '../NotFound/NotFound';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/main.scss';
 
@@ -32,6 +33,7 @@ function App() {
             {/* Routes for the application */}
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
 
             {/* Footer component */}

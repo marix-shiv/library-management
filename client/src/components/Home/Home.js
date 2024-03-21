@@ -168,7 +168,7 @@ return (
             <Card.Body className="d-flex flex-column">
                 <Card.Text className="card-text-small fw-light">
                 Supports different user roles with specific access rights,
-                ensuring that users can only perform actions that are
+                ensuring that users can only perform those actions that are
                 appropriate for their specified role.
                 </Card.Text>
             </Card.Body>
