@@ -1,0 +1,43 @@
+@keyframes scale {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.image-scale {
+    animation: scale 5s infinite ease-in-out;
+}
+
+.card-hover {
+    border: none !important; // Remove border
+    border-radius: 20px !important; // Make borders more rounded
+    box-shadow: 0 4px 8px 0 rgba(61, 39, 90, 0.515); // Add shadow
+    transition: transform 0.5s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.card-text-small{
+    font-size: smaller;
+}
+
+.flip-image {
+    transition: transform 0.8s ease-in-out;
+
+    &:hover {
+        transform: rotateY(180deg);
+    }
+}
+
+.github-image {
+    max-width: 80px;
+    max-height: 80px;
+}
