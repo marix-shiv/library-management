@@ -56,6 +56,24 @@ const users_controller = require("../controllers/usersController");
  */
 router.get('/', users_controller.all_users);
 
+/**
+ * @swagger
+ * /users/check-token:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Check if a token is valid
+ *     description: Returns 200 if token is valid and error response otherwise
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Token is valid
+ *       401:
+ *         description: Unauthorized, token is invalid or not provided
+ *       500:
+ *         description: Server error
+ */
 router.get('/check-token', users_controller.check_token);
 
 /**
@@ -109,7 +127,32 @@ router.get('/check-token', users_controller.check_token);
  */
 router.get('/search/:query', users_controller.search_user);
 
-
+/**
+ * @swagger
+ * /users/username/{query}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Check if a username is present
+ *     description: Returns 200 if no user with such username is present, Conflict otherwise
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "testuser"
+ *         description: The username to check
+ *     responses:
+ *       200:
+ *         description: No user with such username is present
+ *       409:
+ *         description: Username already in use
+ *       500:
+ *         description: Server error
+ */
 router.get('/username/:query', users_controller.check_username_presence);
 
 /**

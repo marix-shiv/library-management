@@ -6,6 +6,11 @@ import App from './App';
 // Mock window.scrollTo
 global.window.scrollTo = jest.fn();
 
+// Mock the axios module
+jest.mock('axios', () => ({
+  get: jest.fn(),
+}));
+
 test('renders App component', () => {
     render(
         <Router>

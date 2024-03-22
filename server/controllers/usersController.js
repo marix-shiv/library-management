@@ -423,6 +423,7 @@ exports.check_username_presence = [
     })
 ]
 
+// Return 200 if token is valid and error response otherwise
 exports.check_token = [
     authenticateUser,
 
