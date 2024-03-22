@@ -6,6 +6,7 @@ import Footer from '../Footer/Footer';
 import NotFound from '../NotFound/NotFound';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
+import Dashboard from '../Dashboard/Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/main.scss';
 import { ToastContainer } from 'react-toastify';
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/signup" element = {<SignUp />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

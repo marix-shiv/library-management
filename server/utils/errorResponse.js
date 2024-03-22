@@ -7,5 +7,5 @@
 const { INTERNAL_SERVER_ERROR } = require('../constants/httpStatusCodes');
 module.exports = function errorResponse(res, message = '') {
 
-    return res.status(INTERNAL_SERVER_ERROR).json({ message: `Internal Server error${ message ? " : "+message : ''}` });
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: `${ message ? message : 'Internal Server error'}` });
 }

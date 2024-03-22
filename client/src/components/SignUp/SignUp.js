@@ -115,41 +115,27 @@ const handleSubmit = async (event) => {
             // Store the error messages from the response in the errors state
             setErrors({ message: response.data.message });
         }
-    }   catch (error) {
-    // The request failed
-    // Store the error message from the error in the errors state
-    let errorMessage = "";
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        errorMessage = error.response.data;
-    
-        // Check if errorMessage.errors is defined and is an array
-        if (Array.isArray(errorMessage.errors)) {
-        // Map over the errors array and create a new object
-        const errorObject = errorMessage.errors.reduce((acc, curr) => {
-            acc[curr.path] = curr.msg;
-            return acc;
-        }, {});
-    
-        // Store the new object in the errors state
-        setErrors(errorObject);
+    }   
+    catch (error) {
+        setIsLoading(false);
+        let errorMessage = "";
+        if (error.response) {
+            errorMessage = error.response.data;
+            if (Array.isArray(errorMessage.errors)) {
+                const errorObject = errorMessage.errors.reduce((acc, curr) => {
+                    acc[curr.path] = [curr.msg];  // Wrap the error message in an array
+                    return acc;
+                }, {});
+                setErrors(errorObject);
+            } else {
+                setErrors({ message: ["Invalid Data entered"] });  // Wrap the error message in an array
+            }
+        } else if (error.request) {
+            errorMessage = "No response received from server.";
+            setErrors({ message: [errorMessage] });  // Wrap the error message in an array
         } else {
-        // errorMessage.errors is not defined or is not an array
-        // Store the errorMessage object in the errors state
-        setErrors(errorMessage);
+            setErrors({ message: ["Server side issue, please try again later."] });
         }
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in Node.js
-        errorMessage = "No response received from server.";
-        setErrors({ message: errorMessage });
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        errorMessage = error.message;
-        setErrors({ message: errorMessage });
-    }
     }
     finally{
         setIsLoading(false);
@@ -163,7 +149,7 @@ return (
     <main role="main">
     <Container>
         <Row className="justify-content-center align-items-center my-4">
-        <Col md={6} className="p-4 bg-medium-dark rounded">
+            <Col md={7} className="p-4 bg-medium-dark rounded">
             <p className="h2 text-center fw-bold slab-font text-primary my-4">
             Join the Library Community
             </p>
@@ -372,11 +358,11 @@ return (
             </div>
             </Form>
             {Object.values(errors).some(Boolean) && (
-            <ul>
-                {Object.values(errors).map((error, index) =>
-                error ? <li key={index}>{error}</li> : ""
-                )}
-            </ul>
+                <ul className="slab-font error-font-size">
+                    {Object.values(errors).flat().map((error, index) =>
+                    error ? <li key={index} className="pb-2">{error}</li> : ""
+                    )}
+                </ul>
             )}
             <p className="text-center mt-3">
             Already have an account? <Link to="/login">Login</Link>

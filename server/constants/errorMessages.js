@@ -5,7 +5,7 @@
  */
 
 module.exports = {
-    INVALID_DATE: 'Date of birth must be a valid date.',
+    INVALID_DATE: 'Please enter a valid date.',
 
     USERNAME_LENGTH: 'Username must be between 5 and 16 characters.',
 
@@ -16,14 +16,14 @@ module.exports = {
 
     ROLE_REQUIRED: 'Role is required.',
     ROLE_LENGTH: 'Role must be a single character.',
-    ROLE_INVALID: 'Role must be one of "A", "S", "L", or "U".',
+    ROLE_INVALID: 'Invalid Role.',
 
     USER_ID_REQUIRED: 'id is required.',
-    USER_ID_UUID: 'id must be a valid UUID.',
+    USER_ID_UUID: 'Invalid id',
 
     REQUEST_BODY_EMPTY: 'Request Body is Empty.',
 
-    DATE_VALID: 'Date must be a valid date.',
+    DATE_VALID: 'Invalid Date',
 
     ACCESS_DENIED: 'Access denied. No token provided.',
     INVALID_TOKEN: 'Invalid token.',
@@ -32,7 +32,7 @@ module.exports = {
 
     MONEY_REQUIRED: 'Money is required.',
     MONEY_VALID: 'Money must be an integer between 0 and 99999999999999999',
-    MONEY_RANGE_INVALID: 'Max money can not be less than Min money.',
+    MONEY_RANGE_INVALID: 'Money out of range',
 
     DESC_REQUIRED: 'Description is required.',
     DESC_LENGTH: 'Description must be between 1 and 10000 characters long',

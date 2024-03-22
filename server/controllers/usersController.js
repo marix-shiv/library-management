@@ -112,36 +112,37 @@ exports.create_user = [
         try{
             // Check if a user with same Username already exists
             const existingUser = await User
-                .query()
-                .where({[USERS_USERNAME]: Username})
-                .first();
-
+            .query()
+            .where({[USERS_USERNAME]: Username})
+            .first();
+            
             if(existingUser){
                 return conflictRequestResponse(res, "Username already taken.");
             }
         }
         catch (err) {
-            return errorResponse(res);
+            return errorResponse(res, err.message);
         }
         const hashedPassword = await hashPassword(Password);
-
+        
         // Update the Password and Salt properties in the request body
         req.body[USERS_PASSWORD] = hashedPassword.key;
         req.body[USERS_SALT] = hashedPassword.salt;
         req.body[USERS_STATUS] = false;
         req.body[USERS_USER_ID] = uuidv4();
         req.body[USERS_DATE_OF_BIRTH] = incrementDate(req.body[USERS_DATE_OF_BIRTH]);
-
+        
         // Save user to database
         try {
             const user = await User
-                .query()
-                .insert(req.body);
-
+            .query()
+            .insert(req.body);
+            
             return successResponse(res, "User Created Successfully");
         }
-
+        
         catch (err) {
+            console.log(err.data);
             return errorResponse(res, err.message);
         }
     })
@@ -309,7 +310,6 @@ exports.login_user = [
         const token = generateToken(user);
         setTokenCookie(res, token);
         return successResponse(res, 'Logged in successfully.');
-
     })
 ];
 
@@ -420,5 +420,13 @@ exports.check_username_presence = [
         } catch (err) {
             errorResponse(res, err.message);
         }
+    })
+]
+
+exports.check_token = [
+    authenticateUser,
+
+    asyncHandler(async(req, res, next)=>{
+        return successResponse(res);
     })
 ]

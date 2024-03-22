@@ -56,6 +56,8 @@ const users_controller = require("../controllers/usersController");
  */
 router.get('/', users_controller.all_users);
 
+router.get('/check-token', users_controller.check_token);
+
 /**
  * @swagger
  * /users/search/{query}:
@@ -106,6 +108,7 @@ router.get('/', users_controller.all_users);
  *         description: Server error
  */
 router.get('/search/:query', users_controller.search_user);
+
 
 router.get('/username/:query', users_controller.check_username_presence);
 
