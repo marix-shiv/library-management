@@ -1,7 +1,7 @@
 // _variables.scss
 
-$primary-color: #2A2A84;
-$secondary-color: #789abc;
+$primary: #2A2A84;
+$secondary: #789abc;
 $font-stack: 'Roboto', sans-serif;
 $base-margin: 2em;
 
@@ -9,12 +9,14 @@ $light: #C9C9FF;
 $dark: #202031;
 $card-bg: #E0E0FF;
 $medium-dark: #8787ff;
+$dark-purple: #3f3f87;
 
 $theme-colors: (
-    "primary": $primary-color,
-    "secondary": $secondary-color,
+    "primary": $primary,
+    "secondary": $secondary,
     "light": $light,
     "dark": $dark,
     "card": $card-bg,
-    "medium-dark": $medium-dark
+    "medium-dark": $medium-dark,
+    "dark-purple": $dark-purple
 );

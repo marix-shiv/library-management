@@ -60,7 +60,7 @@ exports.seed = async function(knex) {
             [USERS_USERNAME]: 'john_doe_123',
             [USERS_PASSWORD]: password1.key,
             [USERS_SALT]: password1.salt,
-            [USERS_ROLE]: 'A',
+            [USERS_ROLE]: 'U',
             [USERS_FIRST_NAME]: 'John',
             [USERS_LAST_NAME]: 'Dave',
             [USERS_DATE_OF_BIRTH]: '1770-01-01',
@@ -75,7 +75,7 @@ exports.seed = async function(knex) {
             [USERS_FIRST_NAME]: 'Jane',
             [USERS_LAST_NAME]: 'Smith',
             [USERS_DATE_OF_BIRTH]: '1985-01-01',
-            [USERS_STATUS]: false
+            [USERS_STATUS]: true
         },
         {
             [USERS_USER_ID]: uuidv4(),

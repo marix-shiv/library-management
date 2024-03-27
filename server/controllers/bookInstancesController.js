@@ -153,7 +153,7 @@ exports.book_instance_details = [
             res.json(response);
         }
         catch (error) {
-            errorResponse(res, err.message);
+            errorResponse(res, error.message);
         }
     })
 ]
@@ -166,8 +166,7 @@ exports.create_book_instance = [
     allowedFields([BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_STATUS]),
 
     validateAndSanitize(),
-
-
+    
     asyncHandler(async(req, res, next)=>{
         try{
             
@@ -432,6 +431,82 @@ exports.update_book_instance_status = [
         }
         catch(err){
             return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.book_instances_issued_by_user = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_USER]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY];
+            const bookFields = [BOOKS_TITLE];
+
+            const instanceDetails = await BookInstance
+                .query()
+                .where(BOOK_INSTANCE_USER_ID, req.params.id)
+                .select(instanceFields);
+
+            if (!instanceDetails || instanceDetails.length === 0) {
+                return notFoundResponse(res);
+            } 
+
+            const bookDetails = await Book
+                .query()
+                .select(bookFields)
+                .findById(instanceDetails[BOOK_INSTANCE_BOOK_ID]);
+                
+            if (!bookDetails || bookDetails.length === 0) {
+                return notFoundResponse(res);
+            }
+
+            const response = { ...instanceDetails, ...bookDetails };
+
+            res.json(response);
+        }
+        catch (error) {
+            errorResponse(res, error.message);
+        }
+    })
+]
+
+exports.book_instances_issued_by_me = [
+    authenticate,
+
+    authorize([userRoles.ROLE_USER]),
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY];
+            const bookFields = [BOOKS_TITLE];
+
+            const instanceDetails = await BookInstance
+                .query()
+                .where(BOOK_INSTANCE_USER_ID, req.user[USERS_USER_ID])
+                .select(instanceFields);
+            if (!instanceDetails || instanceDetails.length === 0) {
+                return notFoundResponse(res);
+            } 
+
+            const bookDetailsPromises = instanceDetails.map(instance => 
+                Book.query().findById(instance[BOOK_INSTANCE_BOOK_ID]).select(bookFields)
+            );
+            const bookDetails = await Promise.all(bookDetailsPromises);
+
+            const response = instanceDetails.map((instance, index) => ({
+                ...instance,
+                book: bookDetails[index]
+            }));
+
+            res.json(response);
+        }
+        catch (error) {
+            errorResponse(res, error.message);
         }
     })
 ]

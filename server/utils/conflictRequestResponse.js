@@ -6,6 +6,5 @@
 
 const { CONFLICT } = require('../constants/httpStatusCodes');
 module.exports = function conflictRequestResponse(res, message = '') {
-    
     return res.status(CONFLICT).json({ message: `Conflict${ message ? " : "+message : ''}` });
 }

@@ -15,9 +15,6 @@
  */
 
 const Book = require('../models/books');
-const Author = require('../models/authors');
-const Genre = require('../models/genres');
-const BooksGenres = require('../models/booksGenres');
 const BookInstance = require('../models/bookinstance');
 const Reservation = require('../models/reservations');
 const LibraryPolicy = require('../models/librarypolicies');
@@ -32,16 +29,11 @@ const validateAndSanitize = require('../middlewares/bodyValidator');
 const authorize = require('../middlewares/authorize');
 
 // Utility Functions
-const hashPassword = require('../utils/passwordHasher');
-const verifyPassword = require('../utils/verifyPassword');
 const errorResponse = require('../utils/errorResponse');
 const notFoundResponse = require('../utils/notFoundResponse');
 const successResponse = require('../utils/successResponse');
 const badRequestResponse = require('../utils/badRequestResponse');
-const conflictRequestResponse = require('../utils/conflictRequestResponse');
 const allowedFields = require('../utils/allowedFields');
-const incrementDate = require('../utils/incrementDate');
-const updateBookInstanceStatus = require('../utils/updateBookInstance');
 const filterTimeExceededReservations = require('../utils/filterTimeExceededReservations');
 const reservationCleaner = require('../utils/reservationCleaner');
 

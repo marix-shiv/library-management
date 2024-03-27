@@ -304,7 +304,56 @@ exports.delete_genre = [
     })
 ]
 
+exports.checkGenrePresence = [
+    authenticate,
 
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...queryValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const genre = req.params.query;
+
+            const genrePresent = await Genre
+                .query()
+                .findOne({ [GENRES_NAME]: genre });
+
+            console.log(genrePresent);
+
+            if (genrePresent) {
+                return conflictRequestResponse(res, "Genre already present");
+            } 
+            else {
+                return successResponse(res);
+            }
+        } 
+        catch (err) {
+            errorResponse(res, err.message);
+        }
+    })
+]
+
+// Returns details of all genres for authorized user
+exports.genres_list = [
+    // Authenticate User
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const genres = await Genre
+                .query()
+                .select()
+
+            return res.json(genres);
+        }
+        catch (err) {
+            return errorResponse(res, err.message);
+        }
+    })
+]
 
 
 

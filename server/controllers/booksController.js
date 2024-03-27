@@ -27,31 +27,24 @@ const {v4: uuidv4} = require('uuid');
 
 // Middleware Functions
 const {idValidator} = require('../middlewares/idValidator');
-const checkEmptyRequestBody = require('../middlewares/checkEmptyRequestBody');
 const validateAndSanitize = require('../middlewares/bodyValidator');
 const authorize = require('../middlewares/authorize');
 
 // Utility Functions
-const hashPassword = require('../utils/passwordHasher');
-const verifyPassword = require('../utils/verifyPassword');
 const errorResponse = require('../utils/errorResponse');
 const notFoundResponse = require('../utils/notFoundResponse');
 const successResponse = require('../utils/successResponse');
 const badRequestResponse = require('../utils/badRequestResponse');
 const conflictRequestResponse = require('../utils/conflictRequestResponse');
 const allowedFields = require('../utils/allowedFields');
-const incrementDate = require('../utils/incrementDate');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS, BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, RESERVATIONS_BOOK_ID } = require('../constants/fieldNames');
-const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
+const { BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, RESERVATIONS_BOOK_ID } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
 const authenticate = require('../auth/authenticateUser');
-const generateToken = require('../auth/generateToken');
-const setTokenCookie = require('../auth/setTokenCookie');
 const { queryValidator } = require('../validators/queryValidator');
 const { validatePage } = require('../validators/validatePage');
 const Reservation = require('../models/reservations');
@@ -101,13 +94,22 @@ exports.search_books = [
             .offset(offset)
             .limit(PAGINATION_LIMIT);
         
-        
-        
         if(!books || books.length === 0){
             return notFoundResponse(res);
         }
-            
-        return res.json(books);
+
+        const booksWithAuthor = await Promise.all(books.map(async (book) => {
+            const author = await Author
+                .query()
+                .findById(book[BOOKS_AUTHOR_ID]);
+            return {
+                ...book,
+                [AUTHORS_FIRST_NAME]: author[AUTHORS_FIRST_NAME],
+                [AUTHORS_LAST_NAME]: author[AUTHORS_LAST_NAME]
+            };
+        }));
+
+        return res.json(booksWithAuthor);
     })
 ]
 
@@ -209,7 +211,7 @@ exports.book_details = [
 exports.create_book = [
     authenticate,
 
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN]),
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
 
     allowedFields([BOOKS_ISBN, BOOKS_TITLE, BOOKS_GENRE_ID, BOOKS_AUTHOR_ID, BOOKS_SUMMARY]),
     
@@ -235,7 +237,7 @@ exports.create_book = [
                 .first()
 
             if(!existingAuthor || existingAuthor.length === 0){
-                badRequestResponse(res, 'No Such Author Found.');
+                return badRequestResponse(res, 'No Such Author Found.');
             }
             const existingGenres = await Genre
                 .query()
@@ -247,7 +249,6 @@ exports.create_book = [
 
             const bookId = uuidv4();
 
-            console.log("HERE?");
             await Book
                 .query()
                 .insert({

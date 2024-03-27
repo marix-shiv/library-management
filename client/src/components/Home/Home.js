@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import HomeImage from "../../assets/home.png";
 import ReaderImage from "../../assets/reader.png";
 import LibrarianImage from "../../assets/librarian.png";
@@ -7,6 +7,7 @@ import AdminImage from "../../assets/admin.png";
 import SuperAdminImage from "../../assets/superadmin.png";
 import Github from "../../assets/github.png";
 import "./Home.scss";
+import { Link } from 'react-router-dom';
 
 // Home component
 function Home() {
@@ -23,8 +24,8 @@ return (
             </p>
             <div className="d-flex justify-content-center">
             <a
-                href="/learn-more"
-                className="btn btn-primary mt-3 px-5 py-2 rounded-pill text-light"
+                href="/login"
+                className="btn btn-primary btn-lg mt-3 px-5 py-2 rounded-pill text-light fw-bold"
             >
                 START READING
             </a>
@@ -51,12 +52,12 @@ return (
             <Card.Body className="d-flex flex-column">
                 <Card.Title>Do You Love Reading Books?</Card.Title>
                 <Card.Img variant="top" src={ReaderImage} className="my-3" />
-                <Button
-                variant="primary"
-                className="my-auto rounded-pill text-light"
+                <Link
+                to='/signup'
+                className="btn btn-primary mt-auto rounded-pill text-light"
                 >
                 Register as Reader
-                </Button>
+                </Link>
             </Card.Body>
             </Card>
         </Col>
@@ -65,12 +66,12 @@ return (
             <Card.Body className="d-flex flex-column">
                 <Card.Title>Ready to Curate Wisdom?</Card.Title>
                 <Card.Img variant="top" src={LibrarianImage} className="my-3" />
-                <Button
-                variant="primary"
-                className="mt-auto rounded-pill text-light"
+                <Link
+                to='/signup'
+                className="btn btn-primary mt-auto rounded-pill text-light"
                 >
                 Join us as Librarian
-                </Button>
+                </Link>
             </Card.Body>
             </Card>
         </Col>
@@ -79,12 +80,12 @@ return (
             <Card.Body className="d-flex flex-column">
                 <Card.Title>Want to Empower Libraries?</Card.Title>
                 <Card.Img variant="top" src={AdminImage} className="my-3" />
-                <Button
-                variant="primary"
-                className="mt-auto rounded-pill text-light"
+                <Link
+                to='/signup'
+                className="btn btn-primary mt-auto rounded-pill text-light"
                 >
                 Become a Lib Admin
-                </Button>
+                </Link>
             </Card.Body>
             </Card>
         </Col>
@@ -97,12 +98,12 @@ return (
                 src={SuperAdminImage}
                 className="my-3"
                 />
-                <Button
-                variant="primary"
-                className="mt-auto rounded-pill text-light"
+                <Link
+                to='/signup'
+                className="btn btn-primary mt-auto rounded-pill text-light"
                 >
                 Be a Super Admin
-                </Button>
+                </Link>
             </Card.Body>
             </Card>
         </Col>

@@ -1,0 +1,22 @@
+.nav-link.dropdown-toggle {
+    background-color: #c9c9ff; // light color in Bootstrap
+
+    &:focus,
+    &:active,
+    &:hover,
+    &.show {
+        background-color: #c9c9ff; // light color in Bootstrap
+    }
+
+    ~ .dropdown-menu {
+        background-color: #c9c9ff; // light color in Bootstrap
+
+        .dropdown-item {
+            &:focus,
+            &:active,
+            &:hover {
+                background-color: #b0b0ff; // slightly darker color for contrast
+            }
+        }
+    }
+}

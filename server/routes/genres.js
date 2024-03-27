@@ -62,6 +62,8 @@ router.get('/', genres_controller.all_genres);
  */
 router.get('/top', genres_controller.top_genres);
 
+router.get('/entire-list', genres_controller.genres_list);
+
 /**
  * @swagger
  * /genres/search/{query}:
@@ -94,6 +96,8 @@ router.get('/top', genres_controller.top_genres);
  *         description: Server error
  */
 router.get('/search/:query', genres_controller.search_genres);
+
+router.get('/check-genre-presence/:query', genres_controller.checkGenrePresence);
 
 /**
  * @swagger

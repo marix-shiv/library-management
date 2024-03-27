@@ -33,6 +33,8 @@ const book_instances_controller = require("../controllers/bookInstancesControlle
  */
 router.get('/', book_instances_controller.all_book_instances);
 
+router.get('/issued-by-me', book_instances_controller.book_instances_issued_by_me);
+
 /**
  * @swagger
  * /bookinstances/status/{status}:
@@ -65,6 +67,8 @@ router.get('/', book_instances_controller.all_book_instances);
  *         description: Server error
  */
 router.get('/status/:status', book_instances_controller.book_instances_by_status);
+
+router.get('/user/:id', book_instances_controller.book_instances_issued_by_user);
 
 /**
  * @swagger

@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/userSlice';
 
 // Login component
 function Login() {
@@ -19,6 +21,7 @@ const [passwordVisibility, setPasswordVisibility] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
 const [errors, setErrors] = useState({});
 const navigate = useNavigate();
+const dispatch = useDispatch();
 
 // Toggle password visibility
 const handlePasswordVisibilityToggle = (event) => {
@@ -38,6 +41,8 @@ const handleSubmit = async (event) => {
     });
     if (response.status === 200) {
         // The request was successful
+        const userResponse = await axios.get('/users/my-data');
+        dispatch(setUser(userResponse.data.data));
         toast.success("Logged in successfully!", {
         toastId: "loginAccountSuccess",
         });
@@ -52,24 +57,33 @@ const handleSubmit = async (event) => {
     if (error.response) {
         errorMessage = error.response.data;
         console.log(error.response);
+
         if (error.response.status === 401 || error.response.status === 400) {
         setErrors({ message: ["Invalid Username or Password"] });
-        } else if (Array.isArray(errorMessage.errors)) {
+        toast.error("Invalid Username or Password");
+        }
+
+        else if (Array.isArray(errorMessage.errors)) {
         const errorObject = errorMessage.errors.reduce((acc, curr) => {
             acc[curr.path] = [curr.msg]; // Wrap the error message in an array
             return acc;
         }, {});
         setErrors(errorObject);
-        } else {
+        }
+
+        else {
         setErrors({
             message: ["Server side issue, please try again later."],
-        }); // Wrap the error message in an array
+        });
+        toast.error("Invalid Username or Password");
         }
     } else if (error.request) {
         errorMessage = "No response received from server.";
         setErrors({ message: [errorMessage] }); // Wrap the error message in an array
+        toast.error("No response received from server.");
     } else {
         setErrors({ message: ["Server side issue, please try again later."] });
+        toast.error("Server side issue, please try again later.")
     }
     } finally {
     setIsLoading(false);
@@ -92,8 +106,8 @@ useEffect(() => {
     }
     };
 
-    checkToken();
-}, []);
+    checkToken(); 
+}, [navigate]);
 
 // Handle toast on component mount
 useEffect(() => {

@@ -34,6 +34,7 @@ const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
 const authenticateUser = require('../auth/authenticateUser');
+const authenticateWithoutStatusCheck = require('../auth/authenticateWithoutStatusCheck');
 const generateToken = require('../auth/generateToken');
 const setTokenCookie = require('../auth/setTokenCookie');
 const { queryValidator } = require('../validators/queryValidator');
@@ -315,7 +316,7 @@ exports.login_user = [
 
 // Logout a user
 exports.logout_user = [
-    authenticateUser,
+    authenticateWithoutStatusCheck,
     asyncHandler((req, res, next)=>{
         res.clearCookie('token');
         return successResponse(res, "Logged out successfully.");
@@ -429,5 +430,53 @@ exports.check_token = [
 
     asyncHandler(async(req, res, next)=>{
         return successResponse(res);
+    })
+]
+
+// Returns user's data using jwt token
+exports.my_data = [
+    authenticateWithoutStatusCheck,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const { [USERS_USERNAME]: Username, [USERS_STATUS]: Status, [USERS_ROLE]: Role } = req.user;
+            return successResponse(res, '', { Username, Status, Role });
+        }
+        catch(err){
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.get_id_from_username = [
+    authenticateUser,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...queryValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const username = req.params.query;
+
+            const user = await User
+                .query()
+                .select(USERS_USER_ID, USERS_ROLE)
+                .findOne({ [USERS_USERNAME]: username });
+
+            console.log(user);
+
+            if (user) {
+                if (user[USERS_ROLE] !== userRoles.ROLE_USER) {
+                    console.log(user[USERS_ROLE]);
+                    return errorResponse(res, "User's role is not ROLE_USER");
+                }
+                return successResponse(res, user);
+            } else {
+                return badRequestResponse(res);
+            }
+        } catch (err) {
+            errorResponse(res, err.message);
+        }
     })
 ]

@@ -57,7 +57,7 @@ exports.seed = async function(knex) {
             Status: 'M',
             AvailableBy: '2025-01-24',
             Imprint: 'Penguin Classics',
-            UserID: null
+            UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
         },
         {
             InstanceID: uuidv4(),

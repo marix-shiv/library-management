@@ -1,0 +1,33 @@
+@keyframes zoom {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.latest-announcement {
+    padding: 1em;
+    font-size: 1.2em;
+    line-height: 1.5;
+
+    h3 {
+        animation: zoom 2s infinite;
+    }
+}
+
+.latest-announcement {
+    // existing styles...
+
+    a {
+        // existing styles...
+
+        div {
+            animation: fadeIn 1s ease-in-out;
+        }
+    }
+}

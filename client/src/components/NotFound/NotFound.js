@@ -1,7 +1,8 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import ErrorImage from "../../assets/error.png"; // Replace with your actual image path
-import "./NotFound.scss"; // Replace with your actual SCSS file path
+import "./NotFound.scss";
 
 function NotFound() {
     return (
@@ -26,6 +27,28 @@ function NotFound() {
                             className="image-wave"
                         />
                     </Col>
+                    <Row className="justify-content-center gap-2">
+                        <Col md={4}>
+                            <Link to="/login">
+                                <Button
+                                    variant="primary"
+                                    className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100"
+                                >
+                                    GO TO LOGIN PAGE
+                                </Button>
+                            </Link>
+                        </Col>
+                        <Col md={4}>
+                            <Link to="/">
+                                <Button
+                                    variant="primary"
+                                    className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100"
+                                >
+                                    GO TO HOME PAGE
+                                </Button>
+                            </Link>
+                        </Col>
+                    </Row>
                 </Row>
             </Container>
         </main>
