@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import {
-ListGroup
+ListGroup,
+Row,
+Col,
+Button
 } from "react-bootstrap";
+import { Link } from 'react-router-dom';
+import { Search } from 'react-bootstrap-icons';
 import axios from "axios";
 import BooksSearch from "../Books/BooksSearch/BooksSearch";
 import SearchResult from "../Books/BooksSearch/SearchResult";
 import UsersSearch from "../Users/UsersSearch/UsersSearch";
 import UsersSearchResult from "../Users/UsersSearch/SearchResult";
-import IssueBook from '../Toolbox/Librarian/IssueBook';
-import ReserveBook from "../Toolbox/Librarian/ReserveBook";
-import ReceiveBook from "../Toolbox/Librarian/ReceiveBook";
-import AddBook from '../Toolbox/Librarian/AddingBook';
-import AddBookInstance from "../Toolbox/Librarian/AddingInstance";
-import AddGenre from "../Toolbox/Librarian/AddingGenre";
-import AddAuthor from "../Toolbox/Librarian/AddingAuthor";
 
 const LibrarianDashboard = () => {
 const [results, setResults] = useState(null);
@@ -49,7 +47,31 @@ const usersSearch = (query, setIsLoading) => {
 
 return (
     <>
-    <div className="d-flex justify-content-center my-3 px-md-5">
+    <Row className="justify-content-around my-5 mx-4">
+        <Col md={6}>
+            <Link to="/issue-book">
+                <Button variant="primary" className="my-2 py-3 rounded-pill w-100 text-light fw-bold">ISSUE BOOK</Button>
+            </Link>
+        </Col>
+        <Col md={6}>
+            <Link to="/reserve-book-librarian">
+                <Button variant="primary" className="my-2 py-3 rounded-pill w-100 text-light fw-bold">RESERVE BOOK</Button>
+            </Link>
+        </Col>
+        <Col md={6}>
+            <Link to="/receive-book">
+                <Button variant="primary" className="my-2 py-3 rounded-pill w-100 text-light fw-bold">RECEIVE BOOK</Button>
+            </Link>
+        </Col>
+        <Col md={6}>
+            <Link to="/all-books">
+                <Button variant="primary" className="my-2 py-3 rounded-pill w-100 text-light fw-bold">MANAGE BOOKS</Button>
+            </Link>
+        </Col>
+    </Row>
+    <hr />
+    <h1 className="d-flex align-items-center justify-content-center">Search Books<Search color="#2A2A84" size={36} className="ms-2"/></h1>
+    <div className="d-flex justify-content-center my-4 px-md-5">
         <BooksSearch
         onSearch={onSearch}
         onClear={() => {
@@ -73,6 +95,7 @@ return (
         </ListGroup>
     </div>
     <hr />
+    <h1 className="d-flex align-items-center justify-content-center">Search Users<Search color="#2A2A84" size={36} className="ms-2"/></h1>
     <div className="d-flex justify-content-center my-4 px-md-5">
         <UsersSearch
         onSearch={usersSearch}

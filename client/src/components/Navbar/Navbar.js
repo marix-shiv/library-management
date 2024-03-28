@@ -87,9 +87,14 @@ return (
             </Nav.Link>
 
             {user.Username ? (
-                <Nav.Link onClick={handleLogout} className="px-3 lead text-light slab-font">
-                    Logout
-                </Nav.Link>
+                <>
+                    <Nav.Link onClick={handleLogout} className="px-3 lead text-light slab-font">
+                        Logout
+                    </Nav.Link>
+                    <Nav.Link as={Link} to="/dashboard" className="px-3 lead text-light slab-font" onClick={() => setExpanded(false)}>
+                        Dashboard
+                    </Nav.Link>
+                </>
             ) : (
                 <>
                     <Nav.Link as={Link} to="/login" className="px-3 lead text-light slab-font" onClick={() => setExpanded(false)}>

@@ -153,7 +153,6 @@ exports.book_details = [
             const bookFields = [BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_AUTHOR_ID, BOOKS_ISBN];
             const authorFields = [AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME];
             const booksGenresFields = [BOOKS_GENRES_GENRE_ID];
-            const genresFields = [GENRES_NAME];
 
             const bookDetails = await Book
                 .query()
@@ -184,7 +183,7 @@ exports.book_details = [
 
             const genreDetails = await Genre
                 .query()
-                .select(genresFields)
+                .select()
                 .whereIn(GENRES_GENRE_ID, allGenresIDs.map(genre => genre[BOOKS_GENRES_GENRE_ID]))
 
             if (!genreDetails.length) {
@@ -192,12 +191,13 @@ exports.book_details = [
             }
 
             const response = {
-                Title: bookDetails[BOOKS_TITLE],
-                Summary: bookDetails[BOOKS_SUMMARY],
-                ISBN: bookDetails[BOOKS_ISBN],
-                Author_First_Name: authorDetails[AUTHORS_FIRST_NAME],
-                Author_Last_Name: authorDetails[AUTHORS_LAST_NAME],
-                Genres: genreDetails.map(genre => genre[GENRES_NAME])
+                [BOOKS_TITLE]: bookDetails[BOOKS_TITLE],
+                [BOOKS_SUMMARY]: bookDetails[BOOKS_SUMMARY],
+                [BOOKS_ISBN]: bookDetails[BOOKS_ISBN],
+                [BOOKS_AUTHOR_ID]: bookDetails[BOOKS_AUTHOR_ID],
+                [AUTHORS_FIRST_NAME]: authorDetails[AUTHORS_FIRST_NAME],
+                [AUTHORS_LAST_NAME]: authorDetails[AUTHORS_LAST_NAME],
+                [BOOKS_GENRE_ID]: genreDetails
             };
 
             res.json(response);

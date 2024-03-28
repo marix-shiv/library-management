@@ -26,7 +26,7 @@ const LatestAnnouncement = () => {
     }, []);
 
     return (
-        <Col md={6} className='bg-dark-purple text-light p-3 rounded-md text-break shadow-md-screen latest-announcement mx-md-2'>
+        <Col md={6} className='bg-dark-purple text-light p-3 rounded-md text-break shadow-md-screen latest-announcement'>
             {announcement ? (
                 <Link to="/announcements" className="text-decoration-none text-light">
                     <div className="pt-3 text-center">

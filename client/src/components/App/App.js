@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Home from '../Home/Home';
 import Navbar from '../Navbar/Navbar';
@@ -22,6 +23,14 @@ import { setUser } from '../../redux/userSlice';
 import IssueBook from '../Toolbox/Librarian/IssueBook';
 import ReserveBook from '../Toolbox/Librarian/ReserveBook';
 import ReceiveBook from '../Toolbox/Librarian/ReceiveBook';
+import AllGenres from '../DataDisplay/AllGenres';
+import GenreDetail from '../DataDetails/GenreDetails';
+import AllAuthors from '../DataDisplay/AllAuthors';
+import AuthorDetail from '../DataDetails/AuthorDetails';
+import AllBooks from '../DataDisplay/AllBooks';
+import BookDetail from '../DataDetails/BookDetails';
+import AllBookInstances from '../DataDisplay/AllBookInstances';
+import BookInstanceDetail from '../DataDetails/BookInstanceDetails';
 
 // App component
 function App() {
@@ -70,7 +79,7 @@ function AppContent({ location }) {
             {/* Routes for the application */}
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/signup" element = {<SignUp />} />
+                <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
 
@@ -81,7 +90,17 @@ function AppContent({ location }) {
                 <Route path="/issue-book" element={<IssueBook />} />
                 <Route path="/reserve-book-librarian" element={<ReserveBook />} />
                 <Route path="/receive-book" element={<ReceiveBook />} />
-                
+
+                <Route path="/all-genres" element={<AllGenres />} />
+                <Route path="/all-authors" element={<AllAuthors />} />
+                <Route path="/all-books" element={<AllBooks />} />
+                <Route path="/all-book-instances" element={<AllBookInstances />} />
+
+                <Route path="/genre-detail/:id" element={<GenreDetail />} />
+                <Route path="/author-detail/:id" element={<AuthorDetail />} />
+                <Route path="/book-detail/:id" element={<BookDetail />} />
+                <Route path="/book-instance-detail/:id" element={<BookInstanceDetail />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
 
@@ -93,5 +112,9 @@ function AppContent({ location }) {
         </div>
     );
 }
+
+AppContent.propTypes = {
+    location: PropTypes.object.isRequired,
+};
 
 export default App;

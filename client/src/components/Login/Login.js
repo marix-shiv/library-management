@@ -101,7 +101,6 @@ useEffect(() => {
     } catch (error) {
         if (error.response && error.response.status === 403) {
         navigate("/dashboard");
-        } else {
         }
     }
     };
@@ -218,7 +217,7 @@ return (
             </div>
 
             <p className="text-center">
-                Don't have an account? <Link to="/signup">Signup</Link>
+                Do not have an account? <Link to="/signup">Signup</Link>
             </p>
 
             </Form>

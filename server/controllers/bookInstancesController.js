@@ -58,7 +58,8 @@ exports.all_book_instances = [
     asyncHandler(async(req, res, next)=>{
         try{
             reservationCleaner();
-            const selectedFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT];
+            const selectedFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT];
+            const bookFields = [BOOKS_TITLE];
             
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
             
@@ -68,7 +69,16 @@ exports.all_book_instances = [
                 .limit(PAGINATION_LIMIT)
                 .offset(offset);
 
-            return res.json(instances);
+            // Query the Book model for each BookInstance
+            const instancesWithBooks = await Promise.all(instances.map(async (instance) => {
+                const book = await Book
+                    .query()
+                    .select(bookFields)
+                    .findById(instance[BOOK_INSTANCE_BOOK_ID]);
+                return { ...instance, book };
+            }));
+
+            return res.json(instancesWithBooks);
         }
         catch (err) {
             return errorResponse(res, err.message);
@@ -129,7 +139,7 @@ exports.book_instance_details = [
 
     asyncHandler(async(req, res, next)=>{
         try {
-            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT];
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY];
             const bookFields = [BOOKS_TITLE];
             const instanceDetails = await BookInstance
                 .query()

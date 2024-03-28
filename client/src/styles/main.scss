@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'DataDisplay';
 @import 'mixins';
 @import 'utilities';
 @import '~bootstrap/scss/bootstrap';
@@ -124,4 +125,16 @@ ul {
 
 .dark-purple-arrow{
     color: $dark-purple
+}
+
+.general-link{
+    text-decoration: none;
+}
+
+.general-link h5 {
+    transition: transform 1s ease-in-out;
+}
+
+.general-link:hover h5 {
+    transform: scale(1.05);
 }

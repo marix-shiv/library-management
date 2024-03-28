@@ -1,0 +1,27 @@
+.pagination-styles .page-link {
+    color: $primary;
+    background-color: $light;
+    border-color: $light;
+    font-size: 1.5em;
+    margin-top: 1em;
+}
+
+.pagination-styles .page-link:hover,
+.pagination-styles .page-link:focus,
+.pagination-styles .page-link:active {
+    color: $primary;
+    background-color: $light;
+    border-color: $light;
+}
+
+.pagination-styles .page-item.active .page-link {
+    color: $primary;
+    background-color: $light;
+    border-color: $light;
+}
+
+.pagination-styles .page-item.disabled .page-link {
+    color: $primary;
+    background-color: $light;
+    border-color: $light;
+}

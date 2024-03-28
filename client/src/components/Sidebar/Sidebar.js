@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Offcanvas, Nav, NavDropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import './Sidebar.scss';
@@ -21,7 +22,7 @@ const Sidebar = ({ show, handleClose }) => {
             { 
                 text: 'Book Functions', 
                 dropdown: [
-                    { href: '/all-book', text: 'All Books' },
+                    { href: '/all-books', text: 'All Books' },
                     { href: '/add-book', text: 'Add Book' },
                     { href: '/update-book', text: 'Update Book' },
                 ]
@@ -29,24 +30,24 @@ const Sidebar = ({ show, handleClose }) => {
             { 
                 text: 'Genre Functions', 
                 dropdown: [
+                    { href: '/all-genres', text: 'All Genres' },
                     { href: '/add-genre', text: 'Add Genre' },
-                    { href: '/delete-genre', text: 'Delete Genre' },
                     { href: '/update-genre', text: 'Update Genre' },
                 ]
             },
             { 
                 text: 'Author Functions', 
                 dropdown: [
+                    { href: '/all-authors', text: 'All Authors' },
                     { href: '/add-author', text: 'Add Author' },
-                    { href: '/delete-author', text: 'Delete Author' },
                     { href: '/update-author', text: 'Update Author' },
                 ]
             },
             { 
                 text: 'Book Instances Functions', 
                 dropdown: [
+                    { href: '/all-book-instances', text: 'All Book Instances' },
                     { href: '/add-book-instance', text: 'Add Book Instance' },
-                    { href: '/delete-book-instance', text: 'Delete Book Instance' },
                     { href: '/update-book-instance', text: 'Update Book Instance' },
                 ]
             },
@@ -60,16 +61,16 @@ const Sidebar = ({ show, handleClose }) => {
     return (
         <Offcanvas show={show} onHide={handleClose} placement="start" className="bg-light p-2 text-dark-purple">
             <Offcanvas.Header closeButton>
-                <Offcanvas.Title className='slab-font display-5 '>Utilities</Offcanvas.Title>
+                <Offcanvas.Title className='slab-font '>Utilities</Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body className='lead'>
+            <Offcanvas.Body >
                 <Nav className="flex-column">
                     <Nav.Link href="/dashboard">Home</Nav.Link>
-                    {roleLinks[role]?.map(link => (
+                    {roleLinks[role]?.map((link, index) => (
                         link.dropdown ? (
-                            <NavDropdown title={link.text} id="basic-nav-dropdown" className='bg-light'>
-                                {link.dropdown.map(sublink => (
-                                    <NavDropdown.Item key={sublink.href} href={sublink.href}>{sublink.text}</NavDropdown.Item>
+                            <NavDropdown key={index} title={link.text} id="basic-nav-dropdown" className='bg-light'>
+                                {link.dropdown.map((sublink, subIndex) => (
+                                    <NavDropdown.Item key={subIndex} href={sublink.href}>{sublink.text}</NavDropdown.Item>
                                 ))}
                             </NavDropdown>
                         ) : (
@@ -80,6 +81,11 @@ const Sidebar = ({ show, handleClose }) => {
             </Offcanvas.Body>
         </Offcanvas>
     );
+};
+
+Sidebar.propTypes = {
+    show: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
 };
 
 export default Sidebar;

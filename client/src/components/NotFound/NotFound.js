@@ -17,7 +17,7 @@ function NotFound() {
                             Oops, page not found!
                         </p>
                         <small className="text-center">
-                            The page you're looking for doesn't exist.
+                            The page you are looking for does not exist.
                         </small>
                     </Col>
                     <Col md={2} className="d-flex justify-content-center">

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from 'prop-types';
 import { InputGroup, FormControl, Button, Spinner } from "react-bootstrap";
 import { Search, Trash } from "react-bootstrap-icons";
 
@@ -38,6 +39,12 @@ const UsersSearch = ({ onSearch, onClear, setResults }) => {
             </Button>
         </InputGroup>
     );
+};
+
+UsersSearch.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+    onClear: PropTypes.func.isRequired,
+    setResults: PropTypes.func.isRequired,
 };
 
 export default UsersSearch;

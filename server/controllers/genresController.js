@@ -151,6 +151,15 @@ exports.genre_details = [
     asyncHandler(async(req, res, next)=>{
         // Gets all the BookID from books_genres table where GenreID is equal to param.id
         try{
+            const genreName = await Genre
+            .query()
+            .findById(req.params.id)
+            .select([GENRES_NAME])
+
+            if(!genreName){
+                return notFoundResponse(res, "Genre not found.");
+            }
+            
             const offset = (req.query.page - 1 || 0) * PAGINATION_LIMIT;
             const books = await BooksGenres
                 .query()
@@ -158,30 +167,26 @@ exports.genre_details = [
                 .limit(PAGINATION_LIMIT)
                 .offset(offset);
 
-            if(!books || books.length === 0){
-                return notFoundResponse(res);
+            let bookDetails = [];
+            
+            if(books){
+                // Extract BookID values from the fetched rows and get book details
+                bookDetails = await Promise.all(books.map(async (book) => {
+                    const bookInfo = await Book
+                        .query()
+                        .findById(book[BOOKS_BOOK_ID]);
+    
+                    return {
+                        [BOOKS_TITLE]: bookInfo[BOOKS_TITLE],
+                        [BOOKS_BOOK_ID]: book[BOOKS_BOOK_ID]
+                    };
+                }));
             }
 
-            const genreName = await Genre
-                .query()
-                .findById(req.params.id)
-                .select([GENRES_NAME])
-
-            // Extract BookID values from the fetched rows and get book details
-            const bookDetails = await Promise.all(books.map(async (book) => {
-                const bookInfo = await Book
-                    .query()
-                    .findById(book[BOOKS_BOOK_ID]);
-
-                return {
-                    [BOOKS_TITLE]: bookInfo[BOOKS_TITLE],
-                    [BOOKS_BOOK_ID]: book[BOOKS_BOOK_ID]
-                };
-            }));
 
             const responseBody = {
-                ...genreName,
-                ...bookDetails
+                [GENRES_NAME]: genreName,
+                Books: bookDetails
             }
 
             return res.json(responseBody);

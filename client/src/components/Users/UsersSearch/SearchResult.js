@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 
 const UsersSearchResult = ({ result }) => (
@@ -12,11 +13,20 @@ const UsersSearchResult = ({ result }) => (
         <ListGroup.Item className="bg-light pt-3">
             <h3 className='text-center'>No users Found</h3>
             <p className='text-center'>
-                Sorry, we couldn't find any users that match your search. Please
+                Sorry, we could not find any users that match your search. Please
                 try using different keywords or fewer letters.
             </p>
         </ListGroup.Item>
     )
 );
+
+UsersSearchResult.propTypes = {
+    result: PropTypes.shape({
+        first_name: PropTypes.string,
+        last_name: PropTypes.string,
+        Username: PropTypes.string,
+        date_of_birth: PropTypes.string,
+    }),
+};
 
 export default UsersSearchResult;

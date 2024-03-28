@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { InputGroup, FormControl, Button, Spinner } from "react-bootstrap";
 import { Search, Trash } from "react-bootstrap-icons";
+import PropTypes from 'prop-types';
 
 const BooksSearch = ({ onSearch, onClear }) => {
     const [query, setQuery] = useState("");
@@ -35,6 +36,11 @@ const BooksSearch = ({ onSearch, onClear }) => {
             </Button>
         </InputGroup>
     );
+};
+
+BooksSearch.propTypes = {
+    onSearch: PropTypes.func.isRequired,
+    onClear: PropTypes.func.isRequired,
 };
 
 export default BooksSearch;
