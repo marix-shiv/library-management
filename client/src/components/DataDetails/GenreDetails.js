@@ -15,7 +15,6 @@ const GenreDetail = () => {
             try {
                 const response = await axios.get(`/genres/${id}?page=${page}`);
                 const data = response.data;
-                toast.error("Something went wrong!");
                 setBooks(data.Books);
                 setGenreName(data.Name.Name);
             } catch (error) {

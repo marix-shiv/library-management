@@ -180,6 +180,9 @@ exports.update_user_details = [
             if(!user){
                 return notFoundResponse(res);
             }
+            if(req.body[USERS_DATE_OF_BIRTH]){
+                req.body[USERS_DATE_OF_BIRTH] = incrementDate(req.body[USERS_DATE_OF_BIRTH]);
+            }
             await User
                 .query()
                 .findById(req.params.id)
@@ -464,11 +467,8 @@ exports.get_id_from_username = [
                 .select(USERS_USER_ID, USERS_ROLE)
                 .findOne({ [USERS_USERNAME]: username });
 
-            console.log(user);
-
             if (user) {
                 if (user[USERS_ROLE] !== userRoles.ROLE_USER) {
-                    console.log(user[USERS_ROLE]);
                     return errorResponse(res, "User's role is not ROLE_USER");
                 }
                 return successResponse(res, user);
@@ -477,6 +477,21 @@ exports.get_id_from_username = [
             }
         } catch (err) {
             errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.get_my_user_id=[
+    authenticateUser,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const { [USERS_USER_ID]: UserID } = req.user;
+            return successResponse(res, '', {UserID}); 
+
+        }
+        catch{
+            return errorResponse(res, err.message);
         }
     })
 ]

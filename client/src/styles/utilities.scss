@@ -47,3 +47,10 @@
 .oscillate {
     animation: quick-oscillation 0.5s ease-in-out infinite;
 }
+
+.link-shift {
+    transition: transform 0.5s ease-in-out;
+    &:hover {
+        transform: translateX(10px);
+    }
+}

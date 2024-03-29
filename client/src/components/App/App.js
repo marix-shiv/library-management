@@ -31,6 +31,9 @@ import AllBooks from '../DataDisplay/AllBooks';
 import BookDetail from '../DataDetails/BookDetails';
 import AllBookInstances from '../DataDisplay/AllBookInstances';
 import BookInstanceDetail from '../DataDetails/BookInstanceDetails';
+import MyProfile from '../Users/MyProfile/MyProfile';
+import ChangePassword from '../Users/MyProfile/ChangePassword';
+import AllAnnouncements from '../Announcement/AllAnnouncements';
 
 // App component
 function App() {
@@ -82,6 +85,9 @@ function AppContent({ location }) {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/my-profile" element={<MyProfile />} />
+                <Route path="/change-password/:id" element={<ChangePassword />} />
+                <Route path="/all-announcements" element={<AllAnnouncements />} />
 
                 <Route path="/add-book" element={<AddBook />} />
                 <Route path="/add-genre" element={<AddGenre />} />

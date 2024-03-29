@@ -159,6 +159,7 @@ router.get('/username/:query', users_controller.check_username_presence);
 
 router.get('/get-id/:query', users_controller.get_id_from_username);
 
+router.get('/get-my-user-id', users_controller.get_my_user_id);
 /**
  * @swagger
  * /users/{id}:

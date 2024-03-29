@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ListGroup, Col } from "react-bootstrap";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 const IssuedByUser = ({ byMe, userId = null }) => {
     const [books, setBooks] = useState({});
@@ -40,5 +41,8 @@ const IssuedByUser = ({ byMe, userId = null }) => {
         </Col>
     );
 };
-
+IssuedByUser.propTypes = {
+    byMe: PropTypes.bool,
+    userId: PropTypes.string
+};
 export default IssuedByUser;
