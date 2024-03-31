@@ -24,7 +24,6 @@ const {v4: uuidv4} = require('uuid');
 
 // Middleware Functions
 const {idValidator} = require('../middlewares/idValidator');
-const checkEmptyRequestBody = require('../middlewares/checkEmptyRequestBody');
 const validateAndSanitize = require('../middlewares/bodyValidator');
 const authorize = require('../middlewares/authorize');
 
@@ -39,20 +38,14 @@ const reservationCleaner = require('../utils/reservationCleaner');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { USERS_USER_ID, USERS_USERNAME, USERS_PASSWORD, USERS_SALT, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, USERS_DATE_OF_BIRTH, USERS_STATUS, BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID, RESERVATIONS_USER_ID, RESERVATIONS_BOOK_ID, RESERVATIONS_DATE_OF_RESERVATION, RESERVATIONS_RESERVATION_ID } = require('../constants/fieldNames');
-const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
+const { USERS_USER_ID, USERS_USERNAME, USERS_ROLE, USERS_FIRST_NAME, USERS_LAST_NAME, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID, RESERVATIONS_USER_ID, RESERVATIONS_BOOK_ID, RESERVATIONS_DATE_OF_RESERVATION, RESERVATIONS_RESERVATION_ID } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
-const {MAX_RESERVATION_DURATION, MAX_LOAN_DURATION, MAX_RESERVATIONS_PER_USER} = require('../constants/policyConstants');
+const {MAX_RESERVATION_DURATION, MAX_RESERVATIONS_PER_USER} = require('../constants/policyConstants');
 
 
 // Authentication Middlewares and Functions
 const authenticate = require('../auth/authenticateUser');
-const { queryValidator } = require('../validators/queryValidator');
-const { statusValidator } = require('../validators/statusValidator');
 const { validatePage } = require('../validators/validatePage');
-const { BOOK_INSTANCES_TABLE } = require('../constants/tableNames');
-const { NotFoundError } = require('objection');
-
 
 exports.all_reservations = [
     authenticate,
@@ -349,7 +342,6 @@ exports.delete_reservation = [
             }
 
             const userId = reservation[RESERVATIONS_USER_ID];
-            const bookId = reservation[RESERVATIONS_BOOK_ID];
 
             const user = await User
                 .query()

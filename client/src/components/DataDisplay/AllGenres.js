@@ -23,7 +23,10 @@ const AllGenres = () => {
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
-            <Row className="h2 text-center fw-bold slab-font text-primary my-4">
+            <div className="d-flex justify-content-end mt-4">
+                <Link to="/top-genres" className="btn btn-dark-purple rounded-pill text-light point-right-button">Top Genres ➤</Link>
+            </div>
+            <Row className="h2 text-center fw-bold slab-font text-primary mb-4 mt-1">
                 <h1 className="my-4">All Genres</h1>
             </Row>
             {genres.length > 0 ? (

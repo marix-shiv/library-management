@@ -22,9 +22,13 @@ const AllAuthors = () => {
     }, [page]);
 
     return (
+        <>
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
-            <Row className="h2 text-center fw-bold slab-font text-primary my-4">
-                <h1 className="my-4">All Authors</h1>
+            <div className="d-flex justify-content-end mt-4">
+                <Link to="/top-authors" className="btn btn-dark-purple rounded-pill text-light point-right-button">Top Authors ➤</Link>
+            </div>
+            <Row className="h2 text-center fw-bold slab-font text-primary mb-4 mt-1">
+                <h1 className="mb-4">All Authors</h1>
             </Row>
             {authors.length > 0 ? (
                 <Row>
@@ -45,6 +49,7 @@ const AllAuthors = () => {
                 <Pagination.Next onClick={() => setPage(page + 1)} disabled={authors.length === 0} />
             </Pagination>
         </Container>
+        </>
     );
 };
 

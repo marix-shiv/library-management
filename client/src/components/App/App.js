@@ -55,6 +55,8 @@ import UpdateBookInstance from '../DataUpdate/UpdateBookInstance';
 import TopAuthors from '../DataDisplay/TopAuthors';
 import TopGenres from '../DataDisplay/TopGenres';
 import TopBooks from '../DataDisplay/TopBooks';
+import AllReservations from '../DataDisplay/AllReservations';
+import ReservationDetail from '../DataDetails/ReservationDetail';
 
 // App component
 function App() {
@@ -145,11 +147,13 @@ function AppContent({ location }) {
                 <Route path="/all-authors" element={<AllAuthors />} />
                 <Route path="/all-books" element={<AllBooks />} />
                 <Route path="/all-book-instances" element={<AllBookInstances />} />
+                <Route path="/all-reservations" element={<AllReservations />} />
 
                 <Route path="/genre-detail/:id" element={<GenreDetail />} />
                 <Route path="/author-detail/:id" element={<AuthorDetail />} />
                 <Route path="/book-detail/:id" element={<BookDetail />} />
                 <Route path="/book-instance-detail/:id" element={<BookInstanceDetail />} />
+                <Route path="/reservation-detail/:id" element={<ReservationDetail />} />
 
                 <Route path="/search-genre" element={<SearchGenres />} />
                 <Route path="/search-author" element={<SearchAuthors />} />

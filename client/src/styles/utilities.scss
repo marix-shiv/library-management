@@ -54,3 +54,19 @@
         transform: translateX(10px);
     }
 }
+
+@keyframes moveRightReturn {
+    0% {
+        transform: translateX(0);
+    }
+    40% {
+        transform: translateX(20px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.point-right-button {
+    animation: moveRightReturn 2s infinite;
+}

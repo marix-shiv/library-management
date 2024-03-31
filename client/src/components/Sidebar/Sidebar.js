@@ -44,6 +44,14 @@ const Sidebar = ({ show, handleClose }) => {
                 ]
             },
             { 
+                text: 'Reservations Functions', 
+                dropdown: [
+                    { href: '/all-reservations', text: 'All Reservations' },
+                    { href: '/add-book-instance', text: 'Add Book Instance' },
+                    { href: '/search-book-instance', text: 'Search Book Instance' },
+                ]
+            },
+            { 
                 text: 'Book Instances Functions', 
                 dropdown: [
                     { href: '/all-book-instances', text: 'All Book Instances' },
