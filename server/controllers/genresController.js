@@ -28,7 +28,7 @@ const allowedFields = require('../utils/allowedFields');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { GENRES_GENRE_ID, GENRES_NAME, BOOKS_GENRES_GENRE_ID, BOOKS_GENRES_BOOK_ID, BOOKS_BOOK_ID, BOOKS_TITLE } = require('../constants/fieldNames');
+const { GENRES_GENRE_ID, GENRES_NAME, BOOKS_GENRES_GENRE_ID, BOOKS_GENRES_BOOK_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOKS_GENRE_ID } = require('../constants/fieldNames');
 const { PAGINATION_LIMIT } = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
@@ -294,6 +294,16 @@ exports.delete_genre = [
 
             if(!genre || genre.length === 0){
                 return notFoundResponse(res);
+            }
+
+            // Check if any book still has this GenreID
+            const booksGenres = await BooksGenres
+                .query()
+                .where(BOOKS_GENRES_GENRE_ID, req.params.id)
+                .limit(1);
+
+            if (booksGenres.length > 0) {
+                return errorResponse(res, "Cannot delete genre with books. Please delete the books first.");
             }
 
             await Genre

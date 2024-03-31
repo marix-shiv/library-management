@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button, Spinner, ListGroup, ListGroupItem} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Spinner, ListGroup, ListGroupItem } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { XCircleFill, } from "react-bootstrap-icons";
-import "./Librarian.scss";
+import { XCircleFill } from "react-bootstrap-icons";
+import { useParams, useNavigate } from 'react-router-dom';
 
-const AddBook = () => {
+const UpdateBook = () => {
     const [title, setTitle] = useState("");
     const [authorID, setAuthorID] = useState("");
     const [ISBN, setISBN] = useState("");
@@ -13,19 +13,32 @@ const AddBook = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [genres, setGenres] = useState([]);
     const [selectedGenres, setSelectedGenres] = useState([]);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchGenres = async () => {
-          try {
-            const response = await axios.get("/genres/entire-list");
-            setGenres(response.data);
-          } catch (error) {
-            toast.error("Failed to fetch genres.");
-          }
+        const fetchBookAndGenres = async () => {
+            setIsLoading(true);
+            try {
+                const [bookResponse, genresResponse] = await Promise.all([
+                    axios.get(`/books/${id}`),
+                    axios.get("/genres/entire-list")
+                ]);
+                setTitle(bookResponse.data.Title);
+                setAuthorID(bookResponse.data.AuthorID);
+                setISBN(bookResponse.data.ISBN);
+                setSummary(bookResponse.data.Summary);
+                setSelectedGenres(bookResponse.data.GenreID);
+                setGenres(genresResponse.data.filter(genre => !bookResponse.data.GenreID.find(g => g.GenreID === genre.GenreID)));
+            } catch (error) {
+                toast.error("Failed to fetch data.");
+            } finally {
+                setIsLoading(false);
+            }
         };
-    
-        fetchGenres();
-      }, []);
+
+        fetchBookAndGenres();
+    }, [id]);
 
     const handleSelectGenre = (event) => {
         const genre = genres.find((genre) => genre.GenreID === event.target.value);
@@ -43,8 +56,8 @@ const AddBook = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(
-                `/books`,
+            const response = await axios.put(
+                `/books/${id}`,
                 { 
                     Title: title, 
                     AuthorID: authorID, 
@@ -54,7 +67,7 @@ const AddBook = () => {
                 }
             );
             if (response.status === 200) {
-                toast.success("Book added successfully.");
+                toast.success("Book updated successfully.");
             } else {
                 toast.error("Operation failed. Retry later.");
             }
@@ -62,13 +75,18 @@ const AddBook = () => {
             toast.error("Operation failed. Check your inputs.");
         } finally {
             setIsLoading(false);
+            navigate(`/book-detail/${id}`);
         }
+    };
+
+    const handleCancel = () => {
+        navigate(`/book-detail/${id}`);
     };
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded">
             <p className="h2 text-center fw-bold slab-font text-primary my-4">
-                Add a Book
+                Update a Book
             </p>
             <Row className="justify-content-center align-items-center my-4">
                 <Col md={7} className="p-4 rounded">
@@ -91,13 +109,13 @@ const AddBook = () => {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter ISBN"
-                                id="title"
+                                id="isbn"
                                 value={ISBN}
                                 onChange={(e) => setISBN(e.target.value)}
                                 className="bg-light"
                                 style={{ border: "none" }}
                             />
-                            <Form.Label htmlFor="title" className="ms-2">
+                            <Form.Label htmlFor="isbn" className="ms-2">
                                 ISBN
                             </Form.Label>
                         </div>
@@ -105,38 +123,38 @@ const AddBook = () => {
                             <Form.Control
                                 type="text"
                                 placeholder="Enter Author ID"
-                                id="title"
+                                id="authorId"
                                 value={authorID}
                                 onChange={(e) => setAuthorID(e.target.value)}
                                 className="bg-light"
                                 style={{ border: "none" }}
                             />
-                            <Form.Label htmlFor="title" className="ms-2">
-                                AuthorID
+                            <Form.Label htmlFor="authorId" className="ms-2">
+                                Author ID
                             </Form.Label>
                         </div>
                         <div className="form-floating mb-3">
                             <Form.Control
                                 type="text"
                                 placeholder="Enter Summary"
-                                id="title"
+                                id="summary"
                                 value={summary}
                                 onChange={(e) => setSummary(e.target.value)}
                                 className="bg-light"
                                 style={{ border: "none" }}
                             />
-                            <Form.Label htmlFor="title" className="ms-2">
+                            <Form.Label htmlFor="summary" className="ms-2">
                                 Summary
                             </Form.Label>
                         </div>
                         <div className="form-floating mb-3 bg-medium-dark">
                             <Form.Select onChange={handleSelectGenre} className="bg-light">
-                            <option>Select genre</option>
-                            {genres.map((genre) => (
-                                <option key={genre.GenreID} value={genre.GenreID}>
-                                    {genre.Name}
-                                </option>
-                            ))}
+                                <option>Select genre</option>
+                                {genres.map((genre) => (
+                                    <option key={genre.GenreID} value={genre.GenreID}>
+                                        {genre.Name}
+                                    </option>
+                                ))}
                             </Form.Select>
                             <Form.Label className="ms-2">Genres</Form.Label>
                         </div>
@@ -153,7 +171,7 @@ const AddBook = () => {
                                 ))}
                             </div>
                         </ListGroup>
-                        <div className="d-grid">
+                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                             <Button
                                 variant="primary"
                                 type="submit"
@@ -161,6 +179,13 @@ const AddBook = () => {
                                 className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100"
                             >
                                 {isLoading ? <Spinner animation="border" /> : "Submit"}
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                onClick={handleCancel}
+                                className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100"
+                            >
+                                Cancel
                             </Button>
                         </div>
                     </Form>
@@ -170,4 +195,4 @@ const AddBook = () => {
     );
 };
 
-export default AddBook;
+export default UpdateBook;

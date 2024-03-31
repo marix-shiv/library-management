@@ -66,7 +66,7 @@ return (
     <Navbar ref={navbarRef} bg="dark" variant="dark" expand="md" role="navigation" expanded={expanded} onToggle={setExpanded} >
 
     {/* Brand logo and name */}
-    <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+    <Navbar.Brand as={Link} to={user.Username ? "/dashboard" : "/"} className="d-flex align-items-center">
         <img
         src="/icons/OLMS_logo.png"
         height="70"

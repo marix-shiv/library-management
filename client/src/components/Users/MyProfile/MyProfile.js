@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import {REVERSE_ROLE_MAPPING} from '../../../constants/roleConstants';
 import { PencilSquare, InfoCircleFill, XCircleFill, CheckCircleFill } from 'react-bootstrap-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser as setReduxUser } from '../../../redux/userSlice';
+import MyProfileImage from '../../../assets/my-profile.png';
 
 const MyProfile = () => {
     const navigate = useNavigate();
@@ -16,9 +17,19 @@ const MyProfile = () => {
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [username, setUsername] = useState(usernameFromStore);
+    const [username, setUsername] = useState(usernameFromStore || '');
     const [errors, setErrors] = useState({});
     const [isUsernameCheckLoading, setIsUsernameCheckLoading] = useState(false);
+    const originalUser = useRef(user);
+    const originalUsername = useRef(username);
+
+    useEffect(() => {
+        originalUser.current = user;
+    }, []);
+
+    useEffect(() => {
+        originalUsername.current = username;
+    }, []);
 
     useEffect(() => {
         axios.get('users/get-my-user-id/')
@@ -29,15 +40,10 @@ const MyProfile = () => {
                         if (res.data) {
                             res.data.date_of_birth = res.data.date_of_birth.split('T')[0];
                             setUser(res.data);
-
-                            // Check if the username is valid and available
-                            if (res.data.Username) {
-                                setIsUsernameCheckLoading(true);
-                                // Make a request to check the username
-                                // If the username is invalid or unavailable, update the errors object
-                                // setErrors({ ...errors, username: 'This username is invalid or unavailable' });
-                                setIsUsernameCheckLoading(false);
-                            }
+                            setUsername(res.data.Username);
+                            // Set originalUser.current and originalUsername.current to the fetched user data and username
+                            originalUser.current = res.data;
+                            originalUsername.current = res.data.Username;
                         }
                     })
                     .catch(() => {
@@ -74,6 +80,11 @@ const MyProfile = () => {
     }, [username, usernameFromStore]);
 
     const handleEditClick = () => {
+        if (isEditing) {
+            // If the form is currently in edit mode, revert the form data back to the original data
+            setUser(originalUser.current);
+            setUsername(originalUsername.current);
+        }
         setIsEditing(!isEditing);
     };
 
@@ -116,12 +127,12 @@ const MyProfile = () => {
         <main>
             <Container className="bg-medium-dark py-4 my-md-5 rounded px-5">
                 <Row className="justify-content-center align-items-center my-4">    
-                <Col md={7} className="p-4 bg-medium-dark rounded">
-                <p className='display-6 text-center'>
+                <Col md={10} className="p-4 bg-medium-dark rounded">
+                <p className='display-6 text-center slab-font fw-bold text-dark-purple'>
                     My Profile
                     {!isEditing && (
-                        <Button variant="link" onClick={handleEditClick} className="ms-2">
-                            <PencilSquare color="blue" size={36} />
+                        <Button variant="link" onClick={handleEditClick} className="ms-2 icon-tilt">
+                            <PencilSquare color="#C9C9FF" size={40} />
                         </Button>
                     )}
                 </p>
@@ -232,27 +243,47 @@ const MyProfile = () => {
                         </Form.Label>
 
                     </div>
-                    <Button variant="primary" type="submit" disabled={isLoading} className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100">
-                        {isLoading ? <Spinner animation="border" /> : "Save"}
-                    </Button>
+                    <Row>
+                        <Col>
+                            <Button variant="primary" type="submit" disabled={isLoading} className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100">
+                                {isLoading ? <Spinner animation="border" /> : "Save Changes"}
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button variant="primary" type="button" disabled={isLoading} className="text-light rounded-pill fw-bold btn btn-lg my-3 w-100" onClick={handleEditClick}>
+                                {isLoading ? <Spinner animation="border" /> : "Cancel"}
+                            </Button>
+                        </Col>
+                    </Row>
                     </Form>
                 ):(
                     <>
-                    <h6 className="my-4">
-                        Name: {user.first_name} {user.last_name}
-                    </h6>
-                    <h6 className="my-4">
-                        Username: {user.Username}
-                    </h6>
-                    <h6 className="my-4">
-                        Date of Birth: {user.date_of_birth && format(new Date(user.date_of_birth), 'dd MMMM yyyy')}
-                    </h6>
-                    <h6 className='my-4'>
-                        Role: {REVERSE_ROLE_MAPPING[user.Role]}
-                    </h6>
-                    <Link to={`/change-password/${user.UserID}`}>
-                        <Button variant="primary">Change Password</Button>
-                    </Link>
+                    <Row>
+                        <Col md={7} className="d-flex flex-column justify-content-center">
+                            <h6 className="my-4 lead fw-bold text-dark-purple">
+                                Name: <span className="text-light slab-font ms-1">{user.first_name} {user.last_name}</span>
+                            </h6>
+                            <h6 className="my-4 lead fw-bold text-dark-purple">
+                                Username: <span className="text-light slab-font ms-1">{user.Username}</span>
+                            </h6>
+                            <h6 className="my-4 lead fw-bold text-dark-purple">
+                                Date of Birth: <span className="text-light slab-font ms-1">{user.date_of_birth && format(new Date(user.date_of_birth), 'dd MMMM yyyy')}</span>
+                            </h6>
+                            <h6 className='my-4 lead fw-bold text-dark-purple'>
+                                Role: <span className="text-light slab-font ms-1">{REVERSE_ROLE_MAPPING[user.Role]}</span>
+                            </h6>
+                            <Link to={`/change-password/${user.UserID}`}>
+                                <Button variant="primary" className='text-light btn btn-lg mt-3 rounded-pill'>Change Password</Button>
+                            </Link>
+                        </Col>
+                        <Col md={5} className='d-none d-md-block d-flex align-items-center justify-content-center'>
+                            <img
+                            src={MyProfileImage}
+                            alt='My Profile'
+                            className='img-fluid ms-1 image-scale'
+                            />
+                        </Col>
+                    </Row>
                     </>
                     )}
                 </Col>

@@ -123,7 +123,7 @@ ul {
     background-color: #c9c9ff;
 }
 
-.dark-purple-arrow{
+.dark-purple-gear{
     color: $dark-purple
 }
 
@@ -141,4 +141,23 @@ ul {
 
 .nice-border{
     border-color: $dark-purple !important;
+}
+
+
+/* Style the selected tab */
+.nav-tabs .nav-link.active {
+    background-color: #C9C9FF;
+    color: #2A2A84; /* Bootstrap's primary color */
+    border-radius: 50px; /* Make the tabs shape rounded-pill */
+    border: none; /* Remove the border */
+}
+
+/* Style the non-selected tabs */
+.nav-tabs .nav-link {
+    color: #202031;
+}
+
+/* Remove the long line which is below the tab headings */
+.nav-tabs {
+    border-bottom: none;
 }

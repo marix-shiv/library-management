@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const SearchResult = ({ result }) => (
     result ? (
         <ListGroup.Item className="bg-light pt-3">
-            <h3>{result.Title}</h3>
-            <h5>by {result.LastName}, {result.FirstName}</h5>
-            <p>{result.Summary}</p>
+            <Link to={`/book-detail/${result.BookID}`} style={{"textDecoration": "none"}}>
+                <h3>{result.Title}</h3>
+                <h5>by {result.LastName}, {result.FirstName}</h5>
+                <p>{result.Summary}</p>
+            </Link>
         </ListGroup.Item>
     ):(
         <ListGroup.Item className="bg-light pt-3">
@@ -22,6 +25,7 @@ const SearchResult = ({ result }) => (
 
 SearchResult.propTypes = {
     result: PropTypes.shape({
+        BookID: PropTypes.string,
         Title: PropTypes.string,
         LastName: PropTypes.string,
         FirstName: PropTypes.string,

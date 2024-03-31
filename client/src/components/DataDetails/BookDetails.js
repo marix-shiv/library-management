@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
+import {INSTANCE_MAPPING} from '../../constants/InstanceConstants';
 
 const BookDetail = () => {
-    const [book, setBook] = useState({ Title: '', Summary: '', ISBN: '', AuthorID: '', FirstName: '', LastName: '', GenreID: [] });
+    const [book, setBook] = useState({ Title: '', Summary: '', ISBN: '', AuthorID: '', FirstName: '', LastName: '', GenreID: [], BookInstances: [] });
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBook = async () => {
             try {
+                console.log("JHEREEEEEEEEEEEEEEEE");
+                console.log(id);
                 const response = await axios.get(`/books/${id}`);
                 setBook(response.data);
             } catch (error) {
+                console.log(error.message);
                 toast.error('Something went wrong!');
             }
         };
 
         fetchBook();
     }, [id]);
+
+    const handleDelete = () => {
+        if (book.BookInstances.length > 0) {
+            toast.error('Cannot delete books with book instances. Please delete the book instances first.');
+        } else {
+            navigate(`/delete-book/${id}`);
+        }
+    };
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
@@ -40,6 +53,27 @@ const BookDetail = () => {
                         </Link>
                     </Col>
                 ))}
+                <hr />
+                <h4>Book Instances:</h4>
+                {book.BookInstances.length > 0 ? (
+                    book.BookInstances.map((instance) => (
+                        <Col key={instance.BookInstanceID} md={4}>
+                            <Link to={`/book-instance-detail/${instance.InstanceID}`} className='general-link'>
+                                <h5 className='bg-dark-purple py-3 px-2 rounded-pill text-light shadow'>{instance.Imprint} - {INSTANCE_MAPPING[instance.Status]}</h5>
+                            </Link>
+                        </Col>
+                    ))
+                ) : (
+                    <p className='lead fw-bold text-primary' key={1}>No book instances found.</p>
+                )}
+            </Row>
+            <Row className="justify-content-center d-flex align-items-center">
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                </Col>
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-book/${id}`)}>Update</Button>
+                </Col>
             </Row>
         </Container>
     );

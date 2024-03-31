@@ -257,6 +257,16 @@ exports.delete_author = [
                 return notFoundResponse(res);
             }
 
+            // Check if any of the books still have this AuthorID
+            const books = await Book
+                .query()
+                .where('authorID', req.params.id)
+                .limit(1);
+
+            if (books.length > 0) {
+                return errorResponse(res, "Cannot delete author with books. Please delete the books first.");
+            }
+
             await Author.query().deleteById(req.params.id);
 
             return successResponse(res, "Author Deleted Successfully");
@@ -294,14 +304,6 @@ exports.update_author = [
 
             // Increase DateOfBirth and DateOfDeath by one day in order to remove
             // any issues caused due to MySQL date format.
-
-            if (req.body[AUTHORS_DATE_OF_BIRTH]) {
-                req.body[AUTHORS_DATE_OF_BIRTH] = incrementDate(req.body[AUTHORS_DATE_OF_BIRTH]);
-            }
-            
-            if (req.body[AUTHORS_DATE_OF_DEATH]) {
-                req.body[AUTHORS_DATE_OF_DEATH] = incrementDate(req.body[AUTHORS_DATE_OF_DEATH]);
-            }
 
             await Author
             .query()

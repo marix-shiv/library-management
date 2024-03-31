@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Pagination } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { Container, Row, Col, Pagination, Button } from 'react-bootstrap';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import {toast} from 'react-toastify';
 
@@ -9,6 +9,7 @@ const AuthorDetail = () => {
     const [author, setAuthor] = useState({ FirstName: '', LastName: '', DateOfBirth: '', DateOfDeath: '', Books: [] });
     const [page, setPage] = useState(1);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchAuthor = async () => {
@@ -23,6 +24,14 @@ const AuthorDetail = () => {
 
         fetchAuthor();
     }, [id, page]);
+
+    const handleDelete = () => {
+        if (author.Books.length > 0) {
+            toast.error('Cannot delete author with books. Please delete the books first.');
+        } else {
+            navigate(`/delete-author/${id}`);
+        }
+    };
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
@@ -52,6 +61,14 @@ const AuthorDetail = () => {
                 <Pagination.Item>{page}</Pagination.Item>
                 <Pagination.Next onClick={() => setPage(page + 1)} disabled={author.Books.length === 0} />
             </Pagination>
+            <Row className="justify-content-center d-flex align-items-center">
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                </Col>
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-author/${id}`)}>Update</Button>
+                </Col>
+            </Row>
         </Container>
     );
 };

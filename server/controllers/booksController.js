@@ -40,7 +40,7 @@ const allowedFields = require('../utils/allowedFields');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, RESERVATIONS_BOOK_ID } = require('../constants/fieldNames');
+const { BOOKS_BOOK_ID, BOOKS_AUTHOR_ID, BOOKS_TITLE, BOOKS_SUMMARY, BOOKS_ISBN, BOOKS_GENRE_ID, AUTHORS_FIRST_NAME, AUTHORS_LAST_NAME, BOOKS_GENRES_GENRE_ID, GENRES_NAME, AUTHORS_AUTHOR_ID, BOOKS_GENRES_BOOK_ID, GENRES_GENRE_ID, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, RESERVATIONS_BOOK_ID, BOOK_INSTANCE_IMPRINT } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 
 // Authentication Middlewares and Functions
@@ -160,6 +160,7 @@ exports.book_details = [
                 .select(bookFields)
 
             if (!bookDetails) {
+                console.log("HERE")
                 return notFoundResponse(res);
             }
 
@@ -190,6 +191,11 @@ exports.book_details = [
                 return notFoundResponse(res);
             }
 
+            const bookInstances = await BookInstance
+                .query()
+                .select()
+                .where({ [BOOK_INSTANCE_BOOK_ID]: req.params.id })
+
             const response = {
                 [BOOKS_TITLE]: bookDetails[BOOKS_TITLE],
                 [BOOKS_SUMMARY]: bookDetails[BOOKS_SUMMARY],
@@ -197,13 +203,14 @@ exports.book_details = [
                 [BOOKS_AUTHOR_ID]: bookDetails[BOOKS_AUTHOR_ID],
                 [AUTHORS_FIRST_NAME]: authorDetails[AUTHORS_FIRST_NAME],
                 [AUTHORS_LAST_NAME]: authorDetails[AUTHORS_LAST_NAME],
-                [BOOKS_GENRE_ID]: genreDetails
+                [BOOKS_GENRE_ID]: genreDetails,
+                BookInstances: bookInstances
             };
 
             res.json(response);
         }
         catch (error) {
-            errorResponse(res, err.message);
+            return errorResponse(res, err.message);
         }
     })
 ]
@@ -228,7 +235,7 @@ exports.create_book = [
                 .first();
 
             if (existingBook) {
-                conflictRequestResponse(res, 'Book Already Exists.');
+                return conflictRequestResponse(res, 'Book Already Exists.');
             }
 
             const existingAuthor = await Author
@@ -244,7 +251,7 @@ exports.create_book = [
                 .whereIn(GENRES_GENRE_ID, req.body[BOOKS_GENRE_ID])
 
             if(existingGenres.length !== req.body[BOOKS_GENRE_ID].length){
-                badRequestResponse(res, 'One or more genres not found.');
+                return badRequestResponse(res, 'One or more genres not found.');
             }
 
             const bookId = uuidv4();
@@ -269,10 +276,10 @@ exports.create_book = [
                     })
             ));
 
-            successResponse(res, 'Book created successfully.');
+            return successResponse(res, 'Book created successfully.');
         }
         catch (error) {
-            errorResponse(res, error.message);
+            return errorResponse(res, error.message);
         }
     })
 ]
@@ -306,10 +313,11 @@ exports.update_book = [
                 query = query.orWhere(BOOKS_SUMMARY, Summary);
             }
 
-            const existingBook = await query.first();
+            const existingBooks = await query;
 
-            if (existingBook) {
-                conflictRequestResponse(res, 'Book with the same ISBN, title, or summary already exists.');
+            if (existingBooks.length > 1 || (existingBooks.length === 1 && existingBooks[0][BOOKS_BOOK_ID] !== req.params.id)) {
+                console.log("Existing Book has ", existingBooks);
+                return conflictRequestResponse(res, 'Book with the same ISBN, title, or summary already exists.');
             }
 
             if (AuthorId){
@@ -317,9 +325,12 @@ exports.update_book = [
                     .query()
                     .where(AUTHORS_AUTHOR_ID, AuthorId)
                     .first()
+
+                console.log("Existing author is ", existingAuthor);
     
-                if(!existingAuthor || existingAuthor.length === 0){
-                    badRequestResponse(res, 'No Such Author Found.');
+                if(!existingAuthor){
+                    console.log("HEREEEEEEEEEEEEEEEEEEE");
+                    return badRequestResponse(res, 'No Such Author Found.');
                 }
             }
 
@@ -329,7 +340,7 @@ exports.update_book = [
                     .whereIn(GENRES_GENRE_ID, genreIds)
     
                 if(existingGenres.length !== genreIds.length){
-                    badRequestResponse(res, 'One or more genres not found.');
+                    return badRequestResponse(res, 'One or more genres not found.');
                 }
             }
 
@@ -363,10 +374,10 @@ exports.update_book = [
 
             }
 
-            successResponse(res, 'Book updated successfully.');
+            return successResponse(res, 'Book updated successfully.');
         }
         catch (error) {
-            errorResponse(res, error.message);
+            return errorResponse(res, error.message);
         }
     })
 ]

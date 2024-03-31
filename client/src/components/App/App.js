@@ -34,6 +34,24 @@ import BookInstanceDetail from '../DataDetails/BookInstanceDetails';
 import MyProfile from '../Users/MyProfile/MyProfile';
 import ChangePassword from '../Users/MyProfile/ChangePassword';
 import AllAnnouncements from '../Announcement/AllAnnouncements';
+import AnnouncementDetails from '../Announcement/AnnouncementDetails';
+import { GearFill } from 'react-bootstrap-icons';
+import { useSelector } from 'react-redux';
+import { showSidebar, hideSidebar } from '../../redux/sidebarSlice';
+import Sidebar from '../Sidebar/Sidebar';
+import NO_SIDEBAR_PATHS from '../../constants/noSidebarPaths';
+import SearchGenres from '../DataSearch/SearchGenres';
+import SearchAuthors from '../DataSearch/SearchAuthors';
+import SearchBooks from '../DataSearch/SearchBooks';
+import SearchBookInstances from '../DataSearch/SearchBookInstances';
+import DeleteAuthor from '../DataDelete/DeleteAuthor';
+import DeleteGenre from '../DataDelete/DeleteGenre';
+import DeleteBook from '../DataDelete/DeleteBook';
+import DeleteBookInstance from '../DataDelete/DeleteBookInstance';
+import UpdateGenre from '../DataUpdate/UpdateGenre';
+import UpdateAuthor from '../DataUpdate/UpdateAuthor';
+import UpdateBook from '../DataUpdate/UpdateBook';
+import UpdateBookInstance from '../DataUpdate/UpdateBookInstance';
 
 // App component
 function App() {
@@ -49,6 +67,8 @@ function App() {
 
 function AppContent({ location }) {
     const dispatch = useDispatch();
+    const isSidebarVisible = useSelector((state) => state.sidebar.isVisible);
+    const user = useSelector((state) => state.user);
 
     // Scroll to the element with the id specified in the hash (if it exists)
     // or to the top of the page otherwise whenever the location changes
@@ -79,6 +99,25 @@ function AppContent({ location }) {
             {/* Navbar component */}
             <Navbar />
 
+            {/* Gear icon for sidebar */}
+            {user && user.Status === 1 && !NO_SIDEBAR_PATHS.includes(location.pathname) && !isSidebarVisible && (
+                <GearFill
+                    className="dark-purple-gear icon-tilt"
+                    size={50}
+                    style={{
+                        position: 'fixed',
+                        bottom: '25px',
+                        left: '25px',
+                        cursor: 'pointer',
+                        zIndex: 1000
+                    }}
+                    onClick={() => dispatch(showSidebar())}
+                />
+            )}
+
+            {/* Sidebar component */}
+            <Sidebar show={isSidebarVisible} handleClose={() => dispatch(hideSidebar())} />
+
             {/* Routes for the application */}
             <Routes>
                 <Route path="/" element={<Home />} />
@@ -87,7 +126,9 @@ function AppContent({ location }) {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/my-profile" element={<MyProfile />} />
                 <Route path="/change-password/:id" element={<ChangePassword />} />
+
                 <Route path="/all-announcements" element={<AllAnnouncements />} />
+                <Route path="/announcement-detail/:id" element={<AnnouncementDetails />} />
 
                 <Route path="/add-book" element={<AddBook />} />
                 <Route path="/add-genre" element={<AddGenre />} />
@@ -106,6 +147,21 @@ function AppContent({ location }) {
                 <Route path="/author-detail/:id" element={<AuthorDetail />} />
                 <Route path="/book-detail/:id" element={<BookDetail />} />
                 <Route path="/book-instance-detail/:id" element={<BookInstanceDetail />} />
+
+                <Route path="/search-genre" element={<SearchGenres />} />
+                <Route path="/search-author" element={<SearchAuthors />} />
+                <Route path="/search-book" element={<SearchBooks />} />
+                <Route path="/search-book-instance" element={<SearchBookInstances />} />
+
+                <Route path="/delete-author/:id" element={<DeleteAuthor />} />
+                <Route path="/delete-genre/:id" element={<DeleteGenre />}  />
+                <Route path="/delete-book/:id" element={<DeleteBook />}  />
+                <Route path="/delete-book-instance/:id" element={<DeleteBookInstance />}  />
+
+                <Route path="/update-genre/:id" element={<UpdateGenre />} />
+                <Route path="/update-author/:id" element={<UpdateAuthor />} />
+                <Route path="/update-book/:id" element={<UpdateBook />} />
+                <Route path="/update-book-instance/:id" element={<UpdateBookInstance />} />
 
                 <Route path="*" element={<NotFound />} />
             </Routes>

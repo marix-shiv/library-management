@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import './LatestAnnouncement.scss'
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const LatestAnnouncement = () => {
     const [announcement, setAnnouncement] = useState(null);
+    const user = useSelector((state) => state.user);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
@@ -28,13 +31,13 @@ const LatestAnnouncement = () => {
     return (
         <Col md={6} className='bg-dark-purple text-light p-3 rounded-md text-break shadow-md-screen latest-announcement'>
             {announcement ? (
-                <Link to="/all-announcements" className="text-decoration-none text-light">
+                <div onClick={() => { if (user && user.Status !== 0) navigate('/all-announcements'); }} className="text-decoration-none text-light">
                     <div className="pt-3 text-center">
                         <h3 className="gradient-text">Latest Announcement!</h3>
                         <h4 className="fw-bold">{announcement.Title}</h4>
                         <p className="lead slab-font">{announcement.Content}</p>
                     </div>
-                </Link>
+                </div>
             ) : (
                 ""
             )}

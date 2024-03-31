@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Pagination } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { Container, Row, Col, Pagination, Button } from 'react-bootstrap';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 
 const GenreDetail = () => {
@@ -9,6 +9,7 @@ const GenreDetail = () => {
     const [books, setBooks] = useState([]);
     const [page, setPage] = useState(1);
     const { id } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchGenre = async () => {
@@ -24,6 +25,14 @@ const GenreDetail = () => {
 
         fetchGenre();
     }, [id, page]);
+
+    const handleDelete = () => {
+        if (books.length > 0) {
+            toast.error('Cannot delete genre with books. Please delete the books first.');
+        } else {
+            navigate(`/delete-genre/${id}`);
+        }
+    };
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
@@ -48,6 +57,14 @@ const GenreDetail = () => {
                 <Pagination.Item>{page}</Pagination.Item>
                 <Pagination.Next onClick={() => setPage(page + 1)} disabled={books.length === 0} />
             </Pagination>
+            <Row className="justify-content-center d-flex align-items-center">
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                </Col>
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-genre/${id}`)}>Update</Button>
+                </Col>
+            </Row>
         </Container>
     );
 };

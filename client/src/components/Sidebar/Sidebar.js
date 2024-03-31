@@ -24,7 +24,7 @@ const Sidebar = ({ show, handleClose }) => {
                 dropdown: [
                     { href: '/all-books', text: 'All Books' },
                     { href: '/add-book', text: 'Add Book' },
-                    { href: '/update-book', text: 'Update Book' },
+                    { href: '/search-book', text: 'Search Book' },
                 ]
             },
             { 
@@ -32,7 +32,7 @@ const Sidebar = ({ show, handleClose }) => {
                 dropdown: [
                     { href: '/all-genres', text: 'All Genres' },
                     { href: '/add-genre', text: 'Add Genre' },
-                    { href: '/update-genre', text: 'Update Genre' },
+                    { href: '/search-genre', text: 'Search Genre' },
                 ]
             },
             { 
@@ -40,7 +40,7 @@ const Sidebar = ({ show, handleClose }) => {
                 dropdown: [
                     { href: '/all-authors', text: 'All Authors' },
                     { href: '/add-author', text: 'Add Author' },
-                    { href: '/update-author', text: 'Update Author' },
+                    { href: '/search-author', text: 'Search Author' },
                 ]
             },
             { 
@@ -48,7 +48,15 @@ const Sidebar = ({ show, handleClose }) => {
                 dropdown: [
                     { href: '/all-book-instances', text: 'All Book Instances' },
                     { href: '/add-book-instance', text: 'Add Book Instance' },
-                    { href: '/update-book-instance', text: 'Update Book Instance' },
+                    { href: '/search-book-instance', text: 'Search Book Instance' },
+                ]
+            },
+            { 
+                text: 'Announcements Functions', 
+                dropdown: [
+                    { href: '/all-announcements', text: 'All Announcements' },
+                    { href: '/search-announcement', text: 'Search Announcement' },
+                    { href: '/update-book', text: 'Update Book' },
                 ]
             },
         ],
