@@ -52,6 +52,9 @@ import UpdateGenre from '../DataUpdate/UpdateGenre';
 import UpdateAuthor from '../DataUpdate/UpdateAuthor';
 import UpdateBook from '../DataUpdate/UpdateBook';
 import UpdateBookInstance from '../DataUpdate/UpdateBookInstance';
+import TopAuthors from '../DataDisplay/TopAuthors';
+import TopGenres from '../DataDisplay/TopGenres';
+import TopBooks from '../DataDisplay/TopBooks';
 
 // App component
 function App() {
@@ -162,6 +165,10 @@ function AppContent({ location }) {
                 <Route path="/update-author/:id" element={<UpdateAuthor />} />
                 <Route path="/update-book/:id" element={<UpdateBook />} />
                 <Route path="/update-book-instance/:id" element={<UpdateBookInstance />} />
+
+                <Route path="/top-authors" element={<TopAuthors />} />
+                <Route path="/top-genres" element={<TopGenres />} />
+                <Route path="/top-books" element={<TopBooks />} />
 
                 <Route path="*" element={<NotFound />} />
             </Routes>
