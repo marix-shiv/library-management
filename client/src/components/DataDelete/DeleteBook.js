@@ -3,25 +3,31 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Container, Alert } from 'react-bootstrap';
 import {toast} from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const DeleteBook = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchBook = async () => {
-            try {
-                const response = await axios.get(`/books/${id}`);
-                setBook(response.data);
-            } catch (error) {
-                toast.error('Something went wrong!');
-                navigate('/all-books');
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchBook = async () => {
+                try {
+                    const response = await axios.get(`/books/${id}`);
+                    setBook(response.data);
+                } catch (error) {
+                    toast.error('Something went wrong!');
+                    navigate('/all-books');
+                }
+            };
 
-        fetchBook();
-    }, [id, navigate]);
+            fetchBook();
+        }
+    }, [id, userRole, navigate]);
 
     const handleDelete = async () => {
         if (book.BookInstances.length > 0) {

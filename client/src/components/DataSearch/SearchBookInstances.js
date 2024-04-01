@@ -46,6 +46,9 @@ const SearchBookInstances = () => {
 
     return (
         <Container className="bg-medium-dark my-md-5 rounded text-center px-5 py-5">
+            <div className="d-flex justify-content-end mt-4">
+                <Link to="/search-book-instance-by-user" className="btn btn-dark-purple rounded-pill text-light point-right-button">Search using user ➤</Link>
+            </div>
             <h1 className="display-4 mb-4 text-dark-purple slab-font fw-bold">Search Book Instances</h1>
             <Tabs activeKey={status} onSelect={(k) => { setStatus(k); setPage(1); }}>
                 <Tab eventKey="L" title="Loaned">

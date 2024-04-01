@@ -47,7 +47,6 @@ const Sidebar = ({ show, handleClose }) => {
                 text: 'Reservations Functions', 
                 dropdown: [
                     { href: '/all-reservations', text: 'All Reservations' },
-                    { href: '/add-book-instance', text: 'Add Book Instance' },
                     { href: '/search-reservation', text: 'Search Reservation' },
                 ]
             },
@@ -64,7 +63,6 @@ const Sidebar = ({ show, handleClose }) => {
                 dropdown: [
                     { href: '/all-announcements', text: 'All Announcements' },
                     { href: '/search-announcement', text: 'Search Announcement' },
-                    { href: '/update-book', text: 'Update Book' },
                 ]
             },
         ],

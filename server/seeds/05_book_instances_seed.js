@@ -87,7 +87,7 @@ exports.seed = async function(knex) {
             InstanceID: uuidv4(),
             BookID: (await knex('books').where({Title: 'The Hound of the Baskervilles'}).first()).BookID,
             Status: 'L',
-            AvailableBy: '2025-12-20',
+            AvailableBy: '2023-12-20',
             Imprint: 'Bloomsbury Publishing',
             UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
         },

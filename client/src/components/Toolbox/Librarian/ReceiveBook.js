@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import "./Librarian.scss";
 import { useLocation } from 'react-router-dom';
+import { CURRENCY_UNIT } from '../../../constants/currencyConstant';
 
 const ReceiveBook = () => {
 const location = useLocation();
@@ -247,15 +248,15 @@ return (
         </Col>
     </Row>
     <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="bg-light">
         <Modal.Title>Fine</Modal.Title>
         </Modal.Header>
-        <Modal.Body>The fine for this book is {fine}.</Modal.Body>
-        <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
+        <Modal.Body className="bg-light">The fine for this book is {fine} {CURRENCY_UNIT}.</Modal.Body>
+        <Modal.Footer className="bg-light">
+        <Button variant="primary" onClick={() => setShowModal(false)} className="rounded-pill">
             Cancel
         </Button>
-        <Button variant="primary" onClick={handleFineReceived}>
+        <Button variant="primary" onClick={handleFineReceived} className="rounded-pill">
             Fine Received
         </Button>
         </Modal.Footer>

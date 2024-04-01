@@ -3,25 +3,31 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Container, Alert } from 'react-bootstrap';
 import {toast} from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const DeleteAuthor = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [author, setAuthor] = useState(null);
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchAuthor = async () => {
-            try {
-                const response = await axios.get(`/authors/${id}`);
-                setAuthor(response.data);
-            } catch (error) {
-                toast.error('Something went wrong!');
-                navigate('/all-authors');
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchAuthor = async () => {
+                try {
+                    const response = await axios.get(`/authors/${id}`);
+                    setAuthor(response.data);
+                } catch (error) {
+                    toast.error('Something went wrong!');
+                    navigate('/all-authors');
+                }
+            };
 
-        fetchAuthor();
-    }, [id, history]);
+            fetchAuthor();
+        }
+    }, [id, userRole, navigate]);
 
     const handleDelete = async () => {
         try {

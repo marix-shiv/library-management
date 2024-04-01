@@ -40,9 +40,9 @@ const reservationCleaner = require('../utils/reservationCleaner');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { USERS_USER_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID } = require('../constants/fieldNames');
+const { USERS_USER_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID, BOOK_INSTANCE_RENEWALS } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
-const {MAX_LOAN_DURATION, LATE_RETURN_PENALTY_PER_DAY} = require('../constants/policyConstants');
+const {MAX_LOAN_DURATION, LATE_RETURN_PENALTY_PER_DAY, MAX_RENEWALS_PER_BOOK} = require('../constants/policyConstants');
 
 
 // Authentication Middlewares and Functions
@@ -314,7 +314,8 @@ exports.update_book_instance_status = [
                             .patch({
                                 [BOOK_INSTANCE_STATUS]: status,
                                 [BOOK_INSTANCE_AVAILABLE_BY]: dateString,
-                                [BOOK_INSTANCE_USER_ID]: readerId
+                                [BOOK_INSTANCE_USER_ID]: readerId,
+                                [BOOK_INSTANCE_RENEWALS]: 0
                             })
                             .where({[BOOK_INSTANCE_INSTANCE_ID]: id});
 
@@ -414,7 +415,8 @@ exports.update_book_instance_status = [
                             .patch({
                                 [BOOK_INSTANCE_STATUS]: status,
                                 [BOOK_INSTANCE_AVAILABLE_BY]: dateString,
-                                [BOOK_INSTANCE_USER_ID]: readerId
+                                [BOOK_INSTANCE_USER_ID]: readerId,
+                                [BOOK_INSTANCE_RENEWALS]: 0
                             })
                             .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
                         
@@ -460,13 +462,13 @@ exports.update_book_instance_status = [
 exports.book_instances_issued_by_user = [
     authenticate,
 
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_USER]),
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
 
     ...idValidator,
 
     asyncHandler(async(req, res, next)=>{
         try {
-            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY];
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_STATUS];
             const bookFields = [BOOKS_TITLE];
 
             const instanceDetails = await BookInstance
@@ -478,16 +480,14 @@ exports.book_instances_issued_by_user = [
                 return notFoundResponse(res);
             } 
 
-            const bookDetails = await Book
-                .query()
-                .select(bookFields)
-                .findById(instanceDetails[BOOK_INSTANCE_BOOK_ID]);
-                
-            if (!bookDetails || bookDetails.length === 0) {
-                return notFoundResponse(res);
-            }
+            const response = await Promise.all(instanceDetails.map(async (instance) => {
+                const bookDetails = await Book
+                    .query()
+                    .select(bookFields)
+                    .findById(instance[BOOK_INSTANCE_BOOK_ID]);
 
-            const response = { ...instanceDetails, ...bookDetails };
+                return { ...instance, ...bookDetails };
+            }));
 
             res.json(response);
         }
@@ -504,7 +504,7 @@ exports.book_instances_issued_by_me = [
 
     asyncHandler(async(req, res, next)=>{
         try {
-            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY];
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_RENEWALS];
             const bookFields = [BOOKS_TITLE];
 
             const instanceDetails = await BookInstance
@@ -579,15 +579,91 @@ exports.get_fine_for_book_instance = [
             const fineMoneyData = await LibraryPolicy
                 .query()
                 .select(LIBRARY_POLICIES_VALUE)
-                .where({[LIBRARY_POLICIES_PROPERTY]: [LATE_RETURN_PENALTY_PER_DAY]})
+                .where({[LIBRARY_POLICIES_PROPERTY]: LATE_RETURN_PENALTY_PER_DAY})
+                .first()
 
-            const fineMoney = fineMoneyData[LIBRARY_POLICIES_VALUE];
+            console.log(fineMoneyData);
+            const fineMoney = parseFloat(fineMoneyData[LIBRARY_POLICIES_VALUE]);
+            console.log(fineMoney);
+            
             const daysLate = Math.ceil((today - expectedDateOfReturn) / (1000 * 60 * 60 * 24));
             const totalFine = fineMoney * daysLate;
+
+            console.log(totalFine);
 
             return successResponse(res, '', totalFine);
         }
         catch(err){
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.renew_book_instance = [
+    authenticate,
+
+    authorize([userRoles.ROLE_USER]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try {
+            const bookInstanceData = await BookInstance 
+                .query()
+                .findById(req.params.id)
+
+            if(bookInstanceData[BOOK_INSTANCE_USER_ID] !== req.user[USERS_USER_ID]){
+                return unauthorizedRequestResponse(res);
+            }
+
+            const maxRenewalsData = await LibraryPolicy
+                .query()
+                .where({[LIBRARY_POLICIES_PROPERTY]: MAX_RENEWALS_PER_BOOK})
+                .first()
+            
+            const maxRenewals = parseFloat(maxRenewalsData[LIBRARY_POLICIES_VALUE]);
+
+            if(bookInstanceData[BOOK_INSTANCE_RENEWALS] < maxRenewals){
+                const newAvailableBy = new Date(bookInstanceData[BOOK_INSTANCE_AVAILABLE_BY]);
+                newAvailableBy.setDate(newAvailableBy.getDate() + 15);
+                const newAvailableByFormatted = newAvailableBy.toISOString().split('T')[0];
+
+                await BookInstance
+                    .query()
+                    .patch({
+                        [BOOK_INSTANCE_AVAILABLE_BY]: newAvailableByFormatted,
+                        [BOOK_INSTANCE_RENEWALS]: bookInstanceData[BOOK_INSTANCE_RENEWALS] + 1
+                    })
+                    .where({[BOOK_INSTANCE_INSTANCE_ID]: req.params.id});
+
+                return successResponse(res);
+            }
+
+            return badRequestResponse(res, "Maximum renewals reached");
+        }
+
+        catch(err) {
+            console.log(err.message);
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.max_renewals = [
+    authenticate,
+
+    asyncHandler(async(req, res , next)=>{
+        try{
+            const maxRenewalsData = await LibraryPolicy
+                .query()
+                .where({[LIBRARY_POLICIES_PROPERTY]: MAX_RENEWALS_PER_BOOK})
+                .first()
+            
+            const maxRenewals = parseFloat(maxRenewalsData[LIBRARY_POLICIES_VALUE]);
+
+            return successResponse(res, '', maxRenewals);
+        }
+        catch(err) {
             return errorResponse(res, err.message);
         }
     })

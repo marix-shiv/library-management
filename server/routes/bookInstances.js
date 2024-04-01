@@ -33,6 +33,8 @@ const book_instances_controller = require("../controllers/bookInstancesControlle
  */
 router.get('/', book_instances_controller.all_book_instances);
 
+router.get('/max-renewals', book_instances_controller.max_renewals);
+
 router.get('/issued-by-me', book_instances_controller.book_instances_issued_by_me);
 
 /**
@@ -73,6 +75,7 @@ router.get('/user/:id', book_instances_controller.book_instances_issued_by_user)
 router.get('/get-user/:id', book_instances_controller.get_user_for_book_instance);
 
 router.get('/get-fine/:id', book_instances_controller.get_fine_for_book_instance);
+
 /**
  * @swagger
  * /bookinstances/{id}:
@@ -132,6 +135,8 @@ router.get('/:id', book_instances_controller.book_instance_details);
  *         description: Server error
  */
 router.post('/', book_instances_controller.create_book_instance);
+
+router.put('/renew/:id', book_instances_controller.renew_book_instance);
 
 /**
  * @swagger

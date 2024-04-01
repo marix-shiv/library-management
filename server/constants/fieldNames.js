@@ -38,6 +38,7 @@ module.exports = {
     BOOK_INSTANCE_IMPRINT: 'Imprint',
     BOOK_INSTANCE_BOOK_ID: 'BookID',
     BOOK_INSTANCE_USER_ID: 'UserID',
+    BOOK_INSTANCE_RENEWALS: 'Renewals',
 
     LIBRARY_BUDGET_BUDGET_ID: 'BudgetID',
     LIBRARY_BUDGET_DATE: 'Date',

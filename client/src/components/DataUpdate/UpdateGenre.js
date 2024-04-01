@@ -11,6 +11,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const UpdateGenre = () => {
     const [name, setName] = useState("");
@@ -18,22 +19,27 @@ const UpdateGenre = () => {
     const [isGenrePresent, setIsGenrePresent] = useState(0);
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchGenre = async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`/genres/${id}`);
-                setName(response.data.Name.Name);
-            } catch (error) {
-                toast.error('Something went wrong!');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchGenre = async () => {
+                setIsLoading(true);
+                try {
+                    const response = await axios.get(`/genres/${id}`);
+                    setName(response.data.Name.Name);
+                } catch (error) {
+                    toast.error('Something went wrong!');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
 
-        fetchGenre();
-    }, [id]);
+            fetchGenre();
+        }
+    }, [id, userRole, navigate]);
 
     const handleCancel = () => {
         navigate(`/genre-detail/${id}`)

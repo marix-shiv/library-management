@@ -3,28 +3,34 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button, Container, Alert } from 'react-bootstrap';
 import {toast} from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const DeleteGenre = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [genreName, setGenreName] = useState('');
     const [books, setBooks] = useState([]);
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchGenre = async () => {
-            try {
-                const response = await axios.get(`/genres/${id}`);
-                const data = response.data;
-                setBooks(data.Books);
-                setGenreName(data.Name.Name);
-            } catch (error) {
-                toast.error('Something went wrong!');
-                navigate('/all-genres');
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchGenre = async () => {
+                try {
+                    const response = await axios.get(`/genres/${id}`);
+                    const data = response.data;
+                    setBooks(data.Books);
+                    setGenreName(data.Name.Name);
+                } catch (error) {
+                    toast.error('Something went wrong!');
+                    navigate('/all-genres');
+                }
+            };
 
-        fetchGenre();
-    }, [id, navigate]);
+            fetchGenre();
+        }
+    }, [id, userRole, navigate]);
 
     const handleDelete = async () => {
         if (books.length > 0) {

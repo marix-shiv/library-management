@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { XCircleFill } from "react-bootstrap-icons";
 import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const UpdateBook = () => {
     const [title, setTitle] = useState("");
@@ -15,30 +16,35 @@ const UpdateBook = () => {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchBookAndGenres = async () => {
-            setIsLoading(true);
-            try {
-                const [bookResponse, genresResponse] = await Promise.all([
-                    axios.get(`/books/${id}`),
-                    axios.get("/genres/entire-list")
-                ]);
-                setTitle(bookResponse.data.Title);
-                setAuthorID(bookResponse.data.AuthorID);
-                setISBN(bookResponse.data.ISBN);
-                setSummary(bookResponse.data.Summary);
-                setSelectedGenres(bookResponse.data.GenreID);
-                setGenres(genresResponse.data.filter(genre => !bookResponse.data.GenreID.find(g => g.GenreID === genre.GenreID)));
-            } catch (error) {
-                toast.error("Failed to fetch data.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchBookAndGenres = async () => {
+                setIsLoading(true);
+                try {
+                    const [bookResponse, genresResponse] = await Promise.all([
+                        axios.get(`/books/${id}`),
+                        axios.get("/genres/entire-list")
+                    ]);
+                    setTitle(bookResponse.data.Title);
+                    setAuthorID(bookResponse.data.AuthorID);
+                    setISBN(bookResponse.data.ISBN);
+                    setSummary(bookResponse.data.Summary);
+                    setSelectedGenres(bookResponse.data.GenreID);
+                    setGenres(genresResponse.data.filter(genre => !bookResponse.data.GenreID.find(g => g.GenreID === genre.GenreID)));
+                } catch (error) {
+                    toast.error("Failed to fetch data.");
+                } finally {
+                    setIsLoading(false);
+                }
+            };
 
-        fetchBookAndGenres();
-    }, [id]);
+            fetchBookAndGenres();
+        }
+    }, [id, userRole, navigate]);
 
     const handleSelectGenre = (event) => {
         const genre = genres.find((genre) => genre.GenreID === event.target.value);

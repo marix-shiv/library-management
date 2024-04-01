@@ -4,12 +4,14 @@ import { Container, Row, Col, Pagination, Button } from 'react-bootstrap';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import {toast} from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const AuthorDetail = () => {
     const [author, setAuthor] = useState({ FirstName: '', LastName: '', DateOfBirth: '', DateOfDeath: '', Books: [] });
     const [page, setPage] = useState(1);
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
         const fetchAuthor = async () => {
@@ -61,14 +63,16 @@ const AuthorDetail = () => {
                 <Pagination.Item>{page}</Pagination.Item>
                 <Pagination.Next onClick={() => setPage(page + 1)} disabled={author.Books.length === 0} />
             </Pagination>
-            <Row className="justify-content-center d-flex align-items-center">
-                <Col xs={6} md={4}>
-                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
-                </Col>
-                <Col xs={6} md={4}>
-                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-author/${id}`)}>Update</Button>
-                </Col>
-            </Row>
+            {(userRole === 'L' || userRole === 'S') && (
+                <Row className="justify-content-center d-flex align-items-center">
+                    <Col xs={6} md={4}>
+                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-author/${id}`)}>Update</Button>
+                    </Col>
+                </Row>
+            )}
         </Container>
     );
 };

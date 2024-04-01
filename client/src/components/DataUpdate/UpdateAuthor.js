@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const UpdateAuthor = () => {
     const [firstName, setFirstName] = useState("");
@@ -19,26 +20,31 @@ const UpdateAuthor = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchAuthor = async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.get(`/authors/${id}`);
-                const author = response.data;
-                setFirstName(author.FirstName);
-                setLastName(author.LastName);
-                setDateOfBirth(author.DateOfBirth.split('T')[0]);
-                setDateOfDeath(author.DateOfDeath.split('T')[0] || "");
-            } catch (error) {
-                toast.error('Something went wrong!');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchAuthor = async () => {
+                setIsLoading(true);
+                try {
+                    const response = await axios.get(`/authors/${id}`);
+                    const author = response.data;
+                    setFirstName(author.FirstName);
+                    setLastName(author.LastName);
+                    setDateOfBirth(author.DateOfBirth.split('T')[0]);
+                    setDateOfDeath(author.DateOfDeath.split('T')[0] || "");
+                } catch (error) {
+                    toast.error('Something went wrong!');
+                } finally {
+                    setIsLoading(false);
+                }
+            };
 
-        fetchAuthor();
-    }, [id]);
+            fetchAuthor();
+        }
+    }, [id, userRole, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 const UpdateBookInstance = () => {
     const { id } = useParams();
@@ -17,16 +18,21 @@ const UpdateBookInstance = () => {
     const [imprint, setImprint] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
-        const fetchBookInstance = async () => {
-            const response = await axios.get(`/bookinstances/${id}`);
-            setBookID(response.data.BookID);
-            setImprint(response.data.Imprint);
-        };
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        } else {
+            const fetchBookInstance = async () => {
+                const response = await axios.get(`/bookinstances/${id}`);
+                setBookID(response.data.BookID);
+                setImprint(response.data.Imprint);
+            };
 
-        fetchBookInstance();
-    }, [id]);
+            fetchBookInstance();
+        }
+    }, [id, userRole, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

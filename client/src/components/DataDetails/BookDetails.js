@@ -4,21 +4,20 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {INSTANCE_MAPPING} from '../../constants/InstanceConstants';
+import { useSelector } from 'react-redux';
 
 const BookDetail = () => {
     const [book, setBook] = useState({ Title: '', Summary: '', ISBN: '', AuthorID: '', FirstName: '', LastName: '', GenreID: [], BookInstances: [] });
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
     useEffect(() => {
         const fetchBook = async () => {
             try {
-                console.log("JHEREEEEEEEEEEEEEEEE");
-                console.log(id);
                 const response = await axios.get(`/books/${id}`);
                 setBook(response.data);
             } catch (error) {
-                console.log(error.message);
                 toast.error('Something went wrong!');
             }
         };
@@ -67,14 +66,16 @@ const BookDetail = () => {
                     <p className='lead fw-bold text-primary' key={1}>No book instances found.</p>
                 )}
             </Row>
-            <Row className="justify-content-center d-flex align-items-center">
-                <Col xs={6} md={4}>
-                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
-                </Col>
-                <Col xs={6} md={4}>
-                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-book/${id}`)}>Update</Button>
-                </Col>
-            </Row>
+            {(userRole === 'L' || userRole === 'S') && (
+                <Row className="justify-content-center d-flex align-items-center">
+                    <Col xs={6} md={4}>
+                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                    </Col>
+                    <Col xs={6} md={4}>
+                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-book/${id}`)}>Update</Button>
+                    </Col>
+                </Row>
+            )}
         </Container>
     );
 };

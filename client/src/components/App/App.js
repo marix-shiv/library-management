@@ -58,6 +58,7 @@ import TopBooks from '../DataDisplay/TopBooks';
 import AllReservations from '../DataDisplay/AllReservations';
 import ReservationDetail from '../DataDetails/ReservationDetail';
 import SearchReservations from '../DataSearch/SearchReservations';
+import SearchBookInstancesUsingUser from '../DataSearch/SearchBookInstancesUsingUser';
 
 // App component
 function App() {
@@ -160,6 +161,7 @@ function AppContent({ location }) {
                 <Route path="/search-author" element={<SearchAuthors />} />
                 <Route path="/search-book" element={<SearchBooks />} />
                 <Route path="/search-book-instance" element={<SearchBookInstances />} />
+                <Route path="/search-book-instance-by-user" element={<SearchBookInstancesUsingUser />} />
                 <Route path="/search-reservation" element={<SearchReservations />} />
 
                 <Route path="/delete-author/:id" element={<DeleteAuthor />} />
