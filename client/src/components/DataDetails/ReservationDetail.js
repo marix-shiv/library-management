@@ -38,6 +38,15 @@ const ReservationDetail = () => {
         setShowModal(false);
     };
 
+    const handleIssue = () => {
+        navigate('/issue-book', {
+            state: {
+                userID: reservation.UserID,
+                bookInstanceID: reservation.BookID
+            }
+        })
+    }
+
     return (
         <Container className="bg-medium-dark pt-2 pb-5 my-md-5 rounded text-center px-5">
             <Modal show={showModal} onHide={handleClose} centered className=" text-center rounded px-5">
@@ -63,6 +72,9 @@ const ReservationDetail = () => {
             <Row className="justify-content-center d-flex align-items-center">
                 <Col xs={6} md={4}>
                     <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleDelete}>Delete</Button>
+                </Col>
+                <Col xs={6} md={4}>
+                    <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleIssue}>Issue</Button>
                 </Col>
             </Row>
         </Container>

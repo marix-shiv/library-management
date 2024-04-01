@@ -70,6 +70,9 @@ router.get('/status/:status', book_instances_controller.book_instances_by_status
 
 router.get('/user/:id', book_instances_controller.book_instances_issued_by_user);
 
+router.get('/get-user/:id', book_instances_controller.get_user_for_book_instance);
+
+router.get('/get-fine/:id', book_instances_controller.get_fine_for_book_instance);
 /**
  * @swagger
  * /bookinstances/{id}:

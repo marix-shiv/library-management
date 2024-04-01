@@ -13,14 +13,25 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import "./Librarian.scss";
+import { useLocation } from 'react-router-dom';
 
 const IssueBook = () => {
+const location = useLocation();
+const initialState = location.state || { userID: '', bookInstanceID: '' };
 const [username, setUsername] = useState("");
-const [userID, setUserID] = useState("");
-const [bookInstanceID, setBookInstanceID] = useState("");
+const [userID, setUserID] = useState(initialState.userID);
+const [bookInstanceID, setBookInstanceID] = useState(initialState.bookInstanceID);
 const [isLoading, setIsLoading] = useState(false);
 const [isValidUser, setIsValidUser] = useState(null);
 const [key, setKey] = useState("UserID");
+
+
+useEffect(() => {
+    if (location.state) {
+        setUserID(location.state.userID);
+        setBookInstanceID(location.state.bookInstanceID);
+    }
+}, [location.state]);
 
 useEffect(() => {
     const fetchUserID = async () => {

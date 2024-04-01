@@ -55,5 +55,11 @@ exports.seed = async function(knex) {
             BookID: (await knex('books').where({Title: "Misery"}).first()).BookID,
             DateOfReservation: new Date().toISOString().split('T')[0]
         },
+        {
+            ReservationID: uuidv4(),
+            UserID: (await knex('users').where({Username: 'sarah_jones_012'}).first()).UserID,
+            BookID: (await knex('books').where({Title: "The Adventures of Sherlock Holmes"}).first()).BookID,
+            DateOfReservation: new Date().toISOString().split('T')[0]
+        },
     ]);
 };

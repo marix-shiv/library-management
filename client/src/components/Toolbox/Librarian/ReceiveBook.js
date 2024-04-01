@@ -8,19 +8,52 @@ Button,
 Spinner,
 Tab,
 Tabs,
+Modal
 } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import "./Librarian.scss";
+import { useLocation } from 'react-router-dom';
 
 const ReceiveBook = () => {
+const location = useLocation();
+const initialState = location.state || { userID: '', bookInstanceID: '' };
 const [username, setUsername] = useState("");
-const [userID, setUserID] = useState("");
-const [bookInstanceID, setBookInstanceID] = useState("");
+const [userID, setUserID] = useState(initialState.userID);
+const [bookInstanceID, setBookInstanceID] = useState(initialState.bookInstanceID);
 const [isLoading, setIsLoading] = useState(false);
 const [isValidUser, setIsValidUser] = useState(null);
 const [key, setKey] = useState("UserID");
+const [showModal, setShowModal] = useState(false);
+const [fine, setFine] = useState(0);
+
+const fetchFine = async () => {
+    try {
+        const response = await axios.get(`/bookinstances/get-fine/${bookInstanceID}`);
+        setFine(response.data.data);
+    } catch (error) {
+        toast.error("Failed to fetch fine.");
+    }
+};
+
+const handleShowModal = async (event) => {
+    event.preventDefault();
+    await fetchFine();
+    setShowModal(true);
+};
+
+const handleFineReceived = async () => {
+    setShowModal(false);
+    await handleSubmit();
+};
+
+useEffect(() => {
+    if (location.state) {
+        setUserID(location.state.userID);
+        setBookInstanceID(location.state.bookInstanceID);
+    }
+}, [location.state]);
 
 useEffect(() => {
     const fetchUserID = async () => {
@@ -43,7 +76,7 @@ useEffect(() => {
 }, [username]);
 
 const handleSubmit = async (event) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
     setIsLoading(true);
 
     try {
@@ -84,7 +117,7 @@ return (
             className="mb-3"
         >
             <Tab eventKey="UserID" title="UserID">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleShowModal}>
                 <div className="form-floating mb-3 position-relative">
                 <Form.Control
                     type="text"
@@ -128,7 +161,7 @@ return (
             </Form>
             </Tab>
             <Tab eventKey="Username" title="Username">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleShowModal}>
                 <div className="form-floating mb-3 position-relative">
                 <Form.Control
                     type="text"
@@ -213,6 +246,20 @@ return (
         </Tabs>
         </Col>
     </Row>
+    <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+        <Modal.Title>Fine</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>The fine for this book is {fine}.</Modal.Body>
+        <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+        </Button>
+        <Button variant="primary" onClick={handleFineReceived}>
+            Fine Received
+        </Button>
+        </Modal.Footer>
+    </Modal>
     </Container>
 );
 };

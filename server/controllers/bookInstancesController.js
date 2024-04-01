@@ -42,13 +42,14 @@ const reservationCleaner = require('../utils/reservationCleaner');
 const userRoles = require('../constants/userRoles');
 const { USERS_USER_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
-const {MAX_LOAN_DURATION} = require('../constants/policyConstants');
+const {MAX_LOAN_DURATION, LATE_RETURN_PENALTY_PER_DAY} = require('../constants/policyConstants');
 
 
 // Authentication Middlewares and Functions
 const authenticate = require('../auth/authenticateUser');
 const { statusValidator } = require('../validators/statusValidator');
 const { validatePage } = require('../validators/validatePage');
+const unauthorizedRequestResponse = require('../utils/unauthorizedRequestResponse');
 
 exports.all_book_instances = [
     authenticate,
@@ -315,8 +316,13 @@ exports.update_book_instance_status = [
                                 [BOOK_INSTANCE_AVAILABLE_BY]: dateString,
                                 [BOOK_INSTANCE_USER_ID]: readerId
                             })
+                            .where({[BOOK_INSTANCE_INSTANCE_ID]: id});
 
                         return successResponse(res, "Book Instance Status Updated Successfully.");
+                    }
+                    else{
+                        console.log("HERE");
+                        return unauthorizedRequestResponse(res, "Book Instance Already Reserved!");
                     }
                 }
                 else if(status === 'A'){
@@ -327,6 +333,7 @@ exports.update_book_instance_status = [
                             [BOOK_INSTANCE_AVAILABLE_BY]: null,
                             [BOOK_INSTANCE_USER_ID]: null
                         })
+                        .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
 
                     try{
                         updateBookInstanceStatus(id, instance[BOOK_INSTANCE_BOOK_ID]);
@@ -351,7 +358,8 @@ exports.update_book_instance_status = [
                     };
                     await BookInstance
                         .query()
-                        .patch(updateData);
+                        .patch(updateData)
+                        .where({[BOOK_INSTANCE_INSTANCE_ID]: id});
                     try{
                         updateBookInstanceStatus(id, instance[BOOK_INSTANCE_BOOK_ID]);
                     }
@@ -368,6 +376,7 @@ exports.update_book_instance_status = [
                             [BOOK_INSTANCE_USER_ID]: null,
                             [BOOK_INSTANCE_AVAILABLE_BY]: null
                         })
+                        .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
 
                     return successResponse(res, "Book Instance Status Updated Successfully.")
                 }
@@ -385,6 +394,7 @@ exports.update_book_instance_status = [
                             [BOOK_INSTANCE_USER_ID]: null,
                             [BOOK_INSTANCE_AVAILABLE_BY]: null
                         })
+                        .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
                     return successResponse(res, "Book Instance Status Updated Successfully.");
                 }
                 else if(status === 'L'){
@@ -406,6 +416,7 @@ exports.update_book_instance_status = [
                                 [BOOK_INSTANCE_AVAILABLE_BY]: dateString,
                                 [BOOK_INSTANCE_USER_ID]: readerId
                             })
+                            .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
                         
                         return successResponse(res, "Book Instance Status Updated Successfully.");
                     }
@@ -415,7 +426,7 @@ exports.update_book_instance_status = [
                 }
             }
 
-            else{
+            else if(currentStatus === 'M'){
                 if(status === 'A'){
                     await BookInstance
                         .query()
@@ -424,6 +435,7 @@ exports.update_book_instance_status = [
                             [BOOK_INSTANCE_USER_ID]: null,
                             [BOOK_INSTANCE_AVAILABLE_BY]: null
                         })
+                        .where({[BOOK_INSTANCE_INSTANCE_ID]: id})
                     try{
                         updateBookInstanceStatus(id, instance[BOOK_INSTANCE_BOOK_ID]);
                     }
@@ -517,6 +529,66 @@ exports.book_instances_issued_by_me = [
         }
         catch (error) {
             errorResponse(res, error.message);
+        }
+    })
+]
+
+exports.get_user_for_book_instance = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const userId = await BookInstance
+                .query()
+                .findById(req.params.id)
+                .select(BOOK_INSTANCE_USER_ID)
+    
+            return successResponse(res, '', userId);
+        }
+        catch(err){
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.get_fine_for_book_instance = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const expectedDateOfReturnData = await BookInstance
+                .query()
+                .findById(req.params.id)
+                .select(BOOK_INSTANCE_AVAILABLE_BY)
+
+            const expectedDateOfReturn = new Date(expectedDateOfReturnData[BOOK_INSTANCE_AVAILABLE_BY]);
+            const today = new Date();
+
+            if (expectedDateOfReturn > today) {
+                return successResponse(res, '', 0);
+            }
+
+            const fineMoneyData = await LibraryPolicy
+                .query()
+                .select(LIBRARY_POLICIES_VALUE)
+                .where({[LIBRARY_POLICIES_PROPERTY]: [LATE_RETURN_PENALTY_PER_DAY]})
+
+            const fineMoney = fineMoneyData[LIBRARY_POLICIES_VALUE];
+            const daysLate = Math.ceil((today - expectedDateOfReturn) / (1000 * 60 * 60 * 24));
+            const totalFine = fineMoney * daysLate;
+
+            return successResponse(res, '', totalFine);
+        }
+        catch(err){
+            return errorResponse(res, err.message);
         }
     })
 ]

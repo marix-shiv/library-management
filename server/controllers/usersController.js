@@ -471,7 +471,7 @@ exports.get_id_from_username = [
                 if (user[USERS_ROLE] !== userRoles.ROLE_USER) {
                     return errorResponse(res, "User's role is not ROLE_USER");
                 }
-                return successResponse(res, user);
+                return successResponse(res, '' ,user);
             } else {
                 return badRequestResponse(res);
             }

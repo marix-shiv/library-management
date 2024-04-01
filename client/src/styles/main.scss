@@ -161,3 +161,15 @@ ul {
 .nav-tabs {
     border-bottom: none;
 }
+
+.nice-switch .custom-control-label::before {
+    right: -2.25rem;
+}
+
+.nice-switch .custom-control-label::after {
+    right: calc(-2.25rem + 2px);
+}
+
+.nice-switch .custom-control-input:checked~.custom-control-label::after {
+    transform: translateX(.75rem);
+}

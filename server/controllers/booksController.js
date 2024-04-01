@@ -421,3 +421,25 @@ exports.delete_book = [
         }
     })
 ]
+
+exports.get_id = [
+    authenticate,
+
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+
+    ...queryValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        const obtained_id = await Book
+            .query()
+            .select(BOOKS_BOOK_ID)
+            .where({[BOOKS_TITLE]: req.params.query})
+            .first()
+
+        if(!obtained_id){
+            return notFoundResponse(res);
+        }
+
+        return successResponse(res, '', obtained_id);
+    })
+]

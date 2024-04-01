@@ -41,7 +41,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Grand Central Publishing',
-            UserID: null
+            UserID: (await knex('users').where({Username: 'sarah_jones_012'}).first()).UserID
         },
         {
             InstanceID: uuidv4(),
@@ -57,7 +57,7 @@ exports.seed = async function(knex) {
             Status: 'M',
             AvailableBy: '2025-01-24',
             Imprint: 'Penguin Classics',
-            UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
+            UserID: null
         },
         {
             InstanceID: uuidv4(),
@@ -65,7 +65,7 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Oxford University Press',
-            UserID: null
+            UserID: (await knex('users').where({Username: 'sarah_jones_012'}).first()).UserID
         },
         {
             InstanceID: uuidv4(),
@@ -81,15 +81,15 @@ exports.seed = async function(knex) {
             Status: 'R',
             AvailableBy: '2025-12-20',
             Imprint: 'Houghton Mifflin Harcourt',
-            UserID: null
+            UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
         },
         {
             InstanceID: uuidv4(),
             BookID: (await knex('books').where({Title: 'The Hound of the Baskervilles'}).first()).BookID,
-            Status: 'R',
+            Status: 'L',
             AvailableBy: '2025-12-20',
             Imprint: 'Bloomsbury Publishing',
-            UserID: null
+            UserID: (await knex('users').where({Username: 'john_doe_123'}).first()).UserID
         },
     ]);
 };

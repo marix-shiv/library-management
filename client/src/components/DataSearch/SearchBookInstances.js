@@ -36,7 +36,7 @@ const SearchBookInstances = () => {
 
         return books.map((book) => (
             <ListGroup.Item key={book.InstanceID} className='bg-medium-dark nice-border pt-4'>
-                <Link to={`/book-instance-detail/${book.BookID}`} style={{"textDecoration": "none"}}>
+                <Link to={`/book-instance-detail/${book.InstanceID}`} style={{"textDecoration": "none"}}>
                     <h1 className="display-6">{book.Title}</h1>
                     <p className="text-primary lead">{book.Imprint}</p>
                 </Link>

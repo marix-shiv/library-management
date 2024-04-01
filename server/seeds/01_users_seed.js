@@ -82,7 +82,7 @@ exports.seed = async function(knex) {
             [USERS_USERNAME]: 'jim_brown_789',
             [USERS_PASSWORD]: password3.key,
             [USERS_SALT]: password3.salt,
-            [USERS_ROLE]: 'S',
+            [USERS_ROLE]: 'U',
             [USERS_FIRST_NAME]: 'Jim',
             [USERS_LAST_NAME]: 'Brown',
             [USERS_DATE_OF_BIRTH]: '1990-01-01',

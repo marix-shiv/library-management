@@ -90,6 +90,8 @@ router.get('/search/:query', books_controller.search_books);
  */
 router.get('/top', books_controller.top_books);
 
+router.get('/get-id/:query', books_controller.get_id);
+
 /**
  * @swagger
  * /books/{id}:

@@ -1,11 +1,11 @@
-const BookInstance = require('../models/bookinstance'); // Replace with the actual path to your BookInstance model
+const BookInstance = require('../models/bookinstance');
 const {
     BOOK_INSTANCE_BOOK_ID,
     BOOK_INSTANCE_STATUS,
     BOOK_INSTANCE_AVAILABLE_BY,
     BOOK_INSTANCE_USER_ID,
     BOOK_INSTANCE_INSTANCE_ID
-} = require('../constants/fieldNames'); // Replace with the actual path to your constants file
+} = require('../constants/fieldNames');
 
 const filterTimeExceededReservations = async (bookId) => {
     try {

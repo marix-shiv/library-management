@@ -57,6 +57,7 @@ import TopGenres from '../DataDisplay/TopGenres';
 import TopBooks from '../DataDisplay/TopBooks';
 import AllReservations from '../DataDisplay/AllReservations';
 import ReservationDetail from '../DataDetails/ReservationDetail';
+import SearchReservations from '../DataSearch/SearchReservations';
 
 // App component
 function App() {
@@ -159,6 +160,7 @@ function AppContent({ location }) {
                 <Route path="/search-author" element={<SearchAuthors />} />
                 <Route path="/search-book" element={<SearchBooks />} />
                 <Route path="/search-book-instance" element={<SearchBookInstances />} />
+                <Route path="/search-reservation" element={<SearchReservations />} />
 
                 <Route path="/delete-author/:id" element={<DeleteAuthor />} />
                 <Route path="/delete-genre/:id" element={<DeleteGenre />}  />
