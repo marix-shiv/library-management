@@ -38,7 +38,6 @@ const allowedFields = require('../utils/allowedFields');
 const userRoles = require('../constants/userRoles');
 const { LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_POLICY_ID, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_CORE, LIBRARY_POLICIES_VALUE_IS_INT, LIBRARY_BUDGET_BUDGET_ID} = require('../constants/fieldNames');
 const { PAGINATION_LIMIT } = require('../constants/paginationConstants');
-const { MAINTENANCE_DAYS } = require('../constants/policyConstants')
 
 // Authentication Middlewares and Functions
 const authenticate = require('../auth/authenticateUser');
@@ -99,7 +98,7 @@ exports.policy_details = [
 
     asyncHandler(async(req, res, next)=>{
         try{
-            const policyFields = [LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE];
+            const policyFields = [LIBRARY_POLICIES_PROPERTY, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_CORE];
             const policyDetails = await LibraryPolicy
                 .query()
                 .findById(req.params.id)

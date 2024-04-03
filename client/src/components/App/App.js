@@ -72,6 +72,11 @@ import UpdateBudget from '../DataUpdate/UpdateBudget';
 import AddAnnouncement from '../Toolbox/Admin/AddingAnnouncement';
 import UpdateAnnouncement from '../Announcement/UpdateAnnouncement';
 import AnnouncementsByDate from '../DataDetails/AnnouncementsByDate';
+import AllPolicies from '../DataDisplay/AllPolicies';
+import PolicyDetails from '../DataDetails/PolicyDetails';
+import UpdatePolicy from '../DataUpdate/UpdatePolicy';
+import AddingPolicy from '../Toolbox/Admin/AddingPolicy';
+import SearchPolicies from '../DataSearch/SearchPolicies';
 
 // App component
 function App() {
@@ -157,6 +162,7 @@ function AppContent({ location }) {
                 <Route path="/add-author" element={<AddAuthor />} />
                 <Route path="/add-budget" element={<AddBudget />} />
                 <Route path="/add-announcement" element={<AddAnnouncement />} />
+                <Route path="/add-policy" element={<AddingPolicy />} />
                 <Route path="/issue-book" element={<IssueBook />} />
                 <Route path="/reserve-book-librarian" element={<ReserveBook />} />
                 <Route path="/receive-book" element={<ReceiveBook />} />
@@ -168,6 +174,7 @@ function AppContent({ location }) {
                 <Route path="/all-reservations" element={<AllReservations />} />
                 <Route path="/my-reservations" element={<AllMyUnexecutedReservations />} />
                 <Route path="/all-budgets" element={<AllBudgets />} />
+                <Route path="/all-policies" element={<AllPolicies />} />
 
                 <Route path="/genre-detail/:id" element={<GenreDetail />} />
                 <Route path="/author-detail/:id" element={<AuthorDetail />} />
@@ -178,6 +185,7 @@ function AppContent({ location }) {
                 <Route path="/budget-by-date" element={<BudgetsByDate />} />
                 <Route path="/budget-by-money" element={<BudgetsByMoney />} />
                 <Route path="/announcement-by-date" element={<AnnouncementsByDate />} />
+                <Route path="/policy-detail/:id" element={<PolicyDetails />} />
 
                 <Route path="/search-genre" element={<SearchGenres />} />
                 <Route path="/search-author" element={<SearchAuthors />} />
@@ -187,6 +195,7 @@ function AppContent({ location }) {
                 <Route path="/search-reservation" element={<SearchReservations />} />
                 <Route path="/search-announcements" element={<SearchAnnouncements />} />
                 <Route path="/search-budgets" element={<SearchBudgets />} />
+                <Route path="/search-policies" element={<SearchPolicies />} />
 
                 <Route path="/delete-author/:id" element={<DeleteAuthor />} />
                 <Route path="/delete-genre/:id" element={<DeleteGenre />}  />
@@ -199,6 +208,7 @@ function AppContent({ location }) {
                 <Route path="/update-book-instance/:id" element={<UpdateBookInstance />} />
                 <Route path="/update-budget/:id" element={<UpdateBudget />} />
                 <Route path="/update-announcement/:id" element={<UpdateAnnouncement />} />
+                <Route path="/update-policy/:id" element={<UpdatePolicy />} />
 
                 <Route path="/top-authors" element={<TopAuthors />} />
                 <Route path="/top-genres" element={<TopGenres />} />

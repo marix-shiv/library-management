@@ -105,6 +105,9 @@ const Sidebar = ({ show, handleClose }) => {
             { href: '/add-budget', text: 'Add Budget' },
             { href: '/all-announcements', text: 'All Announcements' },
             { href: '/add-announcement', text: 'Add Announcement' },
+            { href: '/all-policies', text: 'All Policies'},
+            { href: '/add-policy', text: 'Add Policy'},
+            { href: '/search-policies', text: 'Search Policy'},
             {
                 text: 'Search Budget', 
                 dropdown: [
