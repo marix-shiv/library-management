@@ -9,60 +9,64 @@ const Sidebar = ({ show, handleClose }) => {
 
     const roleLinks = {
         U: [
-            { href: '/my-reservations', text: 'My Reservations' },
+            { href: '/my-reservations', text: 'My Reservations 🔒' },
             { 
-                text: 'Book Functions', 
+                text: 'Book Functions 📚', 
                 dropdown: [
                     { href: '/all-books', text: 'All Books' },                    
                     { href: '/search-book', text: 'Search Book' },
                 ]
             },
             { 
-                text: 'Genre Functions', 
+                text: 'Genre Functions 🏷️', 
                 dropdown: [
                     { href: '/all-genres', text: 'All Genres' },
                     { href: '/search-genre', text: 'Search Genre' },
                 ]
             },
             { 
-                text: 'Author Functions', 
+                text: 'Author Functions ✍️', 
                 dropdown: [
                     { href: '/all-authors', text: 'All Authors' },
                     { href: '/search-author', text: 'Search Author' },
                 ]
             },
             { 
-                text: 'Book Instances Functions', 
+                text: 'Book Instances Functions 📖', 
                 dropdown: [
                     { href: '/all-book-instances', text: 'All Book Instances' },
                     { href: '/search-book-instance', text: 'Search Book Instance' },
                 ]
             },
             { 
-                text: 'Announcements Functions', 
+                text: 'Announcements Functions 📢', 
                 dropdown: [
                     { href: '/all-announcements', text: 'All Announcements' },
                     { href: '/search-announcements', text: 'Search Announcement' },
                 ]
             },
+            { 
+                text: 'Policy Functions 📜', 
+                dropdown: [
+                    { href: '/all-policies', text: 'All Policies'},
+                    { href: '/search-policies', text: 'Search Policy'},
+                ]
+            },
         ],
         S: [
-            { href: '/user-function', text: 'User Function' },
-        ],
-        L: [
-            { href: '/issue-book', text: 'Issue Book' },
-            { href: '/reserve-book-librarian', text: 'Reserve Book' },
-            { href: '/receive-book', text: 'Receive Book' },
             { 
-                text: 'Book Functions', 
+                text: 'Book Functions 📚', 
                 dropdown: [
                     { href: '/all-books', text: 'All Books' },
                     { href: '/add-book', text: 'Add Book' },
                     { href: '/search-book', text: 'Search Book' },
+                    { href: '/receive-book', text: 'Receive Book' },
+                    { href: '/reserve-book-librarian', text: 'Reserve Book' },
+                    { href: '/issue-book', text: 'Issue Book' },
                 ]
             },
             { 
-                text: 'Genre Functions', 
+                text: 'Genre Functions 🏷️', 
                 dropdown: [
                     { href: '/all-genres', text: 'All Genres' },
                     { href: '/add-genre', text: 'Add Genre' },
@@ -70,7 +74,7 @@ const Sidebar = ({ show, handleClose }) => {
                 ]
             },
             { 
-                text: 'Author Functions', 
+                text: 'Author Functions ✍️', 
                 dropdown: [
                     { href: '/all-authors', text: 'All Authors' },
                     { href: '/add-author', text: 'Add Author' },
@@ -78,14 +82,14 @@ const Sidebar = ({ show, handleClose }) => {
                 ]
             },
             { 
-                text: 'Reservations Functions', 
+                text: 'Reservations Functions 🔒', 
                 dropdown: [
                     { href: '/all-reservations', text: 'All Reservations' },
                     { href: '/search-reservation', text: 'Search Reservation' },
                 ]
             },
             { 
-                text: 'Book Instances Functions', 
+                text: 'Book Instances Functions 📖', 
                 dropdown: [
                     { href: '/all-book-instances', text: 'All Book Instances' },
                     { href: '/add-book-instance', text: 'Add Book Instance' },
@@ -93,34 +97,145 @@ const Sidebar = ({ show, handleClose }) => {
                 ]
             },
             { 
-                text: 'Announcements Functions', 
+                text: 'Announcements Functions 📢', 
                 dropdown: [
                     { href: '/all-announcements', text: 'All Announcements' },
                     { href: '/search-announcements', text: 'Search Announcement' },
+                    { href: '/announcement-by-date', text: 'Search Announcement by Date' },
+                ]
+            },
+            { 
+                text: 'Policy Functions 📜', 
+                dropdown: [
+                    { href: '/all-policies', text: 'All Policies'},
+                    { href: '/add-policy', text: 'Add Policy'},
+                    { href: '/search-policies', text: 'Search Policy'},
+                ]
+            },
+        ],
+        L: [
+            { 
+                text: 'Book Functions 📚', 
+                dropdown: [
+                    { href: '/all-books', text: 'All Books' },
+                    { href: '/add-book', text: 'Add Book' },
+                    { href: '/search-book', text: 'Search Book' },
+                    { href: '/receive-book', text: 'Receive Book' },
+                    { href: '/reserve-book-librarian', text: 'Reserve Book' },
+                    { href: '/issue-book', text: 'Issue Book' },
+                ]
+            },
+            { 
+                text: 'Genre Functions 🏷️', 
+                dropdown: [
+                    { href: '/all-genres', text: 'All Genres' },
+                    { href: '/add-genre', text: 'Add Genre' },
+                    { href: '/search-genre', text: 'Search Genre' },
+                ]
+            },
+            { 
+                text: 'Author Functions ✍️', 
+                dropdown: [
+                    { href: '/all-authors', text: 'All Authors' },
+                    { href: '/add-author', text: 'Add Author' },
+                    { href: '/search-author', text: 'Search Author' },
+                ]
+            },
+            { 
+                text: 'Reservations Functions 🔒', 
+                dropdown: [
+                    { href: '/all-reservations', text: 'All Reservations' },
+                    { href: '/search-reservation', text: 'Search Reservation' },
+                ]
+            },
+            { 
+                text: 'Book Instances Functions 📖', 
+                dropdown: [
+                    { href: '/all-book-instances', text: 'All Book Instances' },
+                    { href: '/add-book-instance', text: 'Add Book Instance' },
+                    { href: '/search-book-instance', text: 'Search Book Instance' },
+                ]
+            },
+            { 
+                text: 'Announcements Functions 📢', 
+                dropdown: [
+                    { href: '/all-announcements', text: 'All Announcements' },
+                    { href: '/search-announcements', text: 'Search Announcement' },
+                    { href: '/announcement-by-date', text: 'Search Announcement by Date' },
+                ]
+            },
+            { 
+                text: 'Policy Functions 📜', 
+                dropdown: [
+                    { href: '/all-policies', text: 'All Policies'},
+                    { href: '/search-policies', text: 'Search Policy'},
+                ]
+            },
+            { 
+                text: 'Budget Functions 💰', 
+                dropdown: [
+                    { href: '/all-budgets', text: 'All Budgets' },
+                    { href: '/add-budget', text: 'Add Budget' },
+                    { href: '/search-budgets', text: 'Search Budget by Description' },
+                    { href: '/budget-by-date', text: 'Search Budget by Date' },
+                    { href: '/budget-by-money', text: 'Search Budget by Money' },
                 ]
             },
         ],
         A: [
-            { href: '/all-budgets', text: 'All Budgets' },
-            { href: '/add-budget', text: 'Add Budget' },
-            { href: '/all-announcements', text: 'All Announcements' },
-            { href: '/add-announcement', text: 'Add Announcement' },
-            { href: '/all-policies', text: 'All Policies'},
-            { href: '/add-policy', text: 'Add Policy'},
-            { href: '/search-policies', text: 'Search Policy'},
-            {
-                text: 'Search Budget', 
+            { 
+                text: 'Budget Functions 💰', 
                 dropdown: [
-                    { href: '/budget-by-date', text: 'by Date' },
-                    { href: '/budget-by-money', text: 'by Money' },
-                    { href: '/search-budgets', text: 'by Description' },
+                    { href: '/all-budgets', text: 'All Budgets' },
+                    { href: '/add-budget', text: 'Add Budget' },
+                    { href: '/search-budgets', text: 'Search Budget by Description' },
+                    { href: '/budget-by-date', text: 'Search Budget by Date' },
+                    { href: '/budget-by-money', text: 'Search Budget by Money' },
                 ]
             },
-            {
-                text: 'Search Announcement', 
+            { 
+                text: 'Announcements Functions 📢', 
                 dropdown: [
-                    { href: '/announcement-by-date', text: 'by Date' },
-                    { href: '/search-announcements', text: 'by title' },
+                    { href: '/all-announcements', text: 'All Announcements' },
+                    { href: '/add-announcement', text: 'Add Announcement' },
+                    { href: '/search-announcements', text: 'Search Announcement by Title' },
+                    { href: '/announcement-by-date', text: 'Search Announcement by Date' },
+                ]
+            },
+            { 
+                text: 'Policy Functions 📜', 
+                dropdown: [
+                    { href: '/all-policies', text: 'All Policies'},
+                    { href: '/add-policy', text: 'Add Policy'},
+                    { href: '/search-policies', text: 'Search Policy'},
+                ]
+            },
+            { 
+                text: 'Book Functions 📚', 
+                dropdown: [
+                    { href: '/all-books', text: 'All Books' },                    
+                    { href: '/search-book', text: 'Search Book' },
+                ]
+            },
+            { 
+                text: 'Genre Functions 🏷️', 
+                dropdown: [
+                    { href: '/all-genres', text: 'All Genres' },
+                    { href: '/search-genre', text: 'Search Genre' },
+                ]
+            },
+            { 
+                text: 'Author Functions ✍️', 
+                dropdown: [
+                    { href: '/all-authors', text: 'All Authors' },
+                    { href: '/search-author', text: 'Search Author' },
+                ]
+            },
+            { 
+                text: 'Book Instances Functions 📖', 
+                dropdown: [
+                    { href: '/all-book-instances', text: 'All Book Instances' },
+                    { href: '/search-book-instance', text: 'Search Book Instance' },
                 ]
             },
         ],
@@ -129,7 +244,7 @@ const Sidebar = ({ show, handleClose }) => {
     return (
         <Offcanvas show={show} onHide={handleClose} placement="start" className="bg-light p-2 text-dark-purple">
             <Offcanvas.Header closeButton>
-                <Offcanvas.Title className='slab-font '>Utilities</Offcanvas.Title>
+                <Offcanvas.Title className='slab-font '>Toolbox 🧰</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body >
                 <Nav className="flex-column">
