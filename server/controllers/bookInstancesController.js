@@ -40,7 +40,7 @@ const reservationCleaner = require('../utils/reservationCleaner');
 
 // Constants
 const userRoles = require('../constants/userRoles');
-const { USERS_USER_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID, BOOK_INSTANCE_RENEWALS } = require('../constants/fieldNames');
+const { USERS_USER_ID, BOOKS_BOOK_ID, BOOKS_TITLE, BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_STATUS, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, LIBRARY_POLICIES_VALUE, LIBRARY_POLICIES_PROPERTY, BOOK_INSTANCE_USER_ID, BOOK_INSTANCE_RENEWALS, USERS_ROLE } = require('../constants/fieldNames');
 const {PAGINATION_LIMIT} = require('../constants/paginationConstants');
 const {MAX_LOAN_DURATION, LATE_RETURN_PENALTY_PER_DAY, MAX_RENEWALS_PER_BOOK} = require('../constants/policyConstants');
 
@@ -270,7 +270,7 @@ exports.delete_book_instance = [
 exports.update_book_instance_status = [
     authenticate,
 
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN]),
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER]),
 
     ...idValidator,
 
@@ -295,6 +295,10 @@ exports.update_book_instance_status = [
             }
 
             const currentStatus = instance[BOOK_INSTANCE_STATUS];
+
+            if(req.user[USERS_ROLE] === 'U' && !(currentStatus === 'R' && status === 'A')){
+                return unauthorizedRequestResponse(res)
+            }
 
             if(currentStatus === 'R'){
                 if(status === 'L'){
@@ -504,7 +508,7 @@ exports.book_instances_issued_by_me = [
 
     asyncHandler(async(req, res, next)=>{
         try {
-            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_RENEWALS];
+            const instanceFields = [BOOK_INSTANCE_BOOK_ID, BOOK_INSTANCE_INSTANCE_ID, BOOK_INSTANCE_IMPRINT, BOOK_INSTANCE_AVAILABLE_BY, BOOK_INSTANCE_RENEWALS, BOOK_INSTANCE_STATUS];
             const bookFields = [BOOKS_TITLE];
 
             const instanceDetails = await BookInstance
@@ -664,6 +668,44 @@ exports.max_renewals = [
             return successResponse(res, '', maxRenewals);
         }
         catch(err) {
+            return errorResponse(res, err.message);
+        }
+    })
+]
+
+exports.delete_my_reservation = [
+    authenticate,
+    
+    authorize([userRoles.ROLE_USER]),
+
+    ...idValidator,
+
+    asyncHandler(async(req, res, next)=>{
+        try{
+            const bookInstanceData = await BookInstance
+                .query()
+                .findById(req.params.id)
+
+            if(!bookInstanceData){
+                return notFoundResponse(res);
+            }
+            
+            if(req.user[USERS_USER_ID] !== bookInstanceData[BOOK_INSTANCE_USER_ID]){
+                return unauthorizedRequestResponse(res);
+            }
+
+            await BookInstance
+                .query()
+                .patch({
+                    [BOOK_INSTANCE_USER_ID]: null,
+                    [BOOK_INSTANCE_AVAILABLE_BY]: null,
+                    [BOOK_INSTANCE_STATUS]: 'A'
+                })
+                .where({[BOOK_INSTANCE_INSTANCE_ID]: req.params.id})
+                
+            return successResponse(res);
+        }
+        catch(err){
             return errorResponse(res, err.message);
         }
     })

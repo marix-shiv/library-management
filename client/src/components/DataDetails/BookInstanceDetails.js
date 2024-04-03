@@ -109,17 +109,17 @@ const BookInstanceDetail = () => {
                                 <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleReceive}>Receive</Button>
                             </Col>
                         )}
+                        {bookInstance.Status === 'R' && (
+                            <Col xs={6} md={4}>
+                                <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleIssue}>Issue</Button>
+                            </Col>
+                        )}
+                        {bookInstance.Status === 'M' && (
+                            <Col xs={6} md={4}>
+                                <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleAvailable}>Available</Button>
+                            </Col>
+                        )}
                     </>
-                )}
-                {bookInstance.Status === 'R' && (
-                    <Col xs={6} md={4}>
-                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleIssue}>Issue</Button>
-                    </Col>
-                )}
-                {bookInstance.Status === 'M' && (
-                    <Col xs={6} md={4}>
-                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleAvailable}>Available</Button>
-                    </Col>
                 )}
             </Row>
         </Container>

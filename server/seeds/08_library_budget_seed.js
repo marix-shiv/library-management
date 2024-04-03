@@ -24,32 +24,38 @@ exports.seed = async function(knex) {
             Description: 'Test Budget 1'
         },
         {
-            BudgetID: uuidv4(),
+            BudgetID: '123e4567-e89b-12d3-a456-426614174234',
             Date: new Date().toISOString().split('T')[0],
+            Money: 2000,
+            Description: 'Test Budget 2'
+        },
+        {
+            BudgetID: uuidv4(),
+            Date: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
             Money: 5000,
             Description: 'Purchase of new books'
         },
         {
             BudgetID: uuidv4(),
-            Date: new Date().toISOString().split('T')[0],
+            Date: new Date(new Date().setMonth(new Date().getMonth() - 2)).toISOString().split('T')[0],
             Money: 10000,
             Description: 'Received funding from the city council'
         },
         {
             BudgetID: uuidv4(),
-            Date: new Date().toISOString().split('T')[0],
+            Date: new Date(new Date().setMonth(new Date().getMonth() - 3)).toISOString().split('T')[0],
             Money: 2000,
             Description: 'Maintenance and repair of library infrastructure'
         },
         {
             BudgetID: uuidv4(),
-            Date: new Date().toISOString().split('T')[0],
+            Date: new Date(new Date().setMonth(new Date().getMonth() - 4)).toISOString().split('T')[0],
             Money: 5000,
             Description: 'Donation received from a local business'
         },
         {
             BudgetID: uuidv4(),
-            Date: new Date().toISOString().split('T')[0],
+            Date: new Date(new Date().setMonth(new Date().getMonth() - 5)).toISOString().split('T')[0],
             Money: 3000,
             Description: 'Payment for library staff salaries'
         },

@@ -9,8 +9,42 @@ const Sidebar = ({ show, handleClose }) => {
 
     const roleLinks = {
         U: [
-            { href: '/reservations', text: 'Reservations' },
-            { href: '/check-issues', text: 'Check Issues' },
+            { href: '/my-reservations', text: 'My Reservations' },
+            { 
+                text: 'Book Functions', 
+                dropdown: [
+                    { href: '/all-books', text: 'All Books' },                    
+                    { href: '/search-book', text: 'Search Book' },
+                ]
+            },
+            { 
+                text: 'Genre Functions', 
+                dropdown: [
+                    { href: '/all-genres', text: 'All Genres' },
+                    { href: '/search-genre', text: 'Search Genre' },
+                ]
+            },
+            { 
+                text: 'Author Functions', 
+                dropdown: [
+                    { href: '/all-authors', text: 'All Authors' },
+                    { href: '/search-author', text: 'Search Author' },
+                ]
+            },
+            { 
+                text: 'Book Instances Functions', 
+                dropdown: [
+                    { href: '/all-book-instances', text: 'All Book Instances' },
+                    { href: '/search-book-instance', text: 'Search Book Instance' },
+                ]
+            },
+            { 
+                text: 'Announcements Functions', 
+                dropdown: [
+                    { href: '/all-announcements', text: 'All Announcements' },
+                    { href: '/search-announcements', text: 'Search Announcement' },
+                ]
+            },
         ],
         S: [
             { href: '/user-function', text: 'User Function' },
@@ -62,13 +96,30 @@ const Sidebar = ({ show, handleClose }) => {
                 text: 'Announcements Functions', 
                 dropdown: [
                     { href: '/all-announcements', text: 'All Announcements' },
-                    { href: '/search-announcement', text: 'Search Announcement' },
+                    { href: '/search-announcements', text: 'Search Announcement' },
                 ]
             },
         ],
         A: [
-            { href: '/library-budget', text: 'Library Budget' },
-            { href: '/library-policies', text: 'Library Policies' },
+            { href: '/all-budgets', text: 'All Budgets' },
+            { href: '/add-budget', text: 'Add Budget' },
+            { href: '/all-announcements', text: 'All Announcements' },
+            { href: '/add-announcement', text: 'Add Announcement' },
+            {
+                text: 'Search Budget', 
+                dropdown: [
+                    { href: '/budget-by-date', text: 'by Date' },
+                    { href: '/budget-by-money', text: 'by Money' },
+                    { href: '/search-budgets', text: 'by Description' },
+                ]
+            },
+            {
+                text: 'Search Announcement', 
+                dropdown: [
+                    { href: '/announcement-by-date', text: 'by Date' },
+                    { href: '/search-announcements', text: 'by title' },
+                ]
+            },
         ],
     };
 

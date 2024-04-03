@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Spinner, ListGroup, Container, InputGroup, FormControl, Button, Badge } from "react-bootstrap";
 import {Search, Trash} from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {format} from 'date-fns';
+import { useSelector } from 'react-redux';
 
 const SearchBookInstancesUsingUser = () => {
     const [userSubMode, setUserSubMode] = useState('id');
@@ -12,6 +13,14 @@ const SearchBookInstancesUsingUser = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
+    const userRole = useSelector(state => state.user.Role);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (userRole !== 'L' && userRole !== 'S') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     const getBookInstances = async () => {
         if(userId){
@@ -86,7 +95,7 @@ const SearchBookInstancesUsingUser = () => {
 
     return (
         <Container className="bg-medium-dark my-md-5 rounded text-center px-5 py-5">
-            <h1 className="display-4 mb-4 text-dark-purple slab-font fw-bold">Search Book Instances</h1>
+        <h1 className="d-flex align-items-center justify-content-center">Search Book Instances By User<Search color="#2A2A84" size={36} className="ms-2"/></h1>
             <div className="d-flex justify-content-start ps-3">
                 <Form.Check 
                     type="switch"

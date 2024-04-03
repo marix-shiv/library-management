@@ -11,6 +11,8 @@ import ProfileImage from '../../assets/profile.png'
 import {REVERSE_ROLE_MAPPING} from '../../constants/roleConstants';
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
+import SuperAdminDashboard from './SuperAdminDashboard';
+import AdminDashboard from './AdminDashboard';
 
 const Dashboard = () => {
     const user = useSelector((state) => state.user);
@@ -60,8 +62,8 @@ const Dashboard = () => {
                         <>
                             {user && user.Role === 'A' && (
                                 <div>
-                                    <h2>Admin Functions </h2>
-                                    {/* Render admin functions here */}
+                                    <h2 className='display-6'>Admin Functions </h2>
+                                    <AdminDashboard />
                                 </div>
                             )}
 
@@ -74,8 +76,8 @@ const Dashboard = () => {
 
                             {user && user.Role === 'S' && (
                                 <div>
-                                    <h2>Super Admin Functions</h2>
-                                    {/* Render admin functions here */}
+                                    <h2 className='display-6'>Super Admin Functions</h2>
+                                    <SuperAdminDashboard />
                                 </div>
                             )}
 

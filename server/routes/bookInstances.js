@@ -228,6 +228,8 @@ router.put('/:id/status/:status', book_instances_controller.update_book_instance
  */
 router.put('/:id', book_instances_controller.update_book_instance);
 
+router.delete('/my-reservation/:id', book_instances_controller.delete_my_reservation);
+
 /**
  * @swagger
  * /bookinstances/{id}:

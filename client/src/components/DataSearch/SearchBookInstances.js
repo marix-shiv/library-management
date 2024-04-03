@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Tabs, Tab, Spinner, ListGroup, Container, Pagination } from "react-bootstrap";
+import { Search } from "react-bootstrap-icons";
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const SearchBookInstances = () => {
     const [status, setStatus] = useState('L');
     const [results, setResults] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
+    const userRole = useSelector(state => state.user.Role);
 
     const fetchBookInstances = async () => {
         setIsLoading(true);
@@ -46,10 +49,12 @@ const SearchBookInstances = () => {
 
     return (
         <Container className="bg-medium-dark my-md-5 rounded text-center px-5 py-5">
-            <div className="d-flex justify-content-end mt-4">
-                <Link to="/search-book-instance-by-user" className="btn btn-dark-purple rounded-pill text-light point-right-button">Search using user ➤</Link>
-            </div>
-            <h1 className="display-4 mb-4 text-dark-purple slab-font fw-bold">Search Book Instances</h1>
+            {(userRole === 'L' || userRole === 'S') && (
+                <div className="d-flex justify-content-end mt-4">
+                    <Link to="/search-book-instance-by-user" className="btn btn-dark-purple rounded-pill text-light point-right-button">Search using user ➤</Link>
+                </div>
+            )}
+            <h1 className="d-flex align-items-center justify-content-center">Search Books<Search color="#2A2A84" size={36} className="ms-2"/></h1>
             <Tabs activeKey={status} onSelect={(k) => { setStatus(k); setPage(1); }}>
                 <Tab eventKey="L" title="Loaned">
                     {isLoading ? <Spinner animation="border" size="sm" className="border-pill" /> : <ListGroup className='my-2'>{renderBooks(results)}</ListGroup>}

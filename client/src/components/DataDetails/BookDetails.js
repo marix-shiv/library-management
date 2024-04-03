@@ -32,6 +32,30 @@ const BookDetail = () => {
             navigate(`/delete-book/${id}`);
         }
     };
+    const handleReserve = async () => {
+        try {
+            const response = await axios.get('/users/get-my-user-id');
+            const userId = response.data.data.UserID;
+
+            const requestBody = {
+                BookID: id,
+                DateOfReservation: new Date().toISOString().split('T')[0],
+                UserID: userId
+            };
+
+            axios.post(`/reservations`, requestBody)
+                .then(() => {
+                    toast.success('Book reserved successfully!');
+                    navigate('/dashboard');
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    toast.error('Something went wrong while reserving the book!');
+                });
+        } catch (error) {
+            toast.error('Something went wrong!');
+        }
+    };
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5">
@@ -73,6 +97,13 @@ const BookDetail = () => {
                     </Col>
                     <Col xs={6} md={4}>
                         <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={() => navigate(`/update-book/${id}`)}>Update</Button>
+                    </Col>
+                </Row>
+            )}
+            {(userRole === 'U') && (
+                <Row className="justify-content-center d-flex align-items-center">
+                    <Col xs={6} md={4}>
+                        <Button className="btn btn-lg bg-dark-purple py-3 px-md-5 text-center rounded-pill text-light shadow my-2 my-5" onClick={handleReserve}>Reserve</Button>
                     </Col>
                 </Row>
             )}

@@ -234,7 +234,7 @@ exports.reservation_details = [
 exports.create_reservation = [
     authenticate,
 
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_USER]),
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER]),
 
     allowedFields([RESERVATIONS_BOOK_ID, RESERVATIONS_DATE_OF_RESERVATION, RESERVATIONS_USER_ID]),
     
@@ -242,7 +242,11 @@ exports.create_reservation = [
 
     asyncHandler(async(req, res, next)=>{
         try{
+            if (req.user[USERS_ROLE] === 'U' && req.body[RESERVATIONS_USER_ID] !== req.user[USERS_USER_ID]) {
+                return errorResponse(res, 'You are not allowed to create a reservation for another user');
+            }
             filterTimeExceededReservations(req.body[RESERVATIONS_BOOK_ID]);
+
 
             const maxReservationsPerUser = await LibraryPolicy 
                 .query()
@@ -316,6 +320,7 @@ exports.create_reservation = [
             return successResponse(res, "Reservation Created Successfully.");
         }
         catch (err) {
+            console.log(err.message);
             return errorResponse(res, err.message);
         }
     })

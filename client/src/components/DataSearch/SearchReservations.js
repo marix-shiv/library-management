@@ -137,7 +137,7 @@ const SearchReservations = () => {
 
     return (
         <Container className="bg-medium-dark my-md-5 rounded text-center px-5 py-5">
-            <h1 className="display-4 mb-4 text-dark-purple slab-font fw-bold">Search Reservations</h1>
+        <h1 className="d-flex align-items-center justify-content-center">Search Reservations<Search color="#2A2A84" size={36} className="ms-2"/></h1>
             <Tabs activeKey={mode} onSelect={(k) => { setMode(k); resetData(1); }}>
                 <Tab eventKey="user" title="User">
                     <div className="d-flex justify-content-start ps-3">

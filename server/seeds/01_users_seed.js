@@ -141,7 +141,7 @@ exports.seed = async function(knex) {
             [USERS_FIRST_NAME]: 'David',
             [USERS_LAST_NAME]: 'Wilson',
             [USERS_DATE_OF_BIRTH]: '1975-03-10',
-            [USERS_STATUS]: false
+            [USERS_STATUS]: true
         },
         {
             [USERS_USER_ID]: uuidv4(),

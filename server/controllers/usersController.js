@@ -262,7 +262,7 @@ exports.delete_user = [
 
     // S can delete any account
     // Authenticated user can delete only their own account
-    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER], [userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN, userRoles.ROLE_USER]),
+    authorize([userRoles.ROLE_SUPER_ADMIN, userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN], [userRoles.ROLE_ADMIN, userRoles.ROLE_LIBRARIAN]),
 
     asyncHandler(async(req, res, next)=>{
         try{
@@ -395,8 +395,11 @@ exports.verify_user = [
                 .query()
                 .patch(req.body)
                 .findById(req.params.id)
-            
-            return successResponse(res, "User Verified Successfully.");
+            if(req.body[USERS_STATUS] === 0){
+                return successResponse(res, "User Banned Successfully.");
+            }
+
+            return successResponse(res, "User verified Successfully");
         }
         catch(err){
             errorResponse(res, err.message);

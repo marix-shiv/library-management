@@ -38,6 +38,7 @@ const SearchGenres = () => {
 
     return (
         <Container className="bg-medium-dark py-2 my-md-5 rounded text-center px-5 py-4">
+        <h1 className="d-flex align-items-center justify-content-center">Search Genres<Search color="#2A2A84" size={36} className="ms-2"/></h1>
             <InputGroup className="d-inline-flex my-5 text-center position-relative rounded-pill bg-light">
                 <FormControl
                     type="search"

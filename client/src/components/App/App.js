@@ -59,6 +59,19 @@ import AllReservations from '../DataDisplay/AllReservations';
 import ReservationDetail from '../DataDetails/ReservationDetail';
 import SearchReservations from '../DataSearch/SearchReservations';
 import SearchBookInstancesUsingUser from '../DataSearch/SearchBookInstancesUsingUser';
+import SearchAnnouncements from '../DataSearch/SearchAnnouncements';
+import UserProfile from '../Users/UserProfile/UserProfile';
+import AllMyUnexecutedReservations from '../DataDisplay/AllMyUnexecutedReservations';
+import AllBudgets from '../DataDisplay/AllBudgets';
+import BudgetDetail from '../DataDetails/BudgetDetails';
+import BudgetsByDate from '../DataDetails/BudgetsByDate';
+import BudgetsByMoney from '../DataDetails/BudgetsByMoney';
+import SearchBudgets from '../DataSearch/SearchBudgets';
+import AddBudget from '../Toolbox/Admin/AddingBudget';
+import UpdateBudget from '../DataUpdate/UpdateBudget';
+import AddAnnouncement from '../Toolbox/Admin/AddingAnnouncement';
+import UpdateAnnouncement from '../Announcement/UpdateAnnouncement';
+import AnnouncementsByDate from '../DataDetails/AnnouncementsByDate';
 
 // App component
 function App() {
@@ -133,6 +146,7 @@ function AppContent({ location }) {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/my-profile" element={<MyProfile />} />
                 <Route path="/change-password/:id" element={<ChangePassword />} />
+                <Route path="/user-profile/:id" element={<UserProfile />} />
 
                 <Route path="/all-announcements" element={<AllAnnouncements />} />
                 <Route path="/announcement-detail/:id" element={<AnnouncementDetails />} />
@@ -141,6 +155,8 @@ function AppContent({ location }) {
                 <Route path="/add-genre" element={<AddGenre />} />
                 <Route path="/add-book-instance" element={<AddBookInstance />} />
                 <Route path="/add-author" element={<AddAuthor />} />
+                <Route path="/add-budget" element={<AddBudget />} />
+                <Route path="/add-announcement" element={<AddAnnouncement />} />
                 <Route path="/issue-book" element={<IssueBook />} />
                 <Route path="/reserve-book-librarian" element={<ReserveBook />} />
                 <Route path="/receive-book" element={<ReceiveBook />} />
@@ -150,12 +166,18 @@ function AppContent({ location }) {
                 <Route path="/all-books" element={<AllBooks />} />
                 <Route path="/all-book-instances" element={<AllBookInstances />} />
                 <Route path="/all-reservations" element={<AllReservations />} />
+                <Route path="/my-reservations" element={<AllMyUnexecutedReservations />} />
+                <Route path="/all-budgets" element={<AllBudgets />} />
 
                 <Route path="/genre-detail/:id" element={<GenreDetail />} />
                 <Route path="/author-detail/:id" element={<AuthorDetail />} />
                 <Route path="/book-detail/:id" element={<BookDetail />} />
                 <Route path="/book-instance-detail/:id" element={<BookInstanceDetail />} />
                 <Route path="/reservation-detail/:id" element={<ReservationDetail />} />
+                <Route path="/budget-detail/:id" element={<BudgetDetail />} />
+                <Route path="/budget-by-date" element={<BudgetsByDate />} />
+                <Route path="/budget-by-money" element={<BudgetsByMoney />} />
+                <Route path="/announcement-by-date" element={<AnnouncementsByDate />} />
 
                 <Route path="/search-genre" element={<SearchGenres />} />
                 <Route path="/search-author" element={<SearchAuthors />} />
@@ -163,6 +185,8 @@ function AppContent({ location }) {
                 <Route path="/search-book-instance" element={<SearchBookInstances />} />
                 <Route path="/search-book-instance-by-user" element={<SearchBookInstancesUsingUser />} />
                 <Route path="/search-reservation" element={<SearchReservations />} />
+                <Route path="/search-announcements" element={<SearchAnnouncements />} />
+                <Route path="/search-budgets" element={<SearchBudgets />} />
 
                 <Route path="/delete-author/:id" element={<DeleteAuthor />} />
                 <Route path="/delete-genre/:id" element={<DeleteGenre />}  />
@@ -173,6 +197,8 @@ function AppContent({ location }) {
                 <Route path="/update-author/:id" element={<UpdateAuthor />} />
                 <Route path="/update-book/:id" element={<UpdateBook />} />
                 <Route path="/update-book-instance/:id" element={<UpdateBookInstance />} />
+                <Route path="/update-budget/:id" element={<UpdateBudget />} />
+                <Route path="/update-announcement/:id" element={<UpdateAnnouncement />} />
 
                 <Route path="/top-authors" element={<TopAuthors />} />
                 <Route path="/top-genres" element={<TopGenres />} />
