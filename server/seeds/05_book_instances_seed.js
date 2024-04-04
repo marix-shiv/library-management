@@ -20,14 +20,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('book_instances').insert([
         {
-            InstanceID: '123e4567-e89b-12d3-a456-426614174004',
-            BookID: (await knex('books').where({Title: 'Test Book 1'}).first()).BookID,
-            Status: 'A',
-            AvailableBy: null,
-            Imprint: 'Test Imprint',
-            UserID: null
-        },
-        {
             InstanceID: uuidv4(),
             BookID: (await knex('books').where({Title: '1984'}).first()).BookID,
             Status: 'A',

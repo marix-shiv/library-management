@@ -18,18 +18,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('library_budgets').insert([
         {
-            BudgetID: '123e4567-e89b-12d3-a456-426614174007',
-            Date: new Date().toISOString().split('T')[0],
-            Money: 5000,
-            Description: 'Test Budget 1'
-        },
-        {
-            BudgetID: '123e4567-e89b-12d3-a456-426614174234',
-            Date: new Date().toISOString().split('T')[0],
-            Money: 2000,
-            Description: 'Test Budget 2'
-        },
-        {
             BudgetID: uuidv4(),
             Date: new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString().split('T')[0],
             Money: 5000,

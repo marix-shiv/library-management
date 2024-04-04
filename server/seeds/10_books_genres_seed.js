@@ -18,10 +18,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('books_genres').insert([
         {
-            BookID: (await knex('books').where({Title: 'Test Book 1'}).first()).BookID,
-            GenreID: (await knex('genres').where({Name: 'Test Genre 1'}).first()).GenreID
-        },
-        {
             BookID: (await knex('books').where({Title: '1984'}).first()).BookID,
             GenreID: (await knex('genres').where({Name: 'Dystopian'}).first()).GenreID
         },

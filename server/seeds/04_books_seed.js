@@ -19,13 +19,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return Promise.all([
         knex('books').insert({
-            BookID: '123e4567-e89b-12d3-a456-426614174003', // Test UUID v4
-            Title: "Test Book 1",
-            AuthorID: (await knex('authors').where({FirstName: 'Test', LastName: 'Author 1'}).first()).AuthorID,
-            Summary: "Test Summary 1",
-            ISBN: "1234432112341",
-        }),
-        knex('books').insert({
             BookID: uuidv4(),
             Title: "1984",
             AuthorID: (await knex('authors').where({FirstName: 'George', LastName: 'Orwell'}).first()).AuthorID,

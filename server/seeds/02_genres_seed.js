@@ -18,14 +18,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries in genre table
     return knex('genres').insert([
         {
-            GenreID: '123e4567-e89b-12d3-a456-426614174001',
-            Name: "Test Genre 1"
-        },
-        {
-            GenreID: '123e4567-e89b-12d3-a456-426614174021',
-            Name: "Test Genre 10"
-        },
-        {
             GenreID: uuidv4(),
             Name: "Fantasy"
         },
