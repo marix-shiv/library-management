@@ -54,6 +54,16 @@ app.use('/books', process.env.NODE_ENV === 'production' ? limiter : [], booksRou
 app.use('/bookinstances', process.env.NODE_ENV === 'production' ? limiter : [], bookInstancesRouter);
 app.use('/reservations', process.env.NODE_ENV === 'production' ? limiter : [], reservationsRouter);
 
+// Serve static files from the React app in production
+if (process.env.NODE_ENV === 'production') {
+        // Serve any static files
+        app.use(express.static(path.join(__dirname, '../client/build')));
+        
+        // Handle React routing, return all requests to React app
+        app.get('*', function(req, res) {
+            res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+        });
+}
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
