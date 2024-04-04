@@ -33,7 +33,7 @@ const bookInstancesRouter = require('./routes/bookInstances');
 const reservationsRouter = require('./routes/reservations');
 
 const app = express();
-
+app.set('trust proxy', true);
 app.use(cors());
 
 app.use(logger('dev'));

@@ -56,6 +56,7 @@ const handleSubmit = async (event) => {
         Username: username,
         Password: password,
     });
+    console.log(response);
     if (response.status === 200) {
         // The request was successful
         const userResponse = await axios.get('/users/my-data');

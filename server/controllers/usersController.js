@@ -305,8 +305,7 @@ exports.login_user = [
             .findOne({ [USERS_USERNAME]: req.body[USERS_USERNAME] });
 
         if (!user || !(await verifyPassword(req.body[USERS_PASSWORD], user[USERS_PASSWORD], user[USERS_SALT]))) {
-            unauthorizedRequestResponse(res, 'Invalid username or password.');
-            return;
+            return unauthorizedRequestResponse(res, 'Invalid username or password.');
         }
 
         // User exists and password is correct. Log them in.

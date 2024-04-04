@@ -18,7 +18,6 @@ exports.seed = async function(knex) {
     // Deletes ALL existing entries
     await knex('users').del();
 
-    const testPassword = await hashPassword('Test@#1111');
     const password1 = await hashPassword('AaBb@#1298');
     const password2 = await hashPassword('AaBb@#1299');
     const password3 = await hashPassword('AaBb@#1300');
