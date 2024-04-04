@@ -9,7 +9,7 @@ require('dotenv').config();
 
 module.exports = {
     development: {
-        client: 'mysql2',
+        client: 'mysql',
         connection: {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
@@ -22,16 +22,13 @@ module.exports = {
     },
 
     production: {
-        client: 'mysql2',
+        client: 'mysql',
         connection: {
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
             port: process.env.DB_PORT,
-            ssl: {
-                ca: Buffer.from(process.env.DB_SSL_CERT_BASE64, 'base64').toString('utf-8')
-            }
         },
         migrations: {
             directory: './migrations'
