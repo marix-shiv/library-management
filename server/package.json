@@ -2,6 +2,9 @@
   "name": "server",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "21.6.1"
+  },
   "scripts": {
     "start": "node server.js",
     "client": "cd ../client && npm start",
