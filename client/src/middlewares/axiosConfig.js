@@ -18,6 +18,11 @@ import axios from 'axios';
 import store from '../redux/store';
 import { clearStore } from '../redux/userSlice';
 
+// If REACT_APP_BACKEND_URL is defined, set it as the base URL for axios
+if (process.env.REACT_APP_BACKEND_URL) {
+    axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+}
+
 axios.interceptors.response.use(
     response => response,
     error => {
