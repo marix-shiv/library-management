@@ -34,28 +34,6 @@ exports.seed = async function(knex) {
     // Inserts seed entries
     return knex('users').insert([
         {
-            [USERS_USER_ID]: '123e4567-e89b-12d3-a456-426614174000',
-            [USERS_USERNAME]: 'testUsername1',
-            [USERS_PASSWORD]: testPassword.key,
-            [USERS_SALT]: testPassword.salt,
-            [USERS_ROLE]: 'S',
-            [USERS_FIRST_NAME]: 'Test',
-            [USERS_LAST_NAME]: 'User',
-            [USERS_DATE_OF_BIRTH]: '2000-01-01',
-            [USERS_STATUS]: true
-        },
-        {
-            [USERS_USER_ID]: '123e4567-e89b-12d3-a456-426614174020',
-            [USERS_USERNAME]: 'testUsername2',
-            [USERS_PASSWORD]: testPassword.key,
-            [USERS_SALT]: testPassword.salt,
-            [USERS_ROLE]: 'U',
-            [USERS_FIRST_NAME]: 'Test1',
-            [USERS_LAST_NAME]: 'User2',
-            [USERS_DATE_OF_BIRTH]: '2000-01-01',
-            [USERS_STATUS]: false
-        },
-        {
             [USERS_USER_ID]: uuidv4(),
             [USERS_USERNAME]: 'john_doe_123',
             [USERS_PASSWORD]: password1.key,
