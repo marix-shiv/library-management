@@ -6,7 +6,7 @@
     "node": "21.6.1"
   },
   "scripts": {
-    "start": "npx knex migrate:latest && node server.js",
+    "start": "npx knex migrate:latest && npx knex seed:run && node server.js",
     "client": "cd ../client && npm start",
     "dev": "concurrently \"npm run start\" \"npm run client\"",
     "test": "npx knex seed:run && jest --detectOpenHandles",
