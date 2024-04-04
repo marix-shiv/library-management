@@ -16,6 +16,7 @@ const { Model } = require('objection');
 const knexConfig = require('./knexfile');
 const rateLimit = require("express-rate-limit");
 require('dotenv').config();
+const cors = require('cors');
 
 const knex = Knex(knexConfig.development);
 Model.knex(knex);
@@ -32,6 +33,8 @@ const bookInstancesRouter = require('./routes/bookInstances');
 const reservationsRouter = require('./routes/reservations');
 
 const app = express();
+
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
