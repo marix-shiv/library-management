@@ -1,12 +1,39 @@
+/**
+ * AllReservations.js
+ * 
+ * This is a React component that fetches and displays all reservations in a paginated format.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the axios library to send HTTP requests to the server, the react-toastify library to display notifications, and the useNavigate hook from react-router-dom to navigate to different routes.
+ * 
+ * The reservations are fetched from the `/reservations?page=${page}` endpoint, with the page number managed by the state.
+ * 
+ * The fetched reservations are displayed in a grid. Each reservation is a link that navigates to the detail page for that reservation.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle.
+ * 
+ * If the user's role is 'U', they are redirected to the '/error' page. If an error occurs while fetching the reservations, a toast notification is displayed.
+ * 
+ * @module components/AllReservations
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const AllReservations = () => {
     const [reservations, setReservations] = useState([]);
     const [page, setPage] = useState(1);
+    const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole === 'U') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         const fetchReservations = async () => {

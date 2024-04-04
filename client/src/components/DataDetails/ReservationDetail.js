@@ -1,15 +1,42 @@
+/**
+ * ReservationDetail.js
+ * 
+ * This is a React component that fetches and displays the details of a specific reservation. It allows the user to delete or issue the reservation.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The reservation is fetched from the `/reservations/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched reservation details are displayed in a detailed view. The user can delete or issue the reservation.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/reservations/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-reservations' page. The issue operation is performed by navigating to the '/issue-book' route with the user ID and book instance ID passed in the state.
+ * 
+ * If the user's role is 'U', they are redirected to the '/error' page.
+ * 
+ * @module components/ReservationDetail
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import {format} from 'date-fns';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const ReservationDetail = () => {
     const [reservation, setReservation] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole === 'U') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         const fetchReservation = async () => {

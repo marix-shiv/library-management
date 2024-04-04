@@ -1,3 +1,21 @@
+/**
+ * AddGenre.js
+ * 
+ * This is a React component that allows the user to add a genre. It includes a form with a field for the genre's name, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, axios, and useNavigate hooks to manage the state, side effects, access the Redux store, HTTP requests, and navigation. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The name, loading state, and genre presence are managed by the state. The form field is bound to the state and updates the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S' or 'L', they are redirected to the '/error' page.
+ * 
+ * The genre presence is checked by sending a GET request to the `/genres/check-genre-presence/${name}` endpoint when the name changes. If the genre is present, the genre presence is set to 2. If the genre is not present, the genre presence is set to 1.
+ * 
+ * When the form is submitted, a POST request is sent to the `/genres` endpoint with the name. If the request is successful, a success toast notification is displayed. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/AddGenre
+ */
+
 import React, { useState, useEffect } from "react";
 import {
     Container,
@@ -11,11 +29,22 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import "./Librarian.scss";
+import { useNavigate } from "react-router-dom";
+import {useSelector} from 'react-redux';
 
 const AddGenre = () => {
     const [name, setName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isGenrePresent, setIsGenrePresent] = useState(0);
+    const navigate = useNavigate();
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'L') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         const checkGenrePresence = async () => {

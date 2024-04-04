@@ -1,3 +1,17 @@
+/**
+ * Dashboard.js
+ * 
+ * This is the main dashboard component of the application. It displays different content based on the user's role and verification status.
+ * 
+ * The component uses the useState and useSelector hooks to manage the state and access the Redux store. It also uses the useMediaQuery hook to adapt to different screen sizes.
+ * 
+ * Depending on the user's role and verification status, the component displays one of the following: UnverifiedDashboard, AdminDashboard, UserDashboard, SuperAdminDashboard, or LibrarianDashboard.
+ * 
+ * The component also includes a card flip animation that displays a welcome message on one side and the user's role on the other. On small screens, the card flip is replaced with a simple welcome message.
+ * 
+ * @module components/Dashboard
+ */
+
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';

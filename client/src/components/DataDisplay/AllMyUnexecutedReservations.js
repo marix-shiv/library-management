@@ -1,3 +1,23 @@
+/**
+ * AllMyUnexecutedReservations.js
+ * 
+ * This is a React component that fetches and displays all unexecuted reservations of the current user in a paginated format. It allows the user to delete a reservation.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server and the react-toastify library to display notifications.
+ * 
+ * The user ID is fetched from the `/users/get-my-user-id` endpoint. The reservations are fetched from the `/reservations/user/${userId}?page=${page}` endpoint, with the user ID and page number managed by the state.
+ * 
+ * The fetched reservations are displayed in a grid. Each reservation includes a delete button that opens a modal to confirm the delete operation.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/reservations/${deletingReservationId}` endpoint. If the delete operation is successful, the reservation is removed from the state.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle.
+ * 
+ * If an error occurs while fetching the user ID or reservations, or deleting a reservation, a toast notification is displayed.
+ * 
+ * @module components/AllMyUnexecutedReservations
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination, Button, Badge, Modal } from 'react-bootstrap';

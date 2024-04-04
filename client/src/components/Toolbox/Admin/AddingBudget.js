@@ -1,4 +1,20 @@
-import React, { useState } from "react";
+/**
+ * AddBudget.js
+ * 
+ * This is a React component that allows the user to add a budget. It includes a form with fields for the budget's money, description, and date, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, axios, and useNavigate hooks to manage the state, side effects, access the Redux store, HTTP requests, and navigation. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The money, description, date, and loading state are managed by the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S' or 'A', they are redirected to the '/error' page.
+ * 
+ * When the form is submitted, a POST request is sent to the `/budgets` endpoint with the money, description, and date. If the request is successful, a success toast notification is displayed. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/AddBudget
+ */
+
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Row,
@@ -9,12 +25,23 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 const AddBudget = () => {
     const [money, setMoney] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'A') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

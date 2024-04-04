@@ -1,3 +1,27 @@
+/**
+ * MyProfile.js
+ * 
+ * This is a React component that allows the user to view and edit their profile. It includes a form with fields for the user's first name, last name, username, and date of birth, and buttons to edit and save the form.
+ * 
+ * The component uses the useState, useEffect, useRef, useSelector, useDispatch, useNavigate, axios, and react-router-dom hooks to manage the state, side effects, references, Redux store, navigation, and HTTP requests. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The user, isEditing, isLoading, username, errors, isUsernameCheckLoading, and originalUser and originalUsername references are managed by the state and references. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's username is fetched from the Redux store.
+ * 
+ * The user's data is fetched from the `/users/get-my-user-id/` and `/users/${response.data.data.UserID}` endpoints when the component mounts and stored in the state and originalUser and originalUsername references.
+ * 
+ * The username is checked by sending a GET request to the `/users/username/${username}` endpoint when the username changes. If the username is valid and available, the username error is set to null. If the username is invalid or unavailable, the username error is set to 'This username is already taken'.
+ * 
+ * The handleEditClick function is used to handle the clicking of the edit button. If the form is currently in edit mode, the user data and username are reverted back to the original data. The isEditing state is toggled.
+ * 
+ * The handleInputChange function is used to handle the changing of the form fields. The user data and username are updated with the changed field.
+ * 
+ * The handleSaveClick function is used to handle the clicking of the save button. A PUT request is sent to the `/users/${user.UserID}` endpoint with the updated user data. If the request is successful, a success toast notification is displayed, the Redux store is updated with the updated user data, and the user is redirected to the dashboard. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/MyProfile
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap';

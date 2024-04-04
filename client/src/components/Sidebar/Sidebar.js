@@ -1,3 +1,21 @@
+/**
+ * Sidebar.js
+ * 
+ * This is a React component that displays a sidebar with navigation links. The sidebar can be shown or hidden, and includes different links based on the user's role.
+ * 
+ * The component uses the react-bootstrap library for the UI, the react-redux library to access the Redux store, and the PropTypes library to type check the props.
+ * 
+ * The Sidebar function takes two props: show and handleClose. The show prop is a boolean that determines whether the sidebar is shown or hidden. The handleClose prop is a function that is called when the sidebar is closed.
+ * 
+ * The role of the user is fetched from the Redux store. The roleLinks object contains arrays of links for each role. Each link is an object with a href property for the URL and a text property for the link text. Some links also have a dropdown property with an array of sublinks.
+ * 
+ * The return statement renders the sidebar. The sidebar includes a header with a title and a close button, and a body with a navigation list. The navigation list includes a link to the dashboard and the links for the user's role. Each link is either a Nav.Link component or a NavDropdown component with NavDropdown.Item components for the sublinks.
+ * 
+ * The Sidebar function is type checked with PropTypes. The show prop is required and must be a boolean. The handleClose prop is required and must be a function.
+ * 
+ * @module components/Sidebar
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Offcanvas, Nav, NavDropdown } from 'react-bootstrap';

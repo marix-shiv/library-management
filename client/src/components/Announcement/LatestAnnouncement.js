@@ -1,3 +1,18 @@
+/**
+ * LatestAnnouncement.js
+ * 
+ * This is a React component that fetches and displays the latest announcement.
+ * 
+ * The component uses the useState hook to manage the state for the announcement.
+ * The useEffect hook is used to fetch the latest announcement from the server when the component mounts.
+ * 
+ * The announcement is fetched from the `/announcements/latest` endpoint. If the fetch operation fails, a default announcement is displayed.
+ * 
+ * The fetched announcement is displayed in a detailed view. If the user's status is not 0, clicking on the announcement navigates to the '/all-announcements' page.
+ * 
+ * @module components/LatestAnnouncement
+ */
+
 import React, { useEffect, useState } from "react";
 import { Col } from "react-bootstrap";
 import axios from "axios";

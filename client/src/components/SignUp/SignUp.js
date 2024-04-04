@@ -1,4 +1,19 @@
-// Import necessary libraries and components
+/**
+ * SignUp.js
+ * 
+ * This is a React component that allows the user to sign up to the application. It includes a form with fields for the first name, last name, date of birth, username, password, and role, a button to submit the form, and a link to the login page.
+ * 
+ * The component uses the useState, useEffect, axios, and useNavigate hooks to manage the state, side effects, HTTP requests, and navigation. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The first name, last name, date of birth, username, password, password visibility, role, errors, loading state, and username check loading state are managed by the state. The form fields are bound to the state and update the state when changed. The password visibility is toggled when the eye or slashed eye symbol is clicked.
+ * 
+ * The useEffect hooks are used to validate the username and password. The username is validated by checking its length and availability. The password is validated by checking its length and complexity.
+ * 
+ * When the form is submitted, a POST request is sent to the `/users/` endpoint with the first name, last name, date of birth, username, password, and role. If the request is successful, a success toast notification is displayed and the user is redirected to the login page. If the request fails, an error toast notification is displayed and the errors are stored in the state.
+ * 
+ * @module components/SignUp
+ */
+
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";

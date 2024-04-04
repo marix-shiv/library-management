@@ -1,3 +1,23 @@
+/**
+ * ChangePassword.js
+ * 
+ * This is a React component that allows the user to change their password. It includes a form with a field for the new password, a button to submit the form, and an eye or slashed eye symbol to toggle the password visibility.
+ * 
+ * The component uses the useState, useEffect, axios, useParams, and react-bootstrap hooks to manage the state, side effects, HTTP requests, parameters, and UI. It also uses the react-toastify library to display notifications.
+ * 
+ * The password, password visibility, loading state, and errors are managed by the state. The form field is bound to the state and updates the state when changed. The password visibility is toggled when the eye or slashed eye symbol is clicked.
+ * 
+ * The id is fetched from the parameters.
+ * 
+ * The handlePasswordVisibilityToggle function is used to handle the toggling of the password visibility. The password visibility is toggled when the eye or slashed eye symbol is clicked.
+ * 
+ * The handleSubmit function is used to handle the submission of the form. A PUT request is sent to the `/users/${id}/password` endpoint with the new password. If the request is successful, a success toast notification is displayed. If the request fails, an error toast notification is displayed.
+ * 
+ * The useEffect hook is used to validate the password. The password is validated by checking its length and complexity. If the password is invalid, an error message is stored in the state.
+ * 
+ * @module components/ChangePassword
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';

@@ -1,3 +1,19 @@
+/**
+ * UpdateBookInstance.js
+ * 
+ * This is a React component that allows the user to update a book instance's details. It includes a form with fields for the book instance's book ID and imprint, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, and axios hooks to manage the state, side effects, access the Redux store, and HTTP requests. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The book instance's ID is fetched from the URL parameters. The book instance's details are fetched from the `/bookinstances/${id}` endpoint and stored in the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * When the form is submitted, a PUT request is sent to the `/bookinstances/${id}` endpoint with the updated details. If the operation is successful, a success toast notification is displayed and the user is redirected to the book instance's detail page. If the operation fails, an error toast notification is displayed.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/UpdateBookInstance
+ */
+
 import React, { useState, useEffect } from "react";
 import {
     Container,

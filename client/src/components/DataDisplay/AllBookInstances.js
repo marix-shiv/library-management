@@ -1,3 +1,19 @@
+/**
+ * AllBookInstances.js
+ * 
+ * This is a React component that fetches and displays all book instances in a paginated format.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server.
+ * 
+ * The book instances are fetched from the `/bookinstances?page=${page}` endpoint, with the page number managed by the state.
+ * 
+ * The fetched book instances are displayed in a grid. Each book instance is a link that navigates to the detail page for that book instance.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle.
+ * 
+ * @module components/AllBookInstances
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination } from 'react-bootstrap';

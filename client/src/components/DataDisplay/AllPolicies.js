@@ -1,3 +1,21 @@
+/**
+ * AllPolicies.js
+ * 
+ * This is a React component that fetches and displays all policies in a paginated format.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server and the react-toastify library to display notifications.
+ * 
+ * The policies are fetched from the `/policies?page=${page}` endpoint, with the page number managed by the state.
+ * 
+ * The fetched policies are displayed in a grid. Each policy is a link that navigates to the detail page for that policy. Core policies are marked with a badge.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle.
+ * 
+ * If an error occurs while fetching the policies, a toast notification is displayed.
+ * 
+ * @module components/AllPolicies
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination, Badge } from 'react-bootstrap';

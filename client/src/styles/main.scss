@@ -1,3 +1,37 @@
+/**
+ * main.scss
+ * 
+ * This is the main SCSS file that imports other SCSS partials and defines global styles.
+ * 
+ * The file imports the 'variables', 'DataDisplay', 'mixins', and 'utilities' partials, and the Bootstrap SCSS library.
+ * 
+ * The body's font family and background color are set to the `$font-stack` variable and `#C9C9FF` respectively.
+ * 
+ * The `.slab-font` class sets the font family to 'Roboto Slab', falling back to a generic serif font.
+ * 
+ * The `.text-light` class sets the color to `#C9C9FF` with the `!important` flag to override other styles.
+ * 
+ * The `.nav-link` class sets the transition for the transform property to ease-in-out over 0.5 seconds.
+ * 
+ * The `.nav-link:hover` rule scales the nav link by 1.1 when it is hovered over.
+ * 
+ * The `::-webkit-scrollbar` rules style the scrollbar for WebKit browsers.
+ * 
+ * The `.navbar-dark .navbar-toggler-icon` rule sets the background image of the navbar toggler icon to a SVG image.
+ * 
+ * The `@keyframes` rules define animations for scaling, rotating, and fading in.
+ * 
+ * The `.image-scale`, `.image-full-rotate`, and `.icon-tilt` classes apply the scale, rotate, and tilt animations respectively.
+ * 
+ * The `.gradient-text` class applies a gradient text effect.
+ * 
+ * The `.grid-container` and `.grid-item` classes define a grid layout.
+ * 
+ * The `.dark-purple-gear`, `.general-link`, `.nice-border`, `.nav-tabs .nav-link.active`, `.nav-tabs .nav-link`, `.nav-tabs`, `.nice-switch .custom-control-label::before`, `.nice-switch .custom-control-label::after`, and `.nice-switch .custom-control-input:checked~.custom-control-label::after` rules style various elements.
+ * 
+ * @module styles/main
+ */
+
 @import 'variables';
 @import 'DataDisplay';
 @import 'mixins';

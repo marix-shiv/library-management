@@ -1,3 +1,19 @@
+/**
+ * DataDisplay.scss
+ * 
+ * This is a SCSS partial file that defines styles for the pagination in the data display component.
+ * 
+ * The `.pagination-styles .page-link` rule sets the color, background color, border color, font size, and top margin of the page links. The color and border color are set to the `$primary` variable, and the background color is set to the `$light` variable.
+ * 
+ * The `.pagination-styles .page-link:hover`, `.pagination-styles .page-link:focus`, and `.pagination-styles .page-link:active` rules set the color, background color, and border color of the page links when they are hovered over, focused, or active. The color and border color are set to the `$primary` variable, and the background color is set to the `$light` variable.
+ * 
+ * The `.pagination-styles .page-item.active .page-link` rule sets the color, background color, and border color of the page links when their parent page item is active. The color and border color are set to the `$primary` variable, and the background color is set to the `$light` variable.
+ * 
+ * The `.pagination-styles .page-item.disabled .page-link` rule sets the color, background color, and border color of the page links when their parent page item is disabled. The color and border color are set to the `$primary` variable, and the background color is set to the `$light` variable.
+ * 
+ * @module styles/DataDisplay
+ */
+
 .pagination-styles .page-link {
     color: $primary;
     background-color: $light;

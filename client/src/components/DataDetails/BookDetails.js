@@ -1,3 +1,21 @@
+/**
+ * BookDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific book. It allows the user to delete, update, or reserve the book.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The book is fetched from the `/books/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched book details are displayed in a detailed view. If the book has no book instances, the user can delete the book. If the book has book instances, the user is informed that they cannot delete the book.
+ * 
+ * The delete operation is performed by navigating to the '/delete-book/:id' route. The update operation is performed by navigating to the '/update-book/:id' route. The reserve operation is performed by sending a POST request to the `/reservations` endpoint.
+ * 
+ * If the user's role is 'L' or 'S', they can see the delete and update buttons. If the user's role is 'U', they can see the reserve button.
+ * 
+ * @module components/BookDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';

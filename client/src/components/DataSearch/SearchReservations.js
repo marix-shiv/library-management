@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+/**
+ * SearchReservations.js
+ * 
+ * This is a React component that allows the user to search for reservations by user or book. It includes a tabbed interface to select the search mode (by user or book), a switch to select the sub-mode (by ID or name/title), a search bar, a clear button, and a paginated display of the search results.
+ * 
+ * The component uses the useState, useEffect, useSelector, and axios hooks to manage the state, side effects, access the Redux store, and HTTP requests. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The search mode, sub-mode, search term, user ID, book ID, search results, and loading state are managed by the state. When the search button is clicked, the `/users/get-id/${username}`, `/reservations/user/${userId}`, `/books/get-id/${searchTitle}`, or `/reservations/book/${responseBookId}` endpoint is called to fetch the user ID, search results, book ID, or search results. The search results are displayed in a list, with each reservation being a link to its detail page.
+ * 
+ * The clear button clears the search term, user ID, book ID, and search results.
+ * 
+ * If the user's role is 'U', they are redirected to the '/error' page. If an error occurs while fetching the user ID, book ID, or search results, a toast notification is displayed.
+ * 
+ * @module components/SearchReservations
+ */
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Tabs, Tab, Spinner, ListGroup, Container, InputGroup, FormControl, Button } from "react-bootstrap";
 import {Search, Trash} from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {toast} from 'react-toastify';
 import {format} from 'date-fns';
-
+import { useSelector } from 'react-redux';
 
 const SearchReservations = () => {
     const [mode, setMode] = useState('user');
@@ -17,7 +33,14 @@ const SearchReservations = () => {
     const [bookId, setBookId] = useState('');
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
+    const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
 
+    useEffect(() => {
+        if (userRole === 'U') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     const getReservations = async (responseBookId) => {
         if(bookId){

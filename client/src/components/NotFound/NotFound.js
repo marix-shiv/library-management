@@ -1,3 +1,19 @@
+/**
+ * NotFound.js
+ * 
+ * This is a React component that displays a 404 page not found error. It includes a message, an image, and buttons to go to the login page or home page.
+ * 
+ * The component uses the react-bootstrap library for the UI and the react-router-dom library for navigation.
+ * 
+ * The message is displayed in a text center with a large font size and bold font weight. The image is displayed below the message and is centered. The buttons are displayed below the image and are full width, large, rounded, and bold.
+ * 
+ * The go to login page button navigates to the login page when clicked. The go to home page button navigates to the home page when clicked.
+ * 
+ * The component is styled with custom CSS classes. The message is styled with a primary color, the image is styled with a wave animation, and the buttons are styled with a primary color and light text.
+ * 
+ * @module components/NotFound
+ */
+
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";

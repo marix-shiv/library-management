@@ -1,3 +1,19 @@
+/**
+ * SearchBookInstancesUsingUser.js
+ * 
+ * This is a React component that allows the user to search for book instances by user. It includes a switch to select the search mode (by username or user ID), a search bar, a clear button, and a paginated display of the search results.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the axios library to send HTTP requests to the server, the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The search mode, search term, user ID, and search results are managed by the state. When the search button is clicked, the `/users/get-id/${username}` or `/bookinstances/user/${userId}` endpoint is called to fetch the user ID or search results. The search results are displayed in a list, with each book instance being a link to its detail page.
+ * 
+ * The clear button clears the search term, user ID, and results.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page. If an error occurs while fetching the user ID or search results, a toast notification is displayed.
+ * 
+ * @module components/SearchBookInstancesUsingUser
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form, Spinner, ListGroup, Container, InputGroup, FormControl, Button, Badge } from "react-bootstrap";

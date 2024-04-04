@@ -1,3 +1,21 @@
+/**
+ * UpdateGenre.js
+ * 
+ * This is a React component that allows the user to update a genre's name. It includes a form with a field for the genre's name, and buttons to submit the form or cancel the operation.
+ * 
+ * The component uses the useState, useEffect, useSelector, and axios hooks to manage the state, side effects, access the Redux store, and HTTP requests. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The genre's ID is fetched from the URL parameters. The genre's name is fetched from the `/genres/${id}` endpoint and stored in the state. The form field is bound to the state and updates the state when changed.
+ * 
+ * When the form is submitted, a PUT request is sent to the `/genres/${id}` endpoint with the updated name. If the operation is successful, a success toast notification is displayed and the user is redirected to the genre's detail page. If the operation fails, an error toast notification is displayed.
+ * 
+ * The cancel button redirects the user to the genre's detail page without making any changes.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/UpdateGenre
+ */
+
 import React, { useState, useEffect } from "react";
 import {
     Container,

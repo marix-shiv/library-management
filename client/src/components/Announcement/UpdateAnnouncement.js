@@ -1,3 +1,22 @@
+/**
+ * UpdateAnnouncement.js
+ * 
+ * This is a React component that fetches the details of a specific announcement and allows the user to update them.
+ * 
+ * The component uses the useState hook to manage the state for the announcement details and the loading state.
+ * The useEffect hook is used to fetch the announcement from the server when the component mounts.
+ * 
+ * The announcement is fetched from the `/announcements/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched announcement details are displayed in a form. The user can update the title, content, and date of the announcement.
+ * 
+ * When the form is submitted, a PUT request is sent to the `/announcements/:id` endpoint with the updated details. If the update operation is successful, the user is redirected to the detail page for that announcement.
+ * 
+ * If the user's role is not 'S' or 'A', they are redirected to the '/error' page.
+ * 
+ * @module components/UpdateAnnouncement
+ */
+
 import React, { useState, useEffect } from "react";
 import {
     Container,

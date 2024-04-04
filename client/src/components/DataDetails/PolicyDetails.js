@@ -1,3 +1,21 @@
+/**
+ * PolicyDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific policy. It allows the user to delete or update the policy.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The policy is fetched from the `/policies/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched policy details are displayed in a detailed view. If the policy is not a core policy, the user can delete the policy. If the policy is a core policy, the user is informed that they cannot delete the policy.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/policies/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-policies' page. The update operation is performed by navigating to the '/update-policy/:id' route.
+ * 
+ * If the user's role is not 'A' or 'S', they cannot see the delete and update buttons.
+ * 
+ * @module components/PolicyDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button, Badge, Modal } from 'react-bootstrap';

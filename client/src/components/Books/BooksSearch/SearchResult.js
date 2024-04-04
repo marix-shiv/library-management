@@ -1,3 +1,17 @@
+/**
+ * SearchResult.js
+ * 
+ * This is a React component that displays a single search result for a book. If no result is provided, it displays a message indicating that no books were found.
+ * 
+ * The component receives a result prop, which is an object containing the details of a book. These details are displayed in a ListGroup.Item component from the react-bootstrap library.
+ * 
+ * The title of the book is a link that navigates to the detail page for that book.
+ * 
+ * The component uses PropTypes to validate the type of the result prop.
+ * 
+ * @module components/SearchResult
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';

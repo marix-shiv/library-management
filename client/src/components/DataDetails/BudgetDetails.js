@@ -1,15 +1,41 @@
+/**
+ * BudgetDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific budget. It allows the user to delete or update the budget.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The budget is fetched from the `/budgets/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched budget details are displayed in a detailed view. The user can delete or update the budget.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/budgets/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-budgets' page. The update operation is performed by navigating to the '/update-budget/:id' route.
+ * 
+ * If the user's role is not 'S' or 'A', they are redirected to the '/error' page.
+ * 
+ * @module components/BudgetDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import {toast} from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const BudgetDetail = () => {
     const [budget, setBudget] = useState({ Description: '', Money: 0, Date: '', Title: '' });
     const [showModal, setShowModal] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'A') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         const fetchBudget = async () => {

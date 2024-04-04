@@ -1,3 +1,21 @@
+/**
+ * TopBooks.js
+ * 
+ * This is a React component that fetches and displays the top books in a paginated format.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server and the react-toastify library to display notifications.
+ * 
+ * The books are fetched from the `/books/top?page=${page}` endpoint, with the page number managed by the state.
+ * 
+ * The fetched books are displayed in a grid. Each book is a link that navigates to the detail page for that book.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle. The next button is disabled if no books are fetched.
+ * 
+ * If an error occurs while fetching the books, a toast notification is displayed.
+ * 
+ * @module components/TopBooks
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination } from 'react-bootstrap';

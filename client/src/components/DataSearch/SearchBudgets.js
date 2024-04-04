@@ -1,10 +1,25 @@
+/**
+ * SearchBudgets.js
+ * 
+ * This is a React component that allows the user to search for budgets by description. It includes a search bar, a clear button, and a display of the search results.
+ * 
+ * The component uses the useState, useEffect, and axios hooks to manage the state, side effects, and HTTP requests. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The search term and search results are managed by the state. When the search button is clicked, the `/budgets/search/${query}` endpoint is called to fetch the search results. The search results are displayed in a list, with each budget being a link to its detail page.
+ * 
+ * The clear button clears the search term and search results.
+ * 
+ * If no search term is entered, a message is displayed to prompt the user to enter a search query. If no results are fetched, a toast notification is displayed.
+ * 
+ * @module components/SearchBudgets
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button, InputGroup, FormControl } from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import {Link} from 'react-router-dom';
 import { Search, Trash } from 'react-bootstrap-icons';
-
 
 const SearchBudgets = () => {
     const [query, setQuery] = useState('');

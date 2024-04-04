@@ -1,3 +1,23 @@
+/**
+ * Navbar.js
+ * 
+ * This is a React component that displays the navigation bar of the application. It includes links to the home, about, login, signup, and dashboard pages, and a logout button.
+ * 
+ * The component uses the useState, useEffect, useRef, useSelector, useDispatch, and useNavigate hooks to manage the state, side effects, DOM references, Redux store, and navigation. It also uses the react-bootstrap library for the UI and the axios library to send HTTP requests.
+ * 
+ * The expanded state is used to manage the expanded/collapsed state of the navigation bar. The navbarRef is used to reference the navigation bar element. The user is fetched from the Redux store. The dispatch function is used to dispatch actions to the Redux store. The navigate function is used to navigate to different routes.
+ * 
+ * The handleClickOutside function is used to handle click events outside the navigation bar. If the click event's target is outside the navigation bar, the navigation bar is collapsed.
+ * 
+ * The handleLogout function is used to handle the logout operation. It sends a POST request to the `/users/logout` endpoint, removes the user from the Redux store, navigates to the home page, and collapses the navigation bar.
+ * 
+ * The useEffect hook is used to add/remove the click event listener based on the expanded state. If the navigation bar is expanded, the click event listener is added. If the navigation bar is collapsed, the click event listener is removed. The click event listener is also removed when the component unmounts.
+ * 
+ * The return statement renders the navigation bar. The navigation bar includes a brand logo and name, and links to the home, about, login, signup, and dashboard pages. The links are only displayed if the user is logged in. The logout button is only displayed if the user is logged in.
+ * 
+ * @module components/Navbar
+ */
+
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";

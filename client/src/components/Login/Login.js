@@ -1,4 +1,21 @@
-// Import necessary libraries and components
+/**
+ * Login.js
+ * 
+ * This is a React component that allows the user to log in to the application. It includes a form with fields for the username and password, a button to submit the form, a link to the signup page, and an image.
+ * 
+ * The component uses the useState, useEffect, axios, useDispatch, and useNavigate hooks to manage the state, side effects, HTTP requests, Redux store, and navigation. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The username, password, password visibility, loading state, and errors are managed by the state. The form fields are bound to the state and update the state when changed. The password visibility is toggled when the eye or slashed eye symbol is clicked.
+ * 
+ * When the form is submitted, a POST request is sent to the `/users/login` endpoint with the username and password. If the request is successful, the user is logged in, a success toast notification is displayed, and the user is redirected to the dashboard. If the request fails, an error toast notification is displayed and the errors are stored in the state.
+ * 
+ * The checkToken function is called when the component mounts to check if the user is already logged in. If the user is already logged in, they are redirected to the dashboard.
+ * 
+ * The toast function is called when the component mounts to display a success toast notification if the user has just signed up.
+ * 
+ * @module components/Login
+ */
+
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import "./Login.scss";
@@ -243,7 +260,7 @@ return (
         <Col md={4} className="d-none d-md-block">
             <img
             src={LoginImage}
-            alt="Sign Up"
+            alt="Login"
             className="img-fluid ms-1 image-scale"
             />
         </Col>

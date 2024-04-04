@@ -1,13 +1,37 @@
+/**
+ * BudgetsByDate.js
+ * 
+ * This is a React component that fetches and displays budgets within a specified date range. It includes a form to select the start and end dates, and a search button to fetch the budgets.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server.
+ * 
+ * The budgets are fetched from the `/budgets/date/:startDate/:endDate` endpoint, with the start and end dates obtained from the form.
+ * 
+ * The fetched budgets are displayed in a grid. Each budget is a link that navigates to the detail page for that budget.
+ * 
+ * @module components/BudgetsByDate
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import {Link} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const BudgetsByDate = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [budgets, setBudgets] = useState([]);
+    const navigate = useNavigate();
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'A') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         setBudgets([]);

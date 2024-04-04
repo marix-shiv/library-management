@@ -1,4 +1,20 @@
-import React, { useState } from "react";
+/**
+ * AddAuthor.js
+ * 
+ * This is a React component that allows the user to add an author. It includes a form with fields for the author's first name, last name, date of birth, and date of death, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, axios, and useNavigate hooks to manage the state, side effects, access the Redux store, HTTP requests, and navigation. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The first name, last name, date of birth, date of death, and loading state are managed by the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S' or 'L', they are redirected to the '/error' page.
+ * 
+ * When the form is submitted, a POST request is sent to the `/authors` endpoint with the first name, last name, date of birth, and date of death. If the request is successful, a success toast notification is displayed. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/AddAuthor
+ */
+
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Row,
@@ -10,6 +26,8 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./Librarian.scss";
+import { useNavigate } from "react-router-dom";
+import {useSelector} from 'react-redux';
 
 const AddAuthor = () => {
     const [firstName, setFirstName] = useState("");
@@ -17,6 +35,15 @@ const AddAuthor = () => {
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [dateOfDeath, setDateOfDeath] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'L') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

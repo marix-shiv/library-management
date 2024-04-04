@@ -1,4 +1,20 @@
-import React, { useState } from "react";
+/**
+ * AddingPolicy.js
+ * 
+ * This is a React component that allows the user to add a policy. It includes a form with fields for the policy's property, value, valueIsInt, and core status, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, axios, and useNavigate hooks to manage the state, side effects, access the Redux store, HTTP requests, and navigation. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The property, value, valueIsInt, core, and loading state are managed by the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S' or 'A', they are redirected to the '/error' page.
+ * 
+ * When the form is submitted, a POST request is sent to the `/policies` endpoint with the property, value, valueIsInt, and core. If the request is successful, a success toast notification is displayed and the user is redirected to the all policies page. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/AddingPolicy
+ */
+
+import React, { useState, useEffect } from "react";
 import {
     Container,
     Row,
@@ -12,6 +28,7 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import {useSelector} from 'react-redux';
 
 const AddingPolicy = () => {
     const [property, setProperty] = useState("");
@@ -20,6 +37,14 @@ const AddingPolicy = () => {
     const [core, setCore] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'A') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

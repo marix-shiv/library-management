@@ -1,3 +1,27 @@
+/**
+ * utilities.scss
+ * 
+ * This is a SCSS partial file that defines utility classes for border radius, box shadow, border, animations, and transitions.
+ * 
+ * The `.rounded-sm`, `.rounded-md`, and `.rounded-lg` classes set the border radius to .25rem at different screen widths.
+ * 
+ * The `.shadow-md-screen` and `.shadow-lg-screen` classes set the box shadow at different screen widths.
+ * 
+ * The `.no-border` class removes the border and box shadow.
+ * 
+ * The `@keyframes quick-oscillation` rule defines a quick oscillation animation.
+ * 
+ * The `.oscillate` class applies the quick oscillation animation.
+ * 
+ * The `.link-shift` class sets a transition for the transform property and shifts the element to the right when it is hovered over.
+ * 
+ * The `@keyframes moveRightReturn` rule defines a move right and return animation.
+ * 
+ * The `.point-right-button` class applies the move right and return animation.
+ * 
+ * @module styles/utilities
+ */
+
 @media (min-width: 576px) {
     .rounded-sm {
         border-radius: .25rem;

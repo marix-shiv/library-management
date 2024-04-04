@@ -1,3 +1,17 @@
+/**
+ * Footer.js
+ * 
+ * This is a React component that displays the footer of the application.
+ * 
+ * The component uses the react-bootstrap library for the UI.
+ * 
+ * The footer includes a copyright statement and a link to the license. The copyright statement is displayed on the left, and the link to the license is displayed below it.
+ * 
+ * The footer is styled with padding at the top and a margin at the top to separate it from the rest of the content. The text is aligned to the start (left in left-to-right languages).
+ * 
+ * @module components/Footer
+ */
+
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 

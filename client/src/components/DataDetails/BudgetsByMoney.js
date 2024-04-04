@@ -1,13 +1,39 @@
+/**
+ * BudgetsByMoney.js
+ * 
+ * This is a React component that fetches and displays budgets within a specified money range. It includes a form to select the minimum and maximum money, and a search button to fetch the budgets.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the axios library to send HTTP requests to the server and the useNavigate hook from react-router-dom to navigate to different routes.
+ * 
+ * The budgets are fetched from the `/budgets/money/:minMoney/:maxMoney` endpoint, with the minimum and maximum money obtained from the form.
+ * 
+ * The fetched budgets are displayed in a grid. Each budget is a link that navigates to the detail page for that budget.
+ * 
+ * If the user's role is not 'S' or 'A', they are redirected to the '/error' page.
+ * 
+ * @module components/BudgetsByMoney
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import {toast} from 'react-toastify';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const BudgetsByMoney = () => {
     const [minMoney, setMinMoney] = useState('');
     const [maxMoney, setMaxMoney] = useState('');
     const [budgets, setBudgets] = useState([]);
+    const navigate = useNavigate();
+
+    const userRole = useSelector(state => state.user.Role);
+
+    useEffect(() => {
+        if (userRole !== 'S' && userRole !== 'A') {
+            navigate('/error');
+        }
+    }, [userRole, navigate]);
 
     useEffect(() => {
         setBudgets([]);

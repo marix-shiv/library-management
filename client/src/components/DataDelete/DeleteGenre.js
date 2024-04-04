@@ -1,3 +1,21 @@
+/**
+ * DeleteGenre.js
+ * 
+ * This is a React component that fetches the details of a specific genre and allows the user to delete it.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The genre is fetched from the `/genres/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched genre details are displayed in a confirmation message. If the genre has no books, the user can delete the genre. If the genre has books, the user is informed that they cannot delete the genre.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/genres/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-genres' page.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/DeleteGenre
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';

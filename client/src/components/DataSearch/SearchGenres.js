@@ -1,4 +1,19 @@
-// SearchGenres.js
+/**
+ * SearchGenres.js
+ * 
+ * This is a React component that allows the user to search for genres by name. It includes a search bar, a clear button, and a paginated display of the search results.
+ * 
+ * The component uses the useState, useEffect, and axios hooks to manage the state, side effects, and HTTP requests. It also uses the react-bootstrap library for the UI and the react-router-dom library for navigation.
+ * 
+ * The search term, page number, search results, and loading state are managed by the state. When the search button is clicked, the `/genres/search/${searchTerm}?page=${page}` endpoint is called to fetch the search results. The search results are displayed in a grid, with each genre being a link to its detail page.
+ * 
+ * The clear button clears the search term, search results, and resets the page number to 1.
+ * 
+ * The Pagination component from the react-bootstrap library is used to navigate between pages. The previous button decreases the page number (but not below 1), the next button increases the page number (but is disabled if no results are fetched), and the current page number is displayed in the middle.
+ * 
+ * @module components/SearchGenres
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { InputGroup, FormControl, Button, Spinner, ListGroup, Container, Pagination } from "react-bootstrap";

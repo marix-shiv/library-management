@@ -1,4 +1,18 @@
-// _variables.scss
+/**
+ * _variables.scss
+ * 
+ * This is a SCSS partial file that defines variables for colors, font stack, and base margin. These variables can be imported and used in other SCSS files to maintain consistency and ease of changes.
+ * 
+ * The `$primary`, `$secondary`, `$light`, `$dark`, `$card-bg`, `$medium-dark`, and `$dark-purple` variables define the color palette of the application.
+ * 
+ * The `$font-stack` variable defines the font stack of the application. The font stack is 'Roboto', falling back to a generic sans-serif font.
+ * 
+ * The `$base-margin` variable defines the base margin of the application.
+ * 
+ * The `$theme-colors` map includes the color palette of the application. This map can be used with the `map-get` function to retrieve colors.
+ * 
+ * @module styles/variables
+ */
 
 $primary: #2A2A84;
 $secondary: #789abc;

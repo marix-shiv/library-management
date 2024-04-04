@@ -1,4 +1,12 @@
-// _mixins.scss
+/**
+ * _mixins.scss
+ * 
+ * This is a SCSS partial file that defines a mixin for border radius. The mixin includes vendor prefixes to ensure compatibility with different browsers.
+ * 
+ * The `border-radius` mixin takes a `$radius` parameter and applies it to the `-webkit-border-radius`, `-moz-border-radius`, `-ms-border-radius`, and `border-radius` properties. This ensures that the border radius is applied correctly in WebKit browsers (like Safari and Chrome), Mozilla browsers (like Firefox), Microsoft browsers (like Internet Explorer), and other browsers.
+ * 
+ * @module styles/mixins
+ */
 
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius;

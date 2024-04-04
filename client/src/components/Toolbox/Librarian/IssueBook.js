@@ -1,3 +1,23 @@
+/**
+ * IssueBook.js
+ * 
+ * This is a React component that allows the user to issue a book. It includes a form with fields for the user's ID or username and the book instance's ID, and a button to submit the form.
+ * 
+ * The component uses the useState, useEffect, useSelector, axios, useNavigate, and useLocation hooks to manage the state, side effects, access the Redux store, HTTP requests, navigation, and location. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The username, user ID, book instance ID, loading state, and user validity are managed by the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S' or 'L', they are redirected to the '/error' page.
+ * 
+ * The user ID and book instance ID are fetched from the location state when the component mounts and stored in the state.
+ * 
+ * The user ID is fetched from the `/users/get-id/${username}` endpoint when the username changes and stored in the state. The user validity is set to true if the user ID is fetched successfully, and false otherwise.
+ * 
+ * When the form is submitted, a PUT request is sent to the `/bookinstances/${bookInstanceID}/status/L` endpoint with the user ID. If the request is successful, a success toast notification is displayed. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/IssueBook
+ */
+
 import React, { useState, useEffect } from "react";
 import {
 Container,
@@ -14,6 +34,8 @@ import { toast } from "react-toastify";
 import { XCircleFill, CheckCircleFill } from "react-bootstrap-icons";
 import "./Librarian.scss";
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import {useSelector} from 'react-redux';
 
 const IssueBook = () => {
 const location = useLocation();
@@ -24,6 +46,15 @@ const [bookInstanceID, setBookInstanceID] = useState(initialState.bookInstanceID
 const [isLoading, setIsLoading] = useState(false);
 const [isValidUser, setIsValidUser] = useState(null);
 const [key, setKey] = useState("UserID");
+const navigate = useNavigate();
+
+const userRole = useSelector(state => state.user.Role);
+
+useEffect(() => {
+    if (userRole !== 'S' && userRole !== 'L') {
+        navigate('/error');
+    }
+}, [userRole, navigate]);
 
 
 useEffect(() => {

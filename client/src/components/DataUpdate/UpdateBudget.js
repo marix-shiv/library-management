@@ -1,3 +1,21 @@
+/**
+ * UpdateBudget.js
+ * 
+ * This is a React component that allows the user to update a budget's details. It includes a form with fields for the budget's money, description, and date, and buttons to submit the form or cancel the operation.
+ * 
+ * The component uses the useState, useEffect, useSelector, and axios hooks to manage the state, side effects, access the Redux store, and HTTP requests. It also uses the react-bootstrap library for the UI, the react-router-dom library for navigation, and the react-toastify library to display notifications.
+ * 
+ * The budget's ID is fetched from the URL parameters. The budget's details are fetched from the `/budgets/${id}` endpoint and stored in the state. The form fields are bound to the state and update the state when changed.
+ * 
+ * When the form is submitted, a PUT request is sent to the `/budgets/${id}` endpoint with the updated details. If the operation is successful, a success toast notification is displayed and the user is redirected to the budget's detail page. If the operation fails, an error toast notification is displayed.
+ * 
+ * The cancel button redirects the user to the budget's detail page without making any changes.
+ * 
+ * If the user's role is not 'A' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/UpdateBudget
+ */
+
 import React, { useState, useEffect } from "react";
 import {
     Container,

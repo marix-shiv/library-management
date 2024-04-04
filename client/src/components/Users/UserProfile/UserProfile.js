@@ -1,3 +1,31 @@
+/**
+ * UserProfile.js
+ * 
+ * This is a React component that allows the admin to view and edit a user's profile. It includes a form with fields for the user's first name, last name, username, and date of birth, and buttons to edit, save, delete, ban, and verify the user.
+ * 
+ * The component uses the useState, useEffect, useRef, useSelector, useDispatch, useNavigate, useParams, and react-router-dom hooks to manage the state, side effects, references, Redux store, navigation, and parameters. It also uses the react-bootstrap library for the UI and the react-toastify library to display notifications.
+ * 
+ * The user, isEditing, isLoading, showDeleteModal, and originalUser reference are managed by the state and reference. The form fields are bound to the state and update the state when changed.
+ * 
+ * The user's role is fetched from the Redux store. If the user's role is not 'S', they are redirected to '/my-profile'.
+ * 
+ * The user's data is fetched from the `/users/${id}` endpoint when the component mounts and stored in the state and originalUser reference.
+ * 
+ * The handleInputChange function is used to handle the changing of the form fields. The user data is updated with the changed field.
+ * 
+ * The handleEditClick function is used to handle the clicking of the edit button. If the form is currently in edit mode, the user data is reverted back to the original data. The isEditing state is toggled.
+ * 
+ * The handleSaveClick function is used to handle the clicking of the save button. A PUT request is sent to the `/users/${user.UserID}` endpoint with the updated user data. If the request is successful, a success toast notification is displayed, the Redux store is updated with the updated user data, and the user is redirected to the dashboard. If the request fails, an error toast notification is displayed.
+ * 
+ * The handleDeleteClick function is used to handle the clicking of the delete button. The delete modal is shown.
+ * 
+ * The handleConfirmDeleteClick function is used to handle the clicking of the confirm delete button. A DELETE request is sent to the `/users/${user.UserID}` endpoint. If the request is successful, a success toast notification is displayed and the user is redirected to the dashboard. If the request fails, an error toast notification is displayed.
+ * 
+ * The handleBanVerifyClick function is used to handle the clicking of the ban or verify button. A PUT request is sent to the `/users/${user.UserID}/verify` endpoint with the toggled user status. If the request is successful, a success toast notification is displayed and the local user status is updated. If the request fails, an error toast notification is displayed.
+ * 
+ * @module components/UserProfile
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner, Form, Modal } from 'react-bootstrap';

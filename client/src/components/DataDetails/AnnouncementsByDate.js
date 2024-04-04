@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import {toast} from 'react-toastify';
-import {Link} from 'react-router-dom';
+/**
+ * AnnouncementsByDate.js
+ * 
+ * This is a React component that fetches and displays announcements within a specified date range. It includes a form to select the start and end dates, and a search button to fetch the announcements.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server.
+ * 
+ * The announcements are fetched from the `/announcements/date/:startDate/:endDate` endpoint, with the start and end dates obtained from the form.
+ * 
+ * The fetched announcements are displayed in a grid. Each announcement is a link that navigates to the detail page for that announcement.
+ * 
+ * @module components/AnnouncementsByDate
+ */
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const AnnouncementsByDate = () => {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const [announcements, setAnnouncements] = useState([]);
 
     useEffect(() => {
@@ -16,13 +30,16 @@ const AnnouncementsByDate = () => {
     const fetchAnnouncements = async () => {
         if (startDate && endDate) {
             try {
-                const response = await axios.get(`/announcements/date/${startDate.split('T')[0]}/${endDate.split('T')[0]}`);
+                const response = await axios.get(
+                    `/announcements/date/${startDate.split("T")[0]}/${endDate.split("T")[0]
+                    }`
+                );
                 setAnnouncements(response.data);
-                if(response.data.length === 0){
-                    toast.info("No announcement found!")
+                if (response.data.length === 0) {
+                    toast.info("No announcement found!");
                 }
             } catch (error) {
-                toast.error('Something went wrong!');
+                toast.error("Something went wrong!");
             }
         }
     };
@@ -41,7 +58,7 @@ const AnnouncementsByDate = () => {
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
                             className="bg-light"
-                            style={{border: 'none'}}
+                            style={{ border: "none" }}
                         />
                         <Form.Label htmlFor="start-date" className="ms-2">
                             Start Date
@@ -56,7 +73,7 @@ const AnnouncementsByDate = () => {
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
                             className="bg-light"
-                            style={{border: 'none'}}
+                            style={{ border: "none" }}
                         />
                         <Form.Label htmlFor="end-date" className="ms-2">
                             End Date
@@ -64,16 +81,23 @@ const AnnouncementsByDate = () => {
                     </div>
                 </Col>
             </Row>
-            <Button onClick={fetchAnnouncements} variant="primary" className="my-3 rounded-pill btn-lg">
+            <Button
+                onClick={fetchAnnouncements}
+                variant="primary"
+                className="my-3 rounded-pill btn-lg"
+            >
                 Search
             </Button>
             {startDate && endDate ? (
                 announcements.length > 0 ? (
-                    <Row className='align-items-center'>
+                    <Row className="align-items-center">
                         {announcements.map((announcement) => (
                             <Col key={announcement.AnnouncementID} md={6}>
-                                <Link to={`/announcement-detail/${announcement.AnnouncementID}`} className='general-link'>
-                                    <h5 className='bg-dark-purple py-3 px-2 rounded-pill text-light shadow'>
+                                <Link
+                                    to={`/announcement-detail/${announcement.AnnouncementID}`}
+                                    className="general-link"
+                                >
+                                    <h5 className="bg-dark-purple py-3 px-2 rounded-pill text-light shadow">
                                         {announcement.Title}
                                     </h5>
                                 </Link>
@@ -81,10 +105,12 @@ const AnnouncementsByDate = () => {
                         ))}
                     </Row>
                 ) : (
-                   ''
+                    ""
                 )
             ) : (
-                <p className='lead fw-bold text-primary'>Please enter start and end date.</p>
+                <p className="lead fw-bold text-primary">
+                    Please enter start and end date.
+                </p>
             )}
         </Container>
     );

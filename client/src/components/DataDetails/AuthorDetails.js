@@ -1,3 +1,21 @@
+/**
+ * AuthorDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific author. It allows the user to delete or update the author.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The author is fetched from the `/authors/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched author details are displayed in a detailed view. If the author has no books, the user can delete the author. If the author has books, the user is informed that they cannot delete the author.
+ * 
+ * The delete operation is performed by navigating to the '/delete-author/:id' route. The update operation is performed by navigating to the '/update-author/:id' route.
+ * 
+ * If the user's role is not 'L' or 'S', they cannot see the delete and update buttons.
+ * 
+ * @module components/AuthorDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination, Button } from 'react-bootstrap';

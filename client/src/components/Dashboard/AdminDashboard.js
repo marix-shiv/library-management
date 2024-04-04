@@ -1,3 +1,19 @@
+/**
+ * AdminDashboard.js
+ * 
+ * This is a React component that fetches and displays a line chart of budget data for the past year.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server.
+ * 
+ * The budget data is fetched from the `/budgets/date/:startDate/:endDate` endpoint, with the start and end dates set to one year apart.
+ * 
+ * The fetched data is processed into a format suitable for the recharts library, which is used to create the line chart. The chart displays the date on the x-axis and the money on the y-axis.
+ * 
+ * The component also includes a welcome message for the admin.
+ * 
+ * @module components/AdminDashboard
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';

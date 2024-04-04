@@ -1,3 +1,21 @@
+/**
+ * DeleteAuthor.js
+ * 
+ * This is a React component that fetches the details of a specific author and allows the user to delete them.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The author is fetched from the `/authors/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched author details are displayed in a confirmation message. If the author has no books, the user can delete the author. If the author has books, the user is informed that they cannot delete the author.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/authors/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-authors' page.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/DeleteAuthor
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';

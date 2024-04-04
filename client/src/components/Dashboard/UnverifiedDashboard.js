@@ -1,3 +1,15 @@
+/**
+ * UnverifiedDashboard.js
+ * 
+ * This is a React component that displays a message to the user that their account verification is in progress.
+ * 
+ * The component does not receive any props or manage any state. It simply returns a JSX element that includes the message and an image.
+ * 
+ * The message informs the user that verification may take 1-2 days as it requires manual review. The image is a processing image that rotates continuously.
+ * 
+ * @module components/UnverifiedDashboard
+ */
+
 import React from 'react';
 import ProcessingImage from '../../assets/processing.png'
 

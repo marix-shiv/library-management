@@ -1,3 +1,20 @@
+/**
+ * AnnouncementDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific announcement.
+ * 
+ * The component uses the useState hook to manage the state for the announcement and the visibility of a modal.
+ * The useEffect hook is used to fetch the announcement from the server when the component mounts.
+ * 
+ * The announcement is fetched from the `/announcements/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched announcement is displayed in a detailed view. If the user's role is 'S' or 'A', they are also presented with options to update or delete the announcement.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/announcements/:id` endpoint. If the operation is successful, the user is redirected to the '/all-announcements' page.
+ * 
+ * @module components/AnnouncementDetails
+ */
+
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, Modal } from "react-bootstrap";
 import axios from "axios";

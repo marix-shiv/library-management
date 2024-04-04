@@ -1,3 +1,20 @@
+/**
+ * AllAnnouncements.js
+ * 
+ * This is a React component that fetches and displays all announcements.
+ * 
+ * The component uses the useState hook to manage the state for the announcements and the current page.
+ * The useEffect hook is used to fetch the announcements from the server whenever the current page changes.
+ * 
+ * The announcements are fetched from the `/announcements` endpoint, with the current page number passed as a query parameter.
+ * 
+ * The fetched announcements are displayed in a list. Each announcement is a link that navigates to the detail page for that announcement.
+ * 
+ * The component also includes a pagination control that allows the user to navigate through the pages of announcements.
+ * 
+ * @module components/AllAnnouncements
+ */
+
 import React, { useEffect, useState } from "react";
 import { Row, Col, Card, ListGroup, Pagination } from "react-bootstrap";
 import axios from "axios";

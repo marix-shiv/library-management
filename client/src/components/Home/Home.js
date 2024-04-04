@@ -1,3 +1,17 @@
+/**
+ * Home.js
+ * 
+ * This is a React component that displays the home page of the application. It includes a hero section with a call to action, a section to choose the user role, an about section, a features section, and a link to the GitHub repository.
+ * 
+ * The component uses the react-bootstrap library for the UI and the react-router-dom library for navigation.
+ * 
+ * The hero section includes a headline, a subheadline, and a button to start reading. The choose your role section includes cards for each role (reader, librarian, library admin, super admin) with a description and a button to register. The about section includes a description of the application and its developers. The features section includes cards for each feature (online library services, security related features, role-based access control, announcements system) with a description. The GitHub link section includes a link to the GitHub repository.
+ * 
+ * The component is styled with custom CSS classes. The hero section is styled with a background image, the choose your role section is styled with a grid layout, the about section is styled with a centered layout, the features section is styled with a grid layout, and the GitHub link section is styled with a centered layout.
+ * 
+ * @module components/Home
+ */
+
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import HomeImage from "../../assets/home.png";

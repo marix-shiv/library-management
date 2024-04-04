@@ -1,3 +1,17 @@
+/**
+ * SuperAdminDashboard.js
+ * 
+ * This is a React component that provides the main dashboard for super admins. It includes a search bar to search for users.
+ * 
+ * The component uses the useState hook to manage the state for the users search results.
+ * 
+ * The users are searched by sending a GET request to the `/users/search/:query` endpoint, with the query obtained from the search bar.
+ * 
+ * The search results are displayed in a grid. Each result is a UsersSearchResult component that displays the details of a user.
+ * 
+ * @module components/SuperAdminDashboard
+ */
+
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';

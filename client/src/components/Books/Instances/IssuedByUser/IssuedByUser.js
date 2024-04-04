@@ -1,3 +1,21 @@
+/**
+ * IssuedByUser.js
+ * 
+ * This is a React component that fetches and displays the books issued by a specific user. It allows the user to renew a loaned book or delete a reservation.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server.
+ * 
+ * The books are fetched from the `/bookinstances/issued-by-me` or `/bookinstances/user/:userId` endpoint, depending on whether the books are issued by the current user or another user.
+ * 
+ * The maximum number of renewals is fetched from the `/bookinstances/max-renewals` endpoint.
+ * 
+ * The renew operation is performed by sending a PUT request to the `/bookinstances/renew/:id` endpoint. The delete operation is performed by sending a DELETE request to the `/bookinstances/my-reservation/:id` endpoint.
+ * 
+ * The fetched books and the maximum number of renewals are displayed in a list. Each book is a link that navigates to the detail page for that book.
+ * 
+ * @module components/IssuedByUser
+ */
+
 import React, { useEffect, useState } from "react";
 import { ListGroup, Col, Button, Spinner, Badge, Modal } from "react-bootstrap";
 import axios from "axios";

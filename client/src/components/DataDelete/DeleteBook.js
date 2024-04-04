@@ -1,3 +1,21 @@
+/**
+ * DeleteBook.js
+ * 
+ * This is a React component that fetches the details of a specific book and allows the user to delete it.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The book is fetched from the `/books/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched book details are displayed in a confirmation message. If the book has no book instances, the user can delete the book. If the book has book instances, the user is informed that they cannot delete the book.
+ * 
+ * The delete operation is performed by sending a DELETE request to the `/books/:id` endpoint. If the delete operation is successful, the user is redirected to the '/all-books' page.
+ * 
+ * If the user's role is not 'L' or 'S', they are redirected to the '/error' page.
+ * 
+ * @module components/DeleteBook
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';

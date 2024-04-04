@@ -6,6 +6,22 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Completed Sidebar with all necessary functions.
+- Added Policy related pages.
+- Implemented new admin features and updated files for role-based restrictions.
+- Added issued book renewal button and display fine on book return.
+- Added reservation search page.
+- Added reservations pages.
+- Added pages to display top of the category.
+- Implemented delete and update operations.
+- Added profile display and editing pages and all announcements page.
+- Added pages to list all books, genres, authors, and book instances.
+- Added basic dashboard and basic functions.
+- Added test files for /login and /signup.
+- Added login page functionality.
+- Added Signup page functionality.
+- Added Error Page.
+- Restructured project and added Home page with corresponding components, tests, and styles.
 - Integrated Swagger for API documentation. This includes the installation of necessary packages and setup of Swagger UI for interactive API exploration.
 - Added a note in the `tests` directory indicating plans to return to writing tests at a later stage.
 - Added new `constants/daysOfWeek.js` and `constants/policyConstants.js` files.
@@ -35,6 +51,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Improved user authentication and authorization.
+- Refactor server structure and update models.
+- Refactor controllers and models for better error handling and validation.
 - Updated `package.json` and `package-lock.json` to include Swagger-related dependencies.
 - Modified `docs/DataDict.csv`.
 - Modified `server/app.js`.
@@ -62,32 +81,10 @@ All notable changes to this project will be documented in this file.
 
 ### Other
 
+- Added more comments in various files.
+- Added Top Level comments in various files.
+- Minor Syntactical Error Resolved in DataDict.csv.
+- Minor Changes in SDD.
+- Updated SRS link in README from .md to .pdf.
+- Resolved merge conflict in README.
 - Created new `utils` directory.
-
-<!-- 
-NOTE: The following lines are the reference/example/format for the logs which will be added to this file:
-
-## [Unreleased]
-
-### Added
-- New features that have been added since the last release.
-
-### Changed
-- Changes to existing functionality.
-
-### Deprecated
-- Features that are planned to be removed in a future release.
-
-### Removed
-- Features that have been removed.
-
-### Fixed
-- Any bugs that have been fixed.
-
-### Security
-- Any security improvements.
-
-## [0.1.0] - 2022-01-01
-
-### Added
-- Initial release of the project. -->

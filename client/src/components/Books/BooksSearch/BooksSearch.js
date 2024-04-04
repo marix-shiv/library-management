@@ -1,3 +1,17 @@
+/**
+ * BooksSearch.js
+ * 
+ * This is a React component that provides a search bar for books. It allows the user to enter a query, and then either perform a search or clear the search.
+ * 
+ * The component receives several props, including functions to handle the search and clear actions, the current query, and a function to update the query.
+ * 
+ * The component uses the Bootstrap library to create a styled input group with a search bar and buttons for the search and clear actions.
+ * 
+ * The component also includes PropTypes to validate the types of the props.
+ * 
+ * @module components/BooksSearch
+ */
+
 import React from "react";
 import { InputGroup, FormControl, Button, Spinner } from "react-bootstrap";
 import { Search, Trash } from "react-bootstrap-icons";

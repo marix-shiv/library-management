@@ -1,3 +1,21 @@
+/**
+ * GenreDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific genre. It allows the user to delete or update the genre.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The genre is fetched from the `/genres/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched genre details are displayed in a detailed view. If the genre has no books, the user can delete the genre. If the genre has books, the user is informed that they cannot delete the genre.
+ * 
+ * The delete operation is performed by navigating to the '/delete-genre/:id' route. The update operation is performed by navigating to the '/update-genre/:id' route.
+ * 
+ * If the user's role is not 'L' or 'S', they cannot see the delete and update buttons.
+ * 
+ * @module components/GenreDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination, Button } from 'react-bootstrap';

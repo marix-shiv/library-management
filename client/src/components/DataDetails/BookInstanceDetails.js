@@ -1,3 +1,21 @@
+/**
+ * BookInstanceDetails.js
+ * 
+ * This is a React component that fetches and displays the details of a specific book instance. It allows the user to delete, update, issue, receive, or mark the book instance as available.
+ * 
+ * The component uses the useState, useEffect, and useSelector hooks to manage the state, side effects, and access the Redux store. It also uses the useParams and useNavigate hooks from react-router-dom to get the id from the URL parameters and navigate to different routes.
+ * 
+ * The book instance is fetched from the `/bookinstances/:id` endpoint, with the id obtained from the URL parameters.
+ * 
+ * The fetched book instance details are displayed in a detailed view. If the book instance status is 'A' (Available) or 'M' (Maintenance), the user can delete the book instance. Otherwise, the user is informed that they cannot delete the book instance.
+ * 
+ * The delete operation is performed by navigating to the '/delete-book-instance/:id' route. The update operation is performed by navigating to the '/update-book-instance/:id' route. The issue operation is performed by navigating to the '/issue-book' route. The receive operation is performed by navigating to the '/receive-book' route. The available operation is performed by sending a PUT request to the `/bookinstances/:id/status/A` endpoint.
+ * 
+ * If the user's role is 'L' or 'S', they can see the delete, update, issue, receive, and available buttons.
+ * 
+ * @module components/BookInstanceDetails
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Button } from 'react-bootstrap';

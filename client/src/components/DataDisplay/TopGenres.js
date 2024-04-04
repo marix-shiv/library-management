@@ -1,3 +1,21 @@
+/**
+ * TopGenres.js
+ * 
+ * This is a React component that fetches and displays the top genres in a paginated format.
+ * 
+ * The component uses the useState and useEffect hooks to manage the state and side effects. It also uses the axios library to send HTTP requests to the server and the react-toastify library to display notifications.
+ * 
+ * The genres are fetched from the `/genres/top?page=${page}` endpoint, with the page number managed by the state.
+ * 
+ * The fetched genres are displayed in a grid. Each genre is a link that navigates to the detail page for that genre.
+ * 
+ * The component also includes a Pagination component from the react-bootstrap library to navigate between pages. The previous button decreases the page number, the next button increases the page number, and the current page number is displayed in the middle. The next button is disabled if no genres are fetched.
+ * 
+ * If an error occurs while fetching the genres, a toast notification is displayed.
+ * 
+ * @module components/TopGenres
+ */
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Row, Col, Pagination } from 'react-bootstrap';
