@@ -158,8 +158,8 @@ function AppContent({ location }) {
         .then(response => {
             dispatch(setUser(response.data.data));
         })
-        .catch((error) => {
-            console.error(error);
+        .catch(() => {
+            // do nothing
         });
     }, []);
 

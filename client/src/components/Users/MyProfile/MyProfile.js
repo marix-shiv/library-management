@@ -140,8 +140,7 @@ const MyProfile = () => {
                 setIsLoading(false);
                 navigate('/dashboard');
             })
-            .catch((error) => {
-                console.log(error.message);
+            .catch(() => {
                 toast.error('Something went wrong while updating user data!');
                 setIsLoading(false);
             });

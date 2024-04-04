@@ -31,7 +31,6 @@ const AllBudgets = () => {
         const fetchBudgets = async () => {
             try {
                 const response = await axios.get(`/budgets?page=${page}`);
-                console.log(response.data);
                 setBudgets(response.data);
             } catch (error) {
                 toast.error('Something went wrong!');

@@ -68,8 +68,7 @@ const UpdatePolicy = () => {
         const finalValue = property === 'maintenance_days' ? selectedDays.join(', ') : value;
         const requestBody = core === 1 ? { Value: finalValue } : { Property: property, Value: finalValue, Core: core };
 
-        try {
-            console.log(requestBody);
+        try {    
             const response = await axios.put(`/policies/${id}`, requestBody);
             if (response.status === 200) {
                 toast.success("Policy updated successfully.");

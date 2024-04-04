@@ -38,8 +38,8 @@ const IssuedByUser = ({ byMe, userId = null }) => {
             .then((response) => {
                 setBooks(response.data);
             })
-            .catch((err) => {
-                console.log(err.message);
+            .catch(() => {
+                toast.error("Error fetching issues");
                 setBooks([]);
             });
 
@@ -48,8 +48,8 @@ const IssuedByUser = ({ byMe, userId = null }) => {
             .then((response) => {
                 setMaxRenewals(response.data.data);
             })
-            .catch((err) => {
-                console.log(err.message);
+            .catch(() => {
+                toast.error("Error fetching maximum renewals");
             });
     }, [byMe, userId]);
 

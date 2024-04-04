@@ -66,8 +66,7 @@ const BookDetail = () => {
                     toast.success('Book reserved successfully!');
                     navigate('/dashboard');
                 })
-                .catch((error) => {
-                    console.log(error.message);
+                .catch(() => {
                     toast.error('Something went wrong while reserving the book!');
                 });
         } catch (error) {

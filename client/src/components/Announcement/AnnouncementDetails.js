@@ -37,8 +37,8 @@ const AnnouncementDetails = () => {
             .then((response) => {
                 setAnnouncement(response.data);
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                toast.error("Error fetching announcement detail");
             });
     }, [id]);
 

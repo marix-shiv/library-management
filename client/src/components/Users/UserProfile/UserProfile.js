@@ -105,8 +105,7 @@ const UserProfile = () => {
                 setIsLoading(false);
                 navigate('/dashboard');
             })
-            .catch((error) => {
-                console.log(error.message);
+            .catch(() => {
                 toast.error('Something went wrong while updating user data!');
                 setIsLoading(false);
             });
@@ -123,8 +122,7 @@ const UserProfile = () => {
                 toast.success('User deleted successfully!');
                 navigate('/dashboard'); // Navigate to dashboard or another appropriate page
             })
-            .catch((error) => {
-                console.log(error.message);
+            .catch(() => {
                 toast.error('Something went wrong while deleting the user!');
             });
     };
@@ -136,8 +134,7 @@ const UserProfile = () => {
                 toast.success(`User ${newStatus === 1 ? 'verified' : 'banned'} successfully!`);
                 setUser({ ...user, UStatus: newStatus }); // Update the local user status
             })
-            .catch((error) => {
-                console.log(error.message);
+            .catch(() => {
                 toast.error(`Something went wrong while ${newStatus === 1 ? 'verifying' : 'banning'} the user!`);
             });
     };

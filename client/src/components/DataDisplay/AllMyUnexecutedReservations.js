@@ -49,7 +49,6 @@ const AllMyUnexecutedReservations = () => {
         const fetchReservations = async () => {
             try {
                 const response = await axios.get(`/reservations/user/${userId}?page=${page}`);
-                console.log(response.data);
                 setReservations(response.data);
             } catch (error) {
                 toast.error('Something went wrong!');
@@ -65,8 +64,7 @@ const AllMyUnexecutedReservations = () => {
                 toast.success('Reservation deleted successfully!');
                 setReservations(reservations.filter(reservation => reservation.ReservationID !== deletingReservationId));
             })
-            .catch((error) => {
-                console.log(error.message);
+            .catch(() => {
                 toast.error('Something went wrong while deleting the reservation!');
             });
 

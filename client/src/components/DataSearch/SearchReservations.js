@@ -60,7 +60,6 @@ const SearchReservations = () => {
     const getReservationsByUserId = async () => {
         if(userId){
             try{
-                console.log("Currently, the userId is", userId);
                 const response = await axios.get(`/reservations/user/${userId}`);
                 setResults(response.data);
                 if(response.data.length === 0){

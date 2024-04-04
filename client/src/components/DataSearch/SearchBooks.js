@@ -43,7 +43,6 @@ const SearchBooks = () => {
 
     useEffect(() => {
         if(query){
-            console.log(results);
             onSearch(query, setIsLoading);
         }
     }, [page])

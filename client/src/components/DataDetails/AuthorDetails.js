@@ -35,7 +35,6 @@ const AuthorDetail = () => {
         const fetchAuthor = async () => {
             try {
                 const response = await axios.get(`/authors/${id}?page=${page}`);
-                console.log(response.data);
                 setAuthor(response.data);
             } catch (error) {
                 toast.error('Something went wrong!');

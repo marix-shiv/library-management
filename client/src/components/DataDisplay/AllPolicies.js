@@ -30,7 +30,6 @@ const AllPolicies = () => {
         const fetchPolicies = async () => {
             try {
                 const response = await axios.get(`/policies?page=${page}`);
-                console.log(response.data);
                 setPolicies(response.data);
             } catch (error) {
                 toast.error('Something went wrong!');

@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import './LatestAnnouncement.scss'
 import { format } from 'date-fns';
 import {MegaphoneFill} from 'react-bootstrap-icons';
+import { toast } from 'react-toastify';
 
 const AllAnnouncements = () => {
     const [announcements, setAnnouncements] = useState([]);
@@ -33,8 +34,8 @@ const AllAnnouncements = () => {
             .then((response) => {
                 setAnnouncements(response.data);
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(() => {
+                toast.error("Error fetching announcements.");
             });
     }, [currentPage]);
 

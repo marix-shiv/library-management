@@ -24,6 +24,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import axios from 'axios';
 import { clearStore } from "../../redux/userSlice";
+import {toast} from 'react-toastify';
 
 function NavigationBar() {
 // State variable for managing the expanded/collapsed state of the navbar
@@ -61,8 +62,8 @@ const handleLogout = () => {
             // Collapse the navbar
             setExpanded(false);
         })
-        .catch(error => {
-            console.error('Error logging out: ', error);
+        .catch(() => {
+            toast.error('Error logging out');
         });
 };
 

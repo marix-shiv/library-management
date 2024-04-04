@@ -28,7 +28,6 @@ const AllBookInstances = () => {
         const fetchBookInstances = async () => {
             try {
                 const response = await axios.get(`/bookinstances?page=${page}`);
-                console.log(response.data);
                 setBookInstances(response.data);
             } catch (error) {
                 toast.error('Something went wrong!');

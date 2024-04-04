@@ -73,7 +73,6 @@ const handleSubmit = async (event) => {
     let errorMessage = "";
     if (error.response) {
         errorMessage = error.response.data;
-        console.log(error.response);
 
         if (error.response.status === 401 || error.response.status === 400) {
         setErrors({ message: ["Invalid Username or Password"] });
