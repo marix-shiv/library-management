@@ -28,7 +28,10 @@ module.exports = {
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
-            port: process.env.DB_PORT
+            port: process.env.DB_PORT,
+            ssl: {
+                ca: Buffer.from(process.env.DB_SSL_CERT_BASE64, 'base64').toString('utf-8')
+            }
         },
         migrations: {
             directory: './migrations'
