@@ -23,6 +23,8 @@ if (process.env.REACT_APP_BACKEND_URL) {
     axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 }
 
+axios.defaults.withCredentials = true;
+
 axios.interceptors.response.use(
     response => response,
     error => {

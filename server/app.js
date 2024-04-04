@@ -34,7 +34,10 @@ const reservationsRouter = require('./routes/reservations');
 
 const app = express();
 app.set('trust proxy', true);
-app.use(cors());
+app.use(cors({
+    origin: process.env.WEBSITE_ORIGIN, // use the origin from the environment variables
+    credentials: true, // this allows cookies to be sent with requests
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
