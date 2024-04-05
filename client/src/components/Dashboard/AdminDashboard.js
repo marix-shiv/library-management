@@ -67,7 +67,7 @@ const AdminDashboard = () => {
                                 <YAxis />
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <Tooltip />
-                                <Line type="natural" dataKey="Money" stroke="#8884d8" activeDot={{r: 8}} />
+                                <Line type="monotone" dataKey="Money" stroke="#8884d8" activeDot={{r: 8}} />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
