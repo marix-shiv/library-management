@@ -6,12 +6,10 @@
 
 module.exports = function setTokenCookie(res, token) {
     const isProduction = process.env.NODE_ENV === 'production';
-    console.log('Setting token cookie. Is production:', isProduction);
     res.cookie('token', token, {
         httpOnly: true,
-        secure: true, // Always use secure when sameSite is 'none'
-        sameSite: 'none', // Use 'none' in both production and development
+        secure: isProduction, // Use secure only in production
+        sameSite: isProduction ? 'none' : 'lax', // Use 'none' in production and 'lax' in development
         maxAge: 3600000 // 1 hour in milliseconds
     });
-    console.log('Token cookie set.');
 }

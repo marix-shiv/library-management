@@ -82,7 +82,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-console.log("HERE");
 // Load cron jobs
 require('./jobs/cronJobs');
 
@@ -107,7 +106,7 @@ try {
     const swaggerDocs = swaggerJsDoc(swaggerOptions);
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { docExpansion: 'list' }));
 } catch (error) {
-    console.error('Error setting up Swagger:', error);
+    // do nothing
 }
 
 // catch 404 and forward to error handler
@@ -123,15 +122,13 @@ app.use(function(err, req, res, next) {
 
     // If a response has already been sent, log the error and return
     if (res.headersSent) {
-        console.error(err);
         return;
     }
 
-    console.log("HERE?");
 
     // Otherwise, send the error as a response
     res.status(err.status || 500);
-    res.json({error: err.message});
+    res.json({error: {}});
 });
 
 module.exports = { app, knex };
