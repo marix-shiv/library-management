@@ -1,33 +1,31 @@
-# Library Management System
+# :books: Library Management System
 
-## Description
+## :page_facing_up: Description
 
 The Library Management System is a web-based system designed to streamline virtually all operations in a library. It provides an efficient and user-friendly interface for utilizing library resources and services online.
 
-## Features
+## :star2: Features
 
-- Account Registration, User Authentication, Manage Account Details
-- Check Books in Library, Reserve Books, Renew Books
-- Issue Books (Librarian), Manage Book Instances (Librarian)
-- Set Library Policies (Admin), Manage Library Budget (Admin)
+- :bust_in_silhouette: Account Registration, User Authentication, Manage Account Details
+- :books: Check Books in Library, Reserve Books, Renew Books
+- :outbox_tray: Issue Books (Librarian), Manage Book Instances (Librarian)
+- :gear: Set Library Policies (Admin), Manage Library Budget (Admin)
 
-## User Classes
+## :people_holding_hands: User Classes 
 
 - System User
 - Librarian
 - Library Administrators
 - Super Admin
 
-## Operating Environment
+## :wrench: Installation Instructions
 
-The system will operate on standard commercial hardware platforms, running any modern operating system such as Windows, macOS, or Linux. All services will be cloud-based, including the database.
-
-## Installation Instructions
+### Development Setup
 
 1. Clone the repository to your local machine using `https://github.com/PriyanshDimri/library-management.git`.
 2. Navigate to the project directory using `cd library-management`.
 
-### Server Setup
+#### Server Setup
 
 1. Install MySQL on your machine if you haven't already. You can download it from [here](https://dev.mysql.com/downloads/).
 2. Set up a MySQL database for the project and note down the connection details.
@@ -39,6 +37,7 @@ The system will operate on standard commercial hardware platforms, running any m
     DB_PASSWORD=<your_database_password>
     DB_HOST=<your_database_host>
     JWT_SECRET=<your_jwt_secret>
+    WEBSITE_ORIGIN=http://localhost:3000
     ```
 
     Replace `<your_database_name>`, `<your_database_user>`, `<your_database_password>`, `<your_database_host>`, and `<your_jwt_secret>` with your actual database name, user, password, host, and JWT secret.
@@ -49,17 +48,70 @@ The system will operate on standard commercial hardware platforms, running any m
 5. Run the database migrations using `npx knex migrate:latest`.
 6. Seed the database using `npx knex seed:run`.
 
-### Client Setup
+#### Client Setup
 
 7. Navigate to the client directory using `cd client` from the root directory.
 8. Install the client dependencies using `npm install`.
+9. Create a `.env` file in the `client` directory with the following environment variable:
 
-### Running the Application
+    ```properties
+    PORT=3000
+    ```
 
-9. Navigate back to the `server` directory using `cd ../server`.
-10. Start the application using `npm run dev`.
+#### Running the Application
+
+10. Navigate back to the `server` directory using `cd ../server`.
+11. Start the application using `npm run dev`.
 
 The application should now be running on `localhost:3000`.
+
+### Production Setup
+
+1. Clone the repository to your production server using `https://github.com/PriyanshDimri/library-management.git`.
+2. Navigate to the project directory using `cd library-management`.
+
+#### Server Setup
+
+1. Set up a MySQL database for the project and note down the connection details.
+2. Create a `.env` file in the `server` directory with the following environment variables:
+
+    ```properties
+    DB_NAME=<your_database_name>
+    DB_USER=<your_database_user>
+    DB_PASSWORD=<your_database_password>
+    DB_HOST=<your_database_host>
+    JWT_SECRET=<your_jwt_secret>
+    WEBSITE_ORIGIN=<your_client_side_website_link>
+    ```
+
+    Replace `<your_database_name>`, `<your_database_user>`, `<your_database_password>`, `<your_database_host>`, `<your_jwt_secret>` and `<your_client_side_website_link>` with your actual database name, user, password, host, JWT secret, and client-side website link.
+
+    > Note: Depending on your MySQL hosting service, you may need to configure additional environment variables or set up SSL certificates and may further alter the [knexfile](./server/knexfile.js).
+
+3. Install the server dependencies using `cd server` and then `npm install`.
+4. Run the database migrations using `npx knex migrate:latest`.
+5. Seed the database using `npx knex seed:run`.
+
+#### Client Setup
+
+6. Navigate to the client directory using `cd client` from the root directory.
+7. Install the client dependencies using `npm install`.
+8. Create a `.env` file in the `client` directory with the following environment variable:
+
+    ```properties
+    REACT_APP_BACKEND_URL=<your_server_side_website_link>
+    ```
+
+    Replace `<your_server_side_website_link>` with sever-side website link.
+
+8. Build the client for production using `npm run build`.
+
+#### Running the Application
+
+9. Navigate back to the `server` directory using `cd ../server`.
+10. Start the application using `npm start`.
+
+The application should now be running on your production server.
 
 ## User Guide
 
@@ -80,11 +132,6 @@ For more detailed instructions on how to use each feature, please refer to the [
 ## License
 
 This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
-
-## References
-
-- IEEE Standard for Software Requirements Specifications, IEEE Std 830-1998
-- User Interface Style Guide, Version 2.0, ABC Corp, 2023
 
 ## Software Requirements Specification (SRS)
 
