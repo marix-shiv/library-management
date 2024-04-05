@@ -9,7 +9,7 @@ module.exports = function setTokenCookie(res, token) {
     console.log('Setting token cookie. Is production:', isProduction);
     res.cookie('token', token, {
         httpOnly: true,
-        secure: isProduction, // Only use secure in production
+        secure: true, // Always use secure when sameSite is 'none'
         sameSite: 'none', // Use 'none' in both production and development
         maxAge: 3600000 // 1 hour in milliseconds
     });
