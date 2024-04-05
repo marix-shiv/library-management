@@ -14,7 +14,7 @@ const logger = require('morgan');
 const Knex = require('knex');
 const { Model } = require('objection');
 const knexConfig = require('./knexfile');
-const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit");
 require('dotenv').config();
 const cors = require('cors');
 
@@ -44,21 +44,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
-});
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100 // limit each IP to 100 requests per windowMs
+// });
 
 // Set up your routes with the rate limiter
-app.use('/users', process.env.NODE_ENV === 'production' ? limiter : [], usersRouter);
-app.use('/genres', process.env.NODE_ENV === 'production' ? limiter : [], genresRouter);
-app.use('/authors', process.env.NODE_ENV === 'production' ? limiter : [], authorsRouter);
-app.use('/budgets', process.env.NODE_ENV === 'production' ? limiter : [], libraryBudgetRouter);
-app.use('/announcements', process.env.NODE_ENV === 'production' ? limiter : [], announcementsRouter);
-app.use('/policies', process.env.NODE_ENV === 'production' ? limiter : [], policiesRouter);
-app.use('/books', process.env.NODE_ENV === 'production' ? limiter : [], booksRouter);
-app.use('/bookinstances', process.env.NODE_ENV === 'production' ? limiter : [], bookInstancesRouter);
-app.use('/reservations', process.env.NODE_ENV === 'production' ? limiter : [], reservationsRouter);
+// app.use('/users', process.env.NODE_ENV === 'production' ? limiter : [], usersRouter);
+// app.use('/genres', process.env.NODE_ENV === 'production' ? limiter : [], genresRouter);
+// app.use('/authors', process.env.NODE_ENV === 'production' ? limiter : [], authorsRouter);
+// app.use('/budgets', process.env.NODE_ENV === 'production' ? limiter : [], libraryBudgetRouter);
+// app.use('/announcements', process.env.NODE_ENV === 'production' ? limiter : [], announcementsRouter);
+// app.use('/policies', process.env.NODE_ENV === 'production' ? limiter : [], policiesRouter);
+// app.use('/books', process.env.NODE_ENV === 'production' ? limiter : [], booksRouter);
+// app.use('/bookinstances', process.env.NODE_ENV === 'production' ? limiter : [], bookInstancesRouter);
+// app.use('/reservations', process.env.NODE_ENV === 'production' ? limiter : [], reservationsRouter);
+
+app.use('/users', [], usersRouter);
+app.use('/genres', [], genresRouter);
+app.use('/authors', [], authorsRouter);
+app.use('/budgets', [], libraryBudgetRouter);
+app.use('/announcements', [], announcementsRouter);
+app.use('/policies', [], policiesRouter);
+app.use('/books', [], booksRouter);
+app.use('/bookinstances', [], bookInstancesRouter);
+app.use('/reservations', [], reservationsRouter);
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
@@ -72,7 +82,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
+console.log("HERE");
 // Load cron jobs
 require('./jobs/cronJobs');
 
@@ -117,9 +127,11 @@ app.use(function(err, req, res, next) {
         return;
     }
 
+    console.log("HERE?");
+
     // Otherwise, send the error as a response
     res.status(err.status || 500);
-    res.json({error: err});
+    res.json({error: err.message});
 });
 
 module.exports = { app, knex };

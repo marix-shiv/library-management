@@ -299,20 +299,29 @@ exports.login_user = [
 
     // Process request after validation and sanitization.
     asyncHandler(async (req, res, next) => {
-        // Check if the user exists and the password is correct.
-        const user = await User
-            .query()
-            .findOne({ [USERS_USERNAME]: req.body[USERS_USERNAME] });
+        try {
+            console.log("HERE 1");
+            // Check if the user exists and the password is correct.
+            const user = await User
+                .query()
+                .findOne({ [USERS_USERNAME]: req.body[USERS_USERNAME] });
 
-        if (!user || !(await verifyPassword(req.body[USERS_PASSWORD], user[USERS_PASSWORD], user[USERS_SALT]))) {
-            return unauthorizedRequestResponse(res, 'Invalid username or password.');
+            if (!user || !(await verifyPassword(req.body[USERS_PASSWORD], user[USERS_PASSWORD], user[USERS_SALT]))) {
+                return unauthorizedRequestResponse(res, 'Invalid username or password.');
+            }
+
+            // User exists and password is correct. Log them in.
+            // Generate a JWT and set it as a cookie.
+            const token = generateToken(user);
+            console.log("HERE 2");
+            setTokenCookie(res, token);
+            console.log("HERE 3");
+            return successResponse(res, 'Logged in successfully.');
         }
-
-        // User exists and password is correct. Log them in.
-        // Generate a JWT and set it as a cookie.
-        const token = generateToken(user);
-        setTokenCookie(res, token);
-        return successResponse(res, 'Logged in successfully.');
+        catch(err){
+            console.log(err.message);
+            return errorResponse(res, err.message);
+        }
     })
 ];
 

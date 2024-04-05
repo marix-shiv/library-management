@@ -5,10 +5,11 @@
  */
 
 module.exports = function setTokenCookie(res, token) {
+    const isProduction = process.env.NODE_ENV === 'production';
     res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Only use secure in production
-        sameSite: 'none',
+        secure: isProduction, // Only use secure in production
+        sameSite: isProduction ? 'none' : 'lax', // Use 'lax' in development
         maxAge: 3600000 // 1 hour in milliseconds
     });
 }
