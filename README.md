@@ -67,7 +67,7 @@ The application should now be running on `localhost:3000`.
 
 ### Production Setup
 
-1. Clone the repository to your production server using `https://github.com/PriyanshDimri/library-management.git`.
+1. Clone the repository to your production server using `https://github.com/marix-shiv/library-management.git`.
 2. Navigate to the project directory using `cd library-management`.
 
 #### Server Setup
