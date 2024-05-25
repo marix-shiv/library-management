@@ -22,7 +22,7 @@ The Library Management System is a web-based system designed to streamline virtu
 
 ### Development Setup
 
-1. Clone the repository to your local machine using `https://github.com/PriyanshDimri/library-management.git`.
+1. Clone the repository to your local machine using `https://github.com/marix-shiv/library-management.git`.
 2. Navigate to the project directory using `cd library-management`.
 
 #### Server Setup
