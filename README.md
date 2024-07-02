@@ -127,11 +127,7 @@ This application provides a user-friendly interface for managing a library syste
 
 Different types of users have different permissions. Regular users can view books and make reservations, librarians can manage books and reservations, admins can manage library policies, budgets and announcements, and super admin can perform every other action along with managing user accounts.
 
-For more detailed instructions on how to use each feature, please refer to the [User Manual](/docs/UserManual.md).
-
-## License
-
-This project is licensed under the terms of the MIT license. See the [LICENSE](LICENSE) file for details.
+For more detailed instructions on how to use each feature, please refer to the [User Manual](/docs/UserManual.md)
 
 ## Software Requirements Specification (SRS)
 
